@@ -1,85 +1,23 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <!-- 主導覽列 (對應你原本的 5 個大分類) -->
+  <nav>
+    <router-link to="/"><i class="fas fa-home"></i>&nbsp;首頁</router-link>
+    <router-link to="/fraud-patterns"><i class="fas fa-network-wired"></i>&nbsp;資料視覺化</router-link>
+    <router-link to="/prevention"><i class="fas fa-chart-line"></i>&nbsp;案例分析</router-link>
+    <router-link to="/anti-deepfake-video"><i class="fas fa-shield-alt"></i>&nbsp;165反詐影片</router-link>
+    <router-link to="/summary"><i class="fas fa-file-alt"></i>&nbsp;總結</router-link>
+  </nav>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <!-- 頁面動態切換出口 -->
+  <router-view />
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <footer>
+    <p>© 2026 台灣反詐騙資訊與數據分析網 | 守護您的資安與財產</p>
+  </footer>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+<script setup>
+</script>
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
+<style>
 </style>

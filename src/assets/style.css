@@ -1,0 +1,782 @@
+/* =========================================================================
+   全站基本樣式 (Bright & Breathing Light Style)
+   ========================================================================= */
+
+/* 引入自訂變數字型 Noto Sans TC (路徑已修正為 Vite 友善的絕對路徑) */
+@font-face {
+  font-family: 'Noto Sans TC';
+  src: url('/fonts/NotoSansTC-VF.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* =========================================================================
+   動畫特效區 (Animations)
+   ========================================================================= */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* 🌟 背景光暈呼吸燈 (沒有轉動與位移，只有明暗變化，沒有縮放) */
+@keyframes orbBreathe {
+  0% { opacity: 0.4; }
+  100% { opacity: 0.9; }
+}
+
+/* 🚨 警告區塊專用：黃底紅字閃爍特效 (只針對首頁警告框 .alert-box) */
+@keyframes dangerBlink {
+  0%, 100% { 
+    background-color: #ffee00; 
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.4), inset 0 0 10px rgba(255, 0, 0, 0.1);
+    border-color: #ff0000;
+  }
+  50% { 
+    background-color: #ffcc00; 
+    box-shadow: 0 0 35px rgba(255, 0, 0, 0.8), inset 0 0 20px rgba(255, 0, 0, 0.3);
+    border-color: #cc0000;
+  }
+}
+
+/* =========================================================================
+   主體與動態背景 (Body & Background)
+   ========================================================================= */
+body {
+  /* 明亮且豐富的靜態漸層底色 */
+  background: linear-gradient(135deg, #e0f2fe, #fce7f3, #dcfce7, #fef9c3);
+  
+  font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  margin: 0;
+  padding: 0;
+  color: #1e293b; 
+  line-height: 1.8;
+  font-size: clamp(18px, 2vw, 22px);
+  
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position: relative;
+}
+
+/* 背景特效一：靜態專業數據網格 */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background-image: radial-gradient(rgba(148, 163, 184, 0.3) 1.5px, transparent 1.5px);
+  background-size: 40px 40px;
+  z-index: -2;
+}
+
+/* 背景特效二：多色呼吸燈光暈 */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(14, 165, 233, 0.4) 0%, transparent 45%), /* 藍 */
+    radial-gradient(circle at 80% 25%, rgba(236, 72, 153, 0.3) 0%, transparent 45%), /* 粉 */
+    radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.3) 0%, transparent 45%); /* 綠 */
+  z-index: -1;
+  pointer-events: none;
+  /* 只套用呼吸燈動畫 */
+  animation: orbBreathe 6s ease-in-out infinite alternate;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* =========================================================================
+   導覽列 (Navigation) 
+   ========================================================================= */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  width: 100%;
+  /* 高透毛玻璃，讓背景透出 */
+  background-color: rgba(255, 255, 255, 0.4);
+  padding: 14px 24px;
+  backdrop-filter: blur(15px) saturate(150%);
+  -webkit-backdrop-filter: blur(15px) saturate(150%);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  /* 🌟 底部彩虹漸層線條 */
+  border-bottom: 4px solid transparent;
+  border-image: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff) 1;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+nav a {
+  /* 🌟 白底按鈕 */
+  width: auto;         /* 讓按鈕自動適應文字寬度 */
+  padding: 0 15px;     /* 左右加上留白空間 */
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  color: #1e293b;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: clamp(15px, 2.2vw, 17px);
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+  user-select: text;
+  pointer-events: auto;
+}
+
+nav a:hover {
+  /* 簡單優雅的懸浮效果 */
+  background-color: #f8fafc;
+  color: #0284c7;
+  border-color: #94a3b8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+nav a:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f1f5f9;
+}
+
+/* =========================================================================
+   主要內容區 (Main Content)
+   ========================================================================= */
+.content {
+  text-align: center;
+  max-width: 1100px;
+  margin: 50px auto;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 45px;
+  animation: fadeIn 1s ease-out forwards;
+}
+
+.main-title {
+  /* 🌟 靜止的深色大標題，不閃爍 */
+  font-size: clamp(40px, 6vw, 68px);
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  color: #0f172a;
+  text-shadow: 0px 4px 15px rgba(255, 255, 255, 0.8); 
+}
+
+/* =========================================================================
+   🚨 首頁專屬警告區塊 (Alert Box) - 黃底紅字閃爍特效
+   ========================================================================= */
+.alert-box {
+  /* 強制黃色背景與紅色邊框 */
+  background-color: #ffff00;
+  border: 4px dashed #ff0000;
+  padding: 40px 45px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 900px;
+  border-radius: 12px; 
+  line-height: 1.8;
+  /* 🌟 只有這裡套用閃爍特效 */
+  animation: dangerBlink 1s infinite;
+  transform: scale(1);
+  transition: transform 0.2s ease;
+}
+
+.alert-box:hover {
+  transform: scale(1.02);
+}
+
+.alert-box h2 {
+  /* 標題強制紅色 */
+  color: #ff0000;
+  margin-top: 0;
+  margin-bottom: 20px;
+  padding-bottom: 0;
+  font-weight: 900;
+  font-size: clamp(30px, 5vw, 42px);
+  text-shadow: 2px 2px 0px #ffffff; 
+  border-bottom: none;
+}
+
+.alert-box h2::after {
+  display: none; 
+}
+
+.alert-box p {
+  text-align: center; 
+  margin-bottom: 16px;
+  /* 內文強制深紅色 */
+  color: #b30000;
+  font-weight: 800;
+  font-size: clamp(20px, 3vw, 24px);
+}
+
+.alert-box p strong {
+  /* 重點字強制亮紅底白字 */
+  color: #ffffff; 
+  background-color: #ff0000;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.alert-box a {
+  color: #ff0000;
+  border-bottom: 2px solid #ff0000;
+}
+.alert-box a:hover {
+  background-color: #ff0000;
+  color: #ffff00;
+}
+
+/* =========================================================================
+   內容卡片 (Page Title / Card) - 乾淨、明亮、不閃爍 (其他分頁用)
+   ========================================================================= */
+.page-title {
+  background-color: rgba(255, 255, 255, 0.85);
+  border: 1px solid #e2e8f0;
+  border-top: 5px solid #0284c7; /* 頂部藍色飾條 */
+  padding: 35px 45px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 900px;
+  border-radius: 8px; 
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+  line-height: 1.8;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: box-shadow 0.3s ease;
+}
+
+.page-title:hover {
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+}
+
+.page-title h2 {
+  color: #0f172a;
+  margin-top: 0;
+  margin-bottom: 20px;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.page-title h2::after {
+  display: none; 
+}
+
+.page-title p {
+  text-align: justify;
+  margin-bottom: 16px;
+  color: #334155;
+}
+
+.page-title p strong {
+  font-weight: 800;
+  color: #dc2626; 
+  background-color: rgba(220, 38, 38, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* =========================================================================
+   內文標題與段落 (Other Content)
+   ========================================================================= */
+.content h2 {
+  font-size: clamp(26px, 4vw, 36px);
+  color: #0f172a; 
+  margin: 0;
+  font-weight: 900;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 12px;
+}
+
+.content h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 60px;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #3b82f6, #10b981); /* 藍綠靜態底線 */
+}
+
+.content p {
+  font-size: clamp(18px, 2.5vw, 22px);
+  line-height: 1.8;
+  text-align: justify;
+  color: #1e293b;
+  margin: 0;
+}
+
+/* 一般內文連結 */
+.content a {
+  color: #0284c7;
+  font-weight: 800;
+  text-decoration: none;
+  border-bottom: 3px solid rgba(2, 132, 199, 0.3);
+  transition: all 0.3s ease;
+  user-select: text;
+  pointer-events: auto;
+}
+
+.content a:hover {
+  color: #ffffff;
+  border-color: #0284c7;
+  background-color: #0284c7;
+}
+
+/* =========================================================================
+   子頁面按鈕容器 (Subpages Buttons) - 4x2 網格排版 (🌟 終極加寬版)
+   ========================================================================= */
+.subpages {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 預設 4 欄 */
+  gap: 20px; 
+  margin: 20px auto 40px auto;
+  width: 100%;       /* 🌟 讓容器 100% 填滿可用空間 */
+  max-width: 1200px; /* 🌟 寬度上限再拉高，解除封印 */
+}
+
+.subpages a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: clamp(65px, 8vw, 85px);
+  padding: 0 15px; /* 🌟 左右增加內邊距，不讓字貼齊邊緣 */
+  font-size: clamp(16px, 2.2vw, 20px); 
+  letter-spacing: 1px; /* 🌟 增加字距，讓字不會黏在一起 */
+  white-space: nowrap; /* 🌟 強制不換行，避免字被擠成兩坨 */
+  background: rgba(255, 255, 255, 0.9);
+  color: #1e293b;
+  text-decoration: none;
+  border-radius: 10px; 
+  border: 2px solid #cbd5e1;
+  font-weight: 800;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.subpages a:hover {
+  background: linear-gradient(135deg, #0ea5e9, #3b82f6); 
+  color: #ffffff;
+  border-color: transparent;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(14, 165, 233, 0.35); 
+}
+
+/* 未來擴充的預留空位樣式 */
+.subpages a.disabled {
+  background: rgba(241, 245, 249, 0.4);
+  color: #94a3b8;
+  border: 2px dashed #cbd5e1;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.subpages a.disabled:hover {
+  transform: none;
+  background: rgba(241, 245, 249, 0.4);
+  color: #94a3b8;
+  border-color: #cbd5e1;
+  box-shadow: none;
+}
+
+/* 🌟 RWD 調整：螢幕小於 1000px (如平版/小筆電) 就提早變成 2 欄，保證按鈕絕對夠寬 */
+@media (max-width: 1000px) {
+  .subpages {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 750px; /* 控制兩排時的最佳視覺寬度 */
+  }
+  .subpages a {
+    height: clamp(60px, 12vw, 75px); 
+    font-size: clamp(16px, 3.5vw, 19px);
+  }
+}
+
+/* 手機版 (小於 480px) 微調 */
+@media (max-width: 480px) {
+  .subpages {
+    gap: 12px;
+  }
+  .subpages a {
+    font-size: 15px; /* 手機上字體稍微縮小以適應螢幕 */
+    padding: 0 5px;
+  }
+}
+
+/* =========================================================================
+   Power BI 與 Iframe 容器
+   ========================================================================= */
+.powerbi-container,
+.content iframe,
+.content video {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  border: 4px solid #ffffff;
+  background-color: #ffffff;
+}
+
+.powerbi-container iframe {
+  width: 100%;
+  height: 750px; 
+  border: none;
+  display: block;
+}
+
+/* =========================================================================
+   App QR Code 列表 (App List)
+   ========================================================================= */
+.app-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 35px;
+}
+
+.app-list li {
+  text-align: center;
+  flex: 0 0 160px;
+}
+
+.app-container {
+  user-select: text;
+  pointer-events: auto;
+}
+
+.app-list img {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  border: 3px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  -webkit-user-drag: none;
+  pointer-events: auto;
+}
+
+.app-list li:hover img {
+  transform: translateY(-6px); 
+  border-color: #10b981;
+  box-shadow: 0 12px 25px rgba(16, 185, 129, 0.2);
+}
+
+.app-list li p {
+  margin-top: 15px;
+  line-height: 1.5;
+  font-size: clamp(14px, 2vw, 18px);
+  font-weight: 800;
+  color: #1e293b;
+  transition: color 0.3s ease;
+}
+
+.app-list li:hover p {
+  color: #10b981;
+}
+
+/* =========================================================================
+   表格樣式 (Tables)
+   ========================================================================= */
+table {
+  width: 100%;
+  border-collapse: separate; 
+  border-spacing: 0;
+  margin-bottom: 25px;
+  font-size: clamp(18px, 2.5vw, 22px);
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  border: 2px solid #ffffff;
+}
+
+table td {
+  padding: 20px;
+  vertical-align: top;
+  text-align: left;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+table tr:last-child td {
+  border-bottom: none;
+}
+
+table tr:hover td {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+table td.category {
+  font-weight: 900;
+  font-size: clamp(18px, 3vw, 24px);
+  width: 25%;
+  color: #0f172a;
+  border-right: 2px solid #e2e8f0;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+/* =========================================================================
+   全站列表 (Lists)
+   ========================================================================= */
+.recommend-list {
+  list-style-type: none; 
+  padding-left: 0;
+  line-height: 2;
+  text-align: left;
+}
+
+.recommend-list li {
+  position: relative;
+  margin-bottom: 15px;
+  padding-left: 35px;
+}
+
+.recommend-list li::before {
+  content: '✓'; 
+  position: absolute;
+  left: 0;
+  color: #10b981;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.recommend-list li strong {
+  color: #0284c7;
+  font-weight: 900;
+}
+
+.recommend-list.no-bullets {
+  list-style-type: none;
+}
+
+.recommend-list.no-bullets li {
+  border-left: 6px solid #0284c7;
+  padding-left: 20px;
+  margin-bottom: 16px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 0 8px 8px 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.recommend-list.no-bullets li:hover {
+  background: #ffffff;
+  border-left-color: #10b981;
+  transform: translateX(6px);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.1);
+}
+
+/* =========================================================================
+   圖片區塊共用樣式 (Image Containers)
+   ========================================================================= */
+.image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin: 35px 0;
+  text-align: center;
+}
+
+.image-container img {
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  border: 4px solid #ffffff;
+  transition: transform 0.4s ease;
+  -webkit-user-drag: none;
+}
+
+.image-container img:hover {
+  transform: scale(1.02);
+}
+
+/* 響應式 iframe Wrapper */
+.iframe-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  border: 4px solid #ffffff;
+  background: #000;
+  margin-top: 25px;
+  margin-bottom: 35px;
+}
+
+.iframe-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* =========================================================================
+   頁尾 (Footer)
+   ========================================================================= */
+footer {
+  text-align: center !important;
+  padding: 30px 0;
+  margin-top: 50px;
+  font-size: clamp(14px, 2.5vw, 16px);
+  color: #1e293b;
+  font-weight: bold;
+  border-top: 2px dashed rgba(0,0,0,0.1);
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+}
+
+/* =========================================================================
+   響應式調整 (Responsive / Mobile)
+   ========================================================================= */
+@media (max-width: 768px) {
+  .iframe-wrapper { padding-bottom: 65%; }
+  .page-title, .alert-box { padding: 25px; }
+  table td { padding: 15px; }
+}
+
+@media (max-width: 600px) {
+  nav { padding: 12px 10px; gap: 8px; }
+  nav a { width: 100px; height: 38px; font-size: 13px; }
+  .content { margin: 25px auto; row-gap: 35px; }
+  .main-title { font-size: clamp(32px, 7vw, 42px); }
+  .subpages a { width: clamp(120px, 35vw, 150px); height: clamp(45px, 8vw, 50px); font-size: 14px; }
+  .powerbi-container iframe { height: 550px; }
+  .app-list li { flex: 0 0 130px; }
+  .app-list img { width: 130px; height: 130px; }
+}
+
+@media (max-width: 480px) {
+  .iframe-wrapper { padding-bottom: 75%; }
+}
+
+/* =========================================================================
+   本機影片專用容器 (Local Video Wrapper)
+   ========================================================================= */
+.video-wrapper {
+  width: 100%;
+  max-width: 900px; /* 控制影片不要太大 */
+  margin: 25px auto 35px auto;
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  border: 4px solid #ffffff;
+  background: #000; /* 預設黑色底色 */
+  overflow: hidden;
+}
+
+.video-wrapper video {
+  width: 100%;
+  height: auto; /* 讓影片根據畫面寬度自動調整高度 */
+  display: block;
+  border: none;
+}
+/* =========================================================================
+   十大常見詐騙解析 - 專屬條列式樣式
+   ========================================================================= */
+.fraud-item {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px dashed #cbd5e1;
+}
+.fraud-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.fraud-title {
+  color: #0ea5e9; 
+  font-weight: 800; 
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+.fraud-highlight {
+  background-color: #f1f5f9;
+  border-left: 4px solid #3b82f6;
+  padding: 10px 15px;
+  margin-top: 10px;
+  border-radius: 0 5px 5px 0;
+  font-weight: bold;
+  color: #1e293b;
+}
+.fraud-stats {
+  color: #ef4444;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+/* =========================================================================
+   防制與行動方案專屬樣式 (Action Plan)
+   ========================================================================= */
+.action-image-container {
+  margin: 25px auto;
+  text-align: center;
+}
+.action-image-container img {
+  width: 100%;
+  max-width: 700px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border: 4px solid #ffffff;
+  transition: transform 0.3s ease;
+}
+.action-image-container img:hover {
+  transform: translateY(-5px);
+}
+.image-source {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #64748b;
+  text-align: center;
+  margin-top: 12px;
+}
+.image-source a {
+  color: #0284c7;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.image-source a:hover {
+  border-bottom: 1px solid #0284c7;
+}
+.highlight-text {
+  background-color: #f1f5f9;
+  border-left: 4px solid #10b981;
+  padding: 12px 18px;
+  margin: 15px 0;
+  border-radius: 0 6px 6px 0;
+  font-weight: bold;
+  color: #0f172a;
+}
