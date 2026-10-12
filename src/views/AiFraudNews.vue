@@ -4,22 +4,36 @@
     
     <h1 class="main-title">重大詐騙新聞：AI 技術與黑幫組織</h1>
 
-    <!-- 
-      修正重點 1：將 href 改成 router-link 
-      修正重點 2：未開放的按鈕使用 @click.prevent 防止點擊後畫面亂跳
-    -->
-    <div class="subpages" style="grid-template-columns: repeat(4, 1fr);">
-      <router-link to="/prevention"><i class="fas fa-robot"></i>&nbsp;AI深偽亂入罷免案例</router-link>
-      <router-link to="/fraud-growth-stats"><i class="fas fa-chart-bar"></i>&nbsp;AI科技與黑幫犯罪分析</router-link>
-      <router-link to="/ai-fraud-news"><i class="fas fa-newspaper"></i>&nbsp;AI假檢警詐騙</router-link>
-      <router-link to="/top-10-frauds"><i class="fas fa-list-ol"></i>&nbsp;十大常見詐騙解析</router-link>
-      
-      <!-- 預留的 4 個空位 -->
-      <a href="#" class="disabled" @click.prevent><i class="fas fa-plus"></i>&nbsp;敬請期待</a>
-      <a href="#" class="disabled" @click.prevent><i class="fas fa-plus"></i>&nbsp;敬請期待</a>
-      <a href="#" class="disabled" @click.prevent><i class="fas fa-plus"></i>&nbsp;敬請期待</a>
-      <a href="#" class="disabled" @click.prevent><i class="fas fa-plus"></i>&nbsp;敬請期待</a>
-    </div>
+    <!-- 新的子導覽列 (強制重整，釋放 RAM) -->
+	<div class="subpages" style="grid-template-columns: repeat(4, 1fr);">
+	  <a 
+		href="/PFvue/prevention" 
+		:class="{ 'router-link-exact-active': $route.path === '/prevention' }"
+	  >
+		<i class="fas fa-project-diagram"></i>&nbsp;AI深偽亂入罷免案例
+	  </a>
+	  
+	  <a 
+		href="/PFvue/fraud-growth-stats" 
+		:class="{ 'router-link-exact-active': $route.path === '/fraud-growth-stats' }"
+	  >
+		<i class="fas fa-user-shield"></i>&nbsp;AI詐騙一年暴增四倍多
+	  </a>
+	  
+	  <a 
+		href="/PFvue/ai-fraud-news" 
+		:class="{ 'router-link-exact-active': $route.path === '/ai-fraud-news' }"
+	  >
+		<i class="fas fa-bug"></i>&nbsp;AI假檢警詐騙與黑幫經營
+	  </a>
+	  
+	  <a 
+		href="/PFvue/top-10-frauds" 
+		:class="{ 'router-link-exact-active': $route.path === '/top-10-frauds' }"
+	  >
+		<i class="fas fa-fist-raised"></i>&nbsp;十大常見詐騙解析
+	  </a>
+	</div>
 
     <!-- ================== 案例一 ================== -->
     <div class="page-title" style="margin-top: 30px;">

@@ -23,13 +23,13 @@
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* 🌟 背景光暈呼吸燈 (沒有轉動與位移，只有明暗變化，沒有縮放) */
+/* 🌟 背景光暈呼吸燈 */
 @keyframes orbBreathe {
   0% { opacity: 0.4; }
   100% { opacity: 0.9; }
 }
 
-/* 🚨 警告區塊專用：黃底紅字閃爍特效 (只針對首頁警告框 .alert-box) */
+/* 🚨 警告區塊專用：黃底紅字閃爍特效 */
 @keyframes dangerBlink {
   0%, 100% { 
     background-color: #ffee00; 
@@ -101,57 +101,106 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
+  gap: 24px; 
   flex-wrap: wrap;
   width: 100%;
-  /* 高透毛玻璃，讓背景透出 */
   background-color: rgba(255, 255, 255, 0.4);
-  padding: 14px 24px;
+  padding: 20px 36px; 
   backdrop-filter: blur(15px) saturate(150%);
   -webkit-backdrop-filter: blur(15px) saturate(150%);
   position: sticky;
   top: 0;
   z-index: 1000;
-  /* 🌟 底部彩虹漸層線條 */
   border-bottom: 4px solid transparent;
   border-image: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff) 1;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 nav a {
-  /* 🌟 白底按鈕 */
-  width: auto;         /* 讓按鈕自動適應文字寬度 */
-  padding: 0 15px;     /* 左右加上留白空間 */
-  height: 44px;
+  width: auto;         
+  padding: 0 24px;     
+  height: 66px;        
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #ffffff;
   color: #1e293b;
   text-decoration: none;
-  border-radius: 6px;
+  border-radius: 10px; 
   font-weight: 800;
-  font-size: clamp(15px, 2.2vw, 17px);
+  font-size: clamp(22px, 3.3vw, 26px);
   border: 1px solid #cbd5e1;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04); 
   transition: all 0.2s ease;
   user-select: text;
   pointer-events: auto;
 }
 
-nav a:hover {
-  /* 簡單優雅的懸浮效果 */
-  background-color: #f8fafc;
-  color: #0284c7;
-  border-color: #94a3b8;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+/* =========================================================================
+   1. 導覽列 (上方選單) 互動與點擊狀態修正
+   ========================================================================= */
+
+/* 只有「有滑鼠的裝置 (電腦)」才套用 Hover，解決手機點兩下問題 */
+@media (hover: hover) {
+  nav a:hover {
+    background-color: #f8fafc;
+    color: #0284c7;
+    border-color: #94a3b8;
+    transform: translateY(-3px); 
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  }
 }
 
+/* 點擊當下的回饋效果 (所有裝置適用) */
 nav a:active {
-  transform: translateY(1px);
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: scale(0.98);
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.1);
   background-color: #f1f5f9;
+}
+
+/* Vue Router 自動附加的類別：目前所在頁面的按鈕會「常駐高亮」 */
+nav a.router-link-active,
+nav a.router-link-exact-active {
+  color: #0284c7;
+  background-color: #f0f9ff;
+  font-weight: 900;
+}
+
+
+/* =========================================================================
+   2. 子頁面選單 (下方列表) 互動與點擊狀態修正
+   ========================================================================= */
+
+/* 只有電腦版才套用 Hover 變色 */
+@media (hover: hover) {
+  .subpages a:hover {
+    background: linear-gradient(135deg, #0ea5e9, #3b82f6); 
+    color: #ffffff;
+    border-color: transparent;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(14, 165, 233, 0.35); 
+  }
+  
+  .subpages a.disabled:hover {
+    transform: none;
+    background: rgba(241, 245, 249, 0.4);
+    color: #94a3b8;
+    border-color: #cbd5e1;
+    box-shadow: none;
+  }
+}
+/* 手機點擊當下給予內縮的實體按壓感 */
+.subpages a:active {
+  transform: scale(0.98);
+}
+
+/* Vue Router 自動附加的類別：目前所在的子頁面，按鈕常駐深藍底白字 */
+.subpages a.router-link-active,
+.subpages a.router-link-exact-active {
+  background: linear-gradient(135deg, #0ea5e9, #3b82f6); 
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* =========================================================================
@@ -169,7 +218,6 @@ nav a:active {
 }
 
 .main-title {
-  /* 🌟 靜止的深色大標題，不閃爍 */
   font-size: clamp(40px, 6vw, 68px);
   font-weight: 900;
   letter-spacing: 2px;
@@ -182,7 +230,6 @@ nav a:active {
    🚨 首頁專屬警告區塊 (Alert Box) - 黃底紅字閃爍特效
    ========================================================================= */
 .alert-box {
-  /* 強制黃色背景與紅色邊框 */
   background-color: #ffff00;
   border: 4px dashed #ff0000;
   padding: 40px 45px;
@@ -191,7 +238,6 @@ nav a:active {
   max-width: 900px;
   border-radius: 12px; 
   line-height: 1.8;
-  /* 🌟 只有這裡套用閃爍特效 */
   animation: dangerBlink 1s infinite;
   transform: scale(1);
   transition: transform 0.2s ease;
@@ -202,7 +248,6 @@ nav a:active {
 }
 
 .alert-box h2 {
-  /* 標題強制紅色 */
   color: #ff0000;
   margin-top: 0;
   margin-bottom: 20px;
@@ -220,14 +265,12 @@ nav a:active {
 .alert-box p {
   text-align: center; 
   margin-bottom: 16px;
-  /* 內文強制深紅色 */
   color: #b30000;
   font-weight: 800;
   font-size: clamp(20px, 3vw, 24px);
 }
 
 .alert-box p strong {
-  /* 重點字強制亮紅底白字 */
   color: #ffffff; 
   background-color: #ff0000;
   padding: 4px 8px;
@@ -244,12 +287,12 @@ nav a:active {
 }
 
 /* =========================================================================
-   內容卡片 (Page Title / Card) - 乾淨、明亮、不閃爍 (其他分頁用)
+   內容卡片 (Page Title / Card)
    ========================================================================= */
 .page-title {
   background-color: rgba(255, 255, 255, 0.85);
   border: 1px solid #e2e8f0;
-  border-top: 5px solid #0284c7; /* 頂部藍色飾條 */
+  border-top: 5px solid #0284c7; 
   padding: 35px 45px;
   margin: 0 auto;
   width: 100%;
@@ -313,7 +356,7 @@ nav a:active {
   width: 60px;
   height: 6px;
   border-radius: 3px;
-  background: linear-gradient(90deg, #3b82f6, #10b981); /* 藍綠靜態底線 */
+  background: linear-gradient(90deg, #3b82f6, #10b981); 
 }
 
 .content p {
@@ -324,7 +367,6 @@ nav a:active {
   margin: 0;
 }
 
-/* 一般內文連結 */
 .content a {
   color: #0284c7;
   font-weight: 800;
@@ -342,15 +384,15 @@ nav a:active {
 }
 
 /* =========================================================================
-   子頁面按鈕容器 (Subpages Buttons) - 4x2 網格排版 (🌟 終極加寬版)
+   子頁面按鈕容器 (Subpages Buttons)
    ========================================================================= */
 .subpages {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 預設 4 欄 */
+  grid-template-columns: repeat(4, 1fr); 
   gap: 20px; 
   margin: 20px auto 40px auto;
-  width: 100%;       /* 🌟 讓容器 100% 填滿可用空間 */
-  max-width: 1200px; /* 🌟 寬度上限再拉高，解除封印 */
+  width: 100%;       
+  max-width: 1200px; 
 }
 
 .subpages a {
@@ -359,10 +401,10 @@ nav a:active {
   justify-content: center;
   width: 100%;
   height: clamp(65px, 8vw, 85px);
-  padding: 0 15px; /* 🌟 左右增加內邊距，不讓字貼齊邊緣 */
+  padding: 0 15px; 
   font-size: clamp(16px, 2.2vw, 20px); 
-  letter-spacing: 1px; /* 🌟 增加字距，讓字不會黏在一起 */
-  white-space: nowrap; /* 🌟 強制不換行，避免字被擠成兩坨 */
+  letter-spacing: 1px; 
+  white-space: nowrap; 
   background: rgba(255, 255, 255, 0.9);
   color: #1e293b;
   text-decoration: none;
@@ -381,7 +423,6 @@ nav a:active {
   box-shadow: 0 8px 25px rgba(14, 165, 233, 0.35); 
 }
 
-/* 未來擴充的預留空位樣式 */
 .subpages a.disabled {
   background: rgba(241, 245, 249, 0.4);
   color: #94a3b8;
@@ -396,29 +437,6 @@ nav a:active {
   color: #94a3b8;
   border-color: #cbd5e1;
   box-shadow: none;
-}
-
-/* 🌟 RWD 調整：螢幕小於 1000px (如平版/小筆電) 就提早變成 2 欄，保證按鈕絕對夠寬 */
-@media (max-width: 1000px) {
-  .subpages {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 750px; /* 控制兩排時的最佳視覺寬度 */
-  }
-  .subpages a {
-    height: clamp(60px, 12vw, 75px); 
-    font-size: clamp(16px, 3.5vw, 19px);
-  }
-}
-
-/* 手機版 (小於 480px) 微調 */
-@media (max-width: 480px) {
-  .subpages {
-    gap: 12px;
-  }
-  .subpages a {
-    font-size: 15px; /* 手機上字體稍微縮小以適應螢幕 */
-    padding: 0 5px;
-  }
 }
 
 /* =========================================================================
@@ -661,49 +679,26 @@ footer {
 }
 
 /* =========================================================================
-   響應式調整 (Responsive / Mobile)
-   ========================================================================= */
-@media (max-width: 768px) {
-  .iframe-wrapper { padding-bottom: 65%; }
-  .page-title, .alert-box { padding: 25px; }
-  table td { padding: 15px; }
-}
-
-@media (max-width: 600px) {
-  nav { padding: 12px 10px; gap: 8px; }
-  nav a { width: 100px; height: 38px; font-size: 13px; }
-  .content { margin: 25px auto; row-gap: 35px; }
-  .main-title { font-size: clamp(32px, 7vw, 42px); }
-  .subpages a { width: clamp(120px, 35vw, 150px); height: clamp(45px, 8vw, 50px); font-size: 14px; }
-  .powerbi-container iframe { height: 550px; }
-  .app-list li { flex: 0 0 130px; }
-  .app-list img { width: 130px; height: 130px; }
-}
-
-@media (max-width: 480px) {
-  .iframe-wrapper { padding-bottom: 75%; }
-}
-
-/* =========================================================================
    本機影片專用容器 (Local Video Wrapper)
    ========================================================================= */
 .video-wrapper {
   width: 100%;
-  max-width: 900px; /* 控制影片不要太大 */
+  max-width: 900px; 
   margin: 25px auto 35px auto;
   border-radius: 12px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
   border: 4px solid #ffffff;
-  background: #000; /* 預設黑色底色 */
+  background: #000; 
   overflow: hidden;
 }
 
 .video-wrapper video {
   width: 100%;
-  height: auto; /* 讓影片根據畫面寬度自動調整高度 */
+  height: auto; 
   display: block;
   border: none;
 }
+
 /* =========================================================================
    十大常見詐騙解析 - 專屬條列式樣式
    ========================================================================= */
@@ -737,6 +732,7 @@ footer {
   font-weight: bold;
   font-size: 0.95rem;
 }
+
 /* =========================================================================
    防制與行動方案專屬樣式 (Action Plan)
    ========================================================================= */
@@ -779,4 +775,192 @@ footer {
   border-radius: 0 6px 6px 0;
   font-weight: bold;
   color: #0f172a;
+}
+
+/* =========================================================================
+   反詐騙影片第二頁 (Anti-Phishing) 專屬樣式
+   ========================================================================= */
+.anti-fraud-container .description {
+  font-size: clamp(18px, 2.5vw, 22px); 
+  line-height: 1.8;
+  color: #334155; 
+  text-align: justify;
+  margin: 0;
+}
+.anti-fraud-container .analysis-card li {
+  font-size: clamp(18px, 2.5vw, 22px); 
+  line-height: 1.8;
+  color: #334155; 
+  text-align: justify;
+  margin-bottom: 16px;
+}
+.anti-fraud-container h3, 
+.anti-fraud-container h2 {
+  color: #0f172a;
+  font-weight: 900;
+}
+.anti-fraud-container .video-card h3 {
+  color: #0284c7; 
+  font-size: clamp(22px, 3.5vw, 28px);
+  margin: 0 0 15px 0;
+}
+
+/* =========================================================================
+   嵌入網頁 (iframe) 樣式
+   ========================================================================= */
+.iframe-container {
+  width: 100%;
+  height: 80vh; 
+  min-height: 600px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  margin-bottom: 30px;
+  background-color: #fff;
+}
+.iframe-container iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* =========================================================================
+   響應式調整 (Responsive / Mobile)
+   ========================================================================= */
+@media (max-width: 1000px) {
+  .subpages {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 750px; 
+  }
+  .subpages a {
+    height: clamp(60px, 12vw, 75px); 
+    font-size: clamp(16px, 3.5vw, 19px);
+  }
+}
+
+@media (max-width: 768px) {
+  .iframe-wrapper { padding-bottom: 65%; }
+  .page-title, .alert-box { padding: 25px; }
+  table td { padding: 15px; }
+}
+
+@media (max-width: 600px) {
+  /* ======================================= */
+  /* 1. 導覽列：無縫雙欄表格設計             */
+  /* ======================================= */
+  nav { 
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0; 
+    gap: 1px; /* 利用 1px 間距透出背景色，形成完美的表格內框線 */
+    background-color: #cbd5e1; /* 表格框線顏色 */
+    border: 1px solid #cbd5e1; /* 表格外框線 */
+    border-radius: 8px;
+    overflow: hidden; /* 確保邊角維持圓弧 */
+    margin: 10px 15px; /* 與螢幕邊緣保持一點距離 */
+  }
+  
+  nav a { 
+    width: 100%; 
+    height: 50px; 
+    font-size: 16px; 
+    padding: 0;
+    border-radius: 0; /* 移除個別按鈕圓角，融入表格 */
+    border: none; /* 移除個別邊框 */
+    box-shadow: none; /* 移除陰影 */
+    background-color: #ffffff;
+  }
+  
+  /* 奇數個按鈕時，最後一個跨兩欄置中 */
+  nav a:last-child:nth-child(odd) {
+    grid-column: span 2;
+  }
+
+  /* ======================================= */
+  /* 2. 子頁面選單：列狀清單表格設計         */
+  /* ======================================= */
+  .subpages { 
+    display: flex;
+    flex-direction: column; /* 改為垂直排列，解決文字過長破版問題 */
+    gap: 0; /* 移除按鈕間距，使其相連 */
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-bottom: 10px;
+  }
+  
+  .subpages a { 
+    width: 100% !important;  
+    height: auto !important;          
+    min-height: 60px;      
+    font-size: 16px;       
+    padding: 15px 20px; 
+    white-space: normal; /* 允許文字換行 */
+    justify-content: flex-start; /* 文字統一靠左對齊，閱讀更順眼 */
+    border: none; 
+    border-bottom: 1px solid #e2e8f0; /* 只保留下方分隔線 */
+    border-radius: 0; 
+    box-shadow: none; 
+    background: transparent;
+  }
+  
+  /* 移除最後一項的底線，保持表格收尾乾淨 */
+  .subpages a:last-child {
+    border-bottom: none;
+  }
+
+  /* ======================================= */
+  /* 其他維持不動的設定                      */
+  /* ======================================= */
+  .content { margin: 20px auto; row-gap: 30px; }
+  .main-title { font-size: clamp(28px, 6vw, 36px); }
+  .powerbi-container iframe { height: 550px; }
+  .app-list li { flex: 0 0 130px; }
+  .app-list img { width: 130px; height: 130px; }
+}
+
+@media (max-width: 480px) {
+  .iframe-wrapper { padding-bottom: 75%; }
+}
+/* =========================================================================
+   👑 強制主導覽列 & 子導覽列「絕對常駐」的 Active 狀態
+   ========================================================================= */
+
+/* 1. 主導覽列 (上方選單) 
+   🌟 改回 router-link-active，這樣進入子頁面時，主選單依然能記住位置並常駐高亮 */
+nav a.router-link-active {
+  color: #0284c7 !important;
+  background-color: #f0f9ff !important;
+  font-weight: 900 !important;
+}
+
+/* 2. 🚨【首頁專屬防呆機制】🚨
+   因為所有網址都包含 "/"，Vue 會誤以為首頁永遠是 Active。
+   這裡用 CSS 強制規定：如果網址不是「完全等於」首頁，就把首頁的常駐顏色拔掉！ */
+nav a[href="/"]:not(.router-link-exact-active) {
+  color: #1e293b !important;
+  background-color: #ffffff !important;
+  font-weight: 800 !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* 保持首頁被拔掉常駐後，在電腦上依然能有滑鼠懸浮變色特效 */
+@media (hover: hover) {
+  nav a[href="/"]:not(.router-link-exact-active):hover {
+    background-color: #f8fafc !important;
+    color: #0284c7 !important;
+    border-color: #94a3b8 !important;
+  }
+}
+
+/* 3. 子導覽列 (下方選單)
+   🌟 子選單沒有下一層了，所以維持精準常駐 (exact-active) 即可 */
+.subpages a.router-link-exact-active {
+  background: linear-gradient(135deg, #0ea5e9, #3b82f6) !important; 
+  color: #ffffff !important;
+  border-color: transparent !important;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2) !important;
 }

@@ -143,6 +143,21 @@ const copyEmail = () => {
     console.error('複製失敗:', err)
   })
 }
+import { onMounted } from 'vue';
+import { supabase } from '../lib/supabase.js'
+
+onMounted(async () => {
+  console.log('正在測試連線 Supabase...');
+  
+  // 試著查詢您剛剛建立的資料表（或是隨便抓一個不存在的表來測試回應）
+  const { data, error } = await supabase.from('anti_fraud_stats').select('*');
+
+  if (error) {
+    console.error('❌ 連線或查詢失敗：', error.message);
+  } else {
+    console.log('✅ 成功從 Vue 專案連線到 Supabase！取得資料：', data);
+  }
+});
 </script>
 
 <style scoped>

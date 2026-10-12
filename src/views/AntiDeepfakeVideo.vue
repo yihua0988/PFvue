@@ -4,23 +4,29 @@
     
     <h1 class="main-title">165 反詐騙宣導影片</h1>
 
-    <!-- 
-      子頁面選單 (4x2 網格)
-      修正 1：將 href 改為 router-link
-      修正 2：未開放的空位加上 @click.prevent 防止畫面跳轉
-    -->
-    <div class="subpages" style="grid-template-columns: repeat(4, 1fr);">
-      <router-link to="/anti-deepfake-video"><i class="fas fa-video"></i>&nbsp;反深偽宣導影片</router-link>
-      
-      <!-- 預留的 7 個空位，維持 4x2 滿版排列，供未來擴充其他 165 影片 -->
-      <a href="#" class="disabled" @click.prevent><i class="fas fa-plus"></i>&nbsp;敬請期待</a>
-      <a href="#" class="disabled" @click.prevent><i class="fas fa-plus"></i>&nbsp;敬請期待</a>
-      <a href="#" class="disabled" @click.prevent><i class="fas fa-plus"></i>&nbsp;敬請期待</a>
-      <a href="#" class="disabled" @click.prevent><i class="fas fa-plus"></i>&nbsp;敬請期待</a>
-      <a href="#" class="disabled" @click.prevent><i class="fas fa-plus"></i>&nbsp;敬請期待</a>
-      <a href="#" class="disabled" @click.prevent><i class="fas fa-plus"></i>&nbsp;敬請期待</a>
-      <a href="#" class="disabled" @click.prevent><i class="fas fa-plus"></i>&nbsp;敬請期待</a>
-    </div>
+	<!-- 新的子導覽列 (強制重整，釋放 RAM) -->
+	<div class="subpages" style="grid-template-columns: repeat(4, 1fr);">
+	  <a 
+		href="/PFvue/anti-deepfake-video" 
+		:class="{ 'router-link-exact-active': $route.path === '/anti-deepfake-video' }"
+	  >
+		<i class="fas fa-project-diagram"></i>&nbsp;反深偽詐騙
+	  </a>
+	  
+	  <a 
+		href="/PFvue/anti-phishing-video" 
+		:class="{ 'router-link-exact-active': $route.path === '/anti-phishing-video' }"
+	  >
+		<i class="fas fa-user-shield"></i>&nbsp;常見詐騙手法分析
+	  </a>
+	  
+	  <a 
+		href="/PFvue/anti-investment-video" 
+		:class="{ 'router-link-exact-active': $route.path === '/anti-investment-video' }"
+	  >
+		<i class="fas fa-bug"></i>&nbsp;假投資詐騙解
+	  </a>
+	</div>
 	
     <!-- 內文解析卡片 -->
 	<div class="page-title" style="margin-top: 30px;">

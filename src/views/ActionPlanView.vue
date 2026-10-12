@@ -4,15 +4,35 @@
     
     <h1 class="main-title">防制與行動方案：我們該怎麼做？</h1>
 
-    <!-- 
-      修正重點：將原本的 <a> 標籤改為 Vue Router 專用的 <router-link> 
-    -->
-    <div class="subpages" style="grid-template-columns: repeat(4, 1fr);">
-      <router-link to="/summary"><i class="fas fa-project-diagram"></i>&nbsp;詐騙趨勢總結</router-link>
-      <router-link to="/victim-profile"><i class="fas fa-user-shield"></i>&nbsp;受害人特徵分析</router-link>
-      <router-link to="/fraud-vulnerabilities"><i class="fas fa-bug"></i>&nbsp;防詐破口與責任</router-link>
-      <router-link to="/action-plan"><i class="fas fa-fist-raised"></i>&nbsp;防制與行動方案</router-link>
-    </div>
+    <div class="subpages">
+	  <a 
+		href="/PFvue/summary" 
+		:class="{ 'router-link-exact-active': $route.path === '/summary' }"
+	  >
+		<i class="fas fa-project-diagram"></i>&nbsp;詐騙趨勢總結
+	  </a>
+	  
+	  <a 
+		href="/PFvue/victim-profile" 
+		:class="{ 'router-link-exact-active': $route.path === '/victim-profile' }"
+	  >
+		<i class="fas fa-user-shield"></i>&nbsp;受害人特徵分析
+	  </a>
+	  
+	  <a 
+		href="/PFvue/fraud-vulnerabilities" 
+		:class="{ 'router-link-exact-active': $route.path === '/fraud-vulnerabilities' }"
+	  >
+		<i class="fas fa-bug"></i>&nbsp;防詐破口與責任
+	  </a>
+	  
+	  <a 
+		href="/PFvue/action-plan" 
+		:class="{ 'router-link-exact-active': $route.path === '/action-plan' }"
+	  >
+		<i class="fas fa-fist-raised"></i>&nbsp;防制與行動方案
+	  </a>
+	</div>
 
     <!-- 前言卡片 -->
     <div class="page-title">
@@ -161,15 +181,5 @@
   text-decoration: underline;
 }
 
-/* RWD 微調 */
-@media (max-width: 768px) {
-  .subpages {
-    grid-template-columns: 1fr 1fr !important;
-  }
-}
-@media (max-width: 480px) {
-  .subpages {
-    grid-template-columns: 1fr !important;
-  }
-}
+
 </style>

@@ -3,13 +3,35 @@
     
     <h1 class="main-title">2026 防詐破口與社會責任分析</h1>
 
-    <!-- 子頁面選單 (不預留空位，僅 4 個分類) -->
-    <div class="subpages" style="grid-template-columns: repeat(4, 1fr);">
-      <router-link to="/summary"><i class="fas fa-project-diagram"></i>&nbsp;詐騙趨勢總結</router-link>
-      <router-link to="/victim-profile"><i class="fas fa-user-shield"></i>&nbsp;受害人特徵分析</router-link>
-      <router-link to="/fraud-vulnerabilities"><i class="fas fa-bug"></i>&nbsp;防詐破口與責任</router-link>
-      <router-link to="/action-plan"><i class="fas fa-fist-raised"></i>&nbsp;防制與行動方案</router-link>
-    </div>
+    <div class="subpages">
+	  <a 
+		href="/PFvue/summary" 
+		:class="{ 'router-link-exact-active': $route.path === '/summary' }"
+	  >
+		<i class="fas fa-project-diagram"></i>&nbsp;詐騙趨勢總結
+	  </a>
+	  
+	  <a 
+		href="/PFvue/victim-profile" 
+		:class="{ 'router-link-exact-active': $route.path === '/victim-profile' }"
+	  >
+		<i class="fas fa-user-shield"></i>&nbsp;受害人特徵分析
+	  </a>
+	  
+	  <a 
+		href="/PFvue/fraud-vulnerabilities" 
+		:class="{ 'router-link-exact-active': $route.path === '/fraud-vulnerabilities' }"
+	  >
+		<i class="fas fa-bug"></i>&nbsp;防詐破口與責任
+	  </a>
+	  
+	  <a 
+		href="/PFvue/action-plan" 
+		:class="{ 'router-link-exact-active': $route.path === '/action-plan' }"
+	  >
+		<i class="fas fa-fist-raised"></i>&nbsp;防制與行動方案
+	  </a>
+	</div>
 
     <!-- 前言卡片 -->
     <div class="page-title">
@@ -94,19 +116,8 @@
 </template>
 
 <script setup>
-// 本頁面為防詐破口與社會責任深度分析靜態展示
 </script>
 
 <style scoped>
-/* RWD 微調 */
-@media (max-width: 768px) {
-  .subpages {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-}
-@media (max-width: 480px) {
-  .subpages {
-    grid-template-columns: 1fr !important;
-  }
-}
+/* 已刪除 RWD，讓全域 CSS 接手完美版面 */
 </style>

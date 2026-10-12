@@ -3,16 +3,35 @@
     
     <h1 class="main-title">2026 受害人特徵與心理弱點剖析</h1>
 
-    <!-- 
-      修正重點 1：將原本的 <a> 標籤改為 Vue Router 專用的 <router-link> 
-      修正重點 2：將 href="xxx.html" 替換為對應的 to="/xxx" 路徑
-    -->
-    <div class="subpages" style="grid-template-columns: repeat(4, 1fr);">
-      <router-link to="/summary"><i class="fas fa-project-diagram"></i>&nbsp;詐騙趨勢總結</router-link>
-      <router-link to="/victim-profile"><i class="fas fa-user-shield"></i>&nbsp;受害人特徵分析</router-link>
-      <router-link to="/fraud-vulnerabilities"><i class="fas fa-bug"></i>&nbsp;防詐破口與責任</router-link>
-      <router-link to="/action-plan"><i class="fas fa-fist-raised"></i>&nbsp;防制與行動方案</router-link>
-    </div>
+    <div class="subpages">
+	  <a 
+		href="/PFvue/summary" 
+		:class="{ 'router-link-exact-active': $route.path === '/summary' }"
+	  >
+		<i class="fas fa-project-diagram"></i>&nbsp;詐騙趨勢總結
+	  </a>
+	  
+	  <a 
+		href="/PFvue/victim-profile" 
+		:class="{ 'router-link-exact-active': $route.path === '/victim-profile' }"
+	  >
+		<i class="fas fa-user-shield"></i>&nbsp;受害人特徵分析
+	  </a>
+	  
+	  <a 
+		href="/PFvue/fraud-vulnerabilities" 
+		:class="{ 'router-link-exact-active': $route.path === '/fraud-vulnerabilities' }"
+	  >
+		<i class="fas fa-bug"></i>&nbsp;防詐破口與責任
+	  </a>
+	  
+	  <a 
+		href="/PFvue/action-plan" 
+		:class="{ 'router-link-exact-active': $route.path === '/action-plan' }"
+	  >
+		<i class="fas fa-fist-raised"></i>&nbsp;防制與行動方案
+	  </a>
+	</div>
 
     <!-- 前言卡片 -->
     <div class="page-title">
@@ -82,22 +101,7 @@
 </template>
 
 <script setup>
-// 這頁目前是純靜態內容展示，所以 Script 區塊留空即可
+// 純靜態內容展示
 </script>
 
-<style scoped>
-/* 
-  如果發現螢幕變小的時候（如手機版）子選單擠在一起，
-  可以在這邊針對這頁寫簡單的 RWD 微調，例如：
-*/
-@media (max-width: 768px) {
-  .subpages {
-    grid-template-columns: 1fr 1fr !important; /* 手機版變成兩排 */
-  }
-}
-@media (max-width: 480px) {
-  .subpages {
-    grid-template-columns: 1fr !important; /* 更小的螢幕變一排 */
-  }
-}
-</style>
+<!-- 🌟 整個 <style scoped> 都可以安心刪除！App.vue 已經處理好完美的手機版 RWD 了 -->

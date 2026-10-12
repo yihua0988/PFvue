@@ -1,11 +1,45 @@
 <template>
-  <!-- 主導覽列 (對應你原本的 5 個大分類) -->
+  <!-- 主導覽列 -->
   <nav>
-    <router-link to="/"><i class="fas fa-home"></i>&nbsp;首頁</router-link>
-    <router-link to="/fraud-patterns"><i class="fas fa-network-wired"></i>&nbsp;資料視覺化</router-link>
-    <router-link to="/prevention"><i class="fas fa-chart-line"></i>&nbsp;案例分析</router-link>
-    <router-link to="/anti-deepfake-video"><i class="fas fa-shield-alt"></i>&nbsp;165反詐影片</router-link>
-    <router-link to="/summary"><i class="fas fa-file-alt"></i>&nbsp;總結</router-link>
+    <!-- 1. 首頁 (加上 /PFvue) -->
+    <a 
+      href="/PFvue/" 
+      :class="{ 'router-link-active': ['/'].includes($route.path) }"
+    >
+      <i class="fas fa-home"></i>首頁
+    </a>
+
+    <!-- 2. 資料視覺化 (加上 /PFvue) -->
+    <a 
+      href="/PFvue/fraud-patterns" 
+      :class="{ 'router-link-active': ['/fraud-patterns'].includes($route.path) }"
+    >
+      <i class="fas fa-chart-bar"></i>資料視覺化
+    </a>
+
+    <!-- 3. 案例分析 (加上 /PFvue) -->
+    <a 
+      href="/PFvue/prevention"
+      :class="{ 'router-link-active': ['/prevention', '/fraud-growth-stats', '/ai-fraud-news', '/top-10-frauds'].includes($route.path) }"
+    >
+      <i class="fas fa-chart-line"></i>案例分析
+    </a>
+
+    <!-- 4. 165反詐影片 (加上 /PFvue) -->
+    <a 
+      href="/PFvue/anti-deepfake-video" 
+      :class="{ 'router-link-active': ['/anti-deepfake-video', '/anti-phishing-video', '/anti-investment-video'].includes($route.path) }"
+    >
+      <i class="fas fa-shield-alt"></i>165反詐影片
+    </a>
+
+    <!-- 5. 總結 (加上 /PFvue) -->
+    <a 
+      href="/PFvue/summary" 
+      :class="{ 'router-link-active': ['/summary', '/victim-profile', '/fraud-vulnerabilities', '/action-plan'].includes($route.path) }"
+    >
+      <i class="fas fa-file-alt"></i>總結
+    </a>
   </nav>
 
   <!-- 頁面動態切換出口 -->
@@ -20,4 +54,5 @@
 </script>
 
 <style>
+/* 您的 CSS 樣式保留在這裡即可 */
 </style>
