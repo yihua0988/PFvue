@@ -150,7 +150,7 @@ onMounted(async () => {
   console.log('正在測試連線 Supabase...');
   
   // 試著查詢您剛剛建立的資料表（或是隨便抓一個不存在的表來測試回應）
-  const { data, error } = await supabase.from('anti_fraud_stats').select('*');
+  const { data, error } = await supabase.from('anti_fraud_performance').select('*');
 
   if (error) {
     console.error('❌ 連線或查詢失敗：', error.message);
