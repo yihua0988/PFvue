@@ -7,20 +7,20 @@
      <p class="dashboard-subtitle">犯罪心理學與行為經濟學深度報告：解構「演算法精準狩獵」下的人類認知防線潰堤</p>
    </div>
 
-   <!-- 4.總結子導覽列 (強制重整) -->
+   <<!-- 4.總結子導覽列 -->
 	<div class="subpages" style="grid-template-columns: repeat(4, 1fr);">
-	 <a href="/PFvue/summary" :class="{ 'router-link-exact-active': $route.path === '/summary' }">
+	  <router-link to="/summary" :class="{ 'router-link-exact-active': $route.path === '/summary' }">
 		<i class="fas fa-project-diagram"></i>&nbsp;詐騙趨勢總結
-	 </a>
-	 <a href="/PFvue/victim-profile" :class="{ 'router-link-exact-active': $route.path === '/victim-profile' }">
+	  </router-link>
+	  <router-link to="/victim-profile" :class="{ 'router-link-exact-active': $route.path === '/victim-profile' }">
 		<i class="fas fa-user-shield"></i>&nbsp;受害人特徵分析
-	 </a>
-	 <a href="/PFvue/fraud-vulnerabilities" :class="{ 'router-link-exact-active': $route.path === '/fraud-vulnerabilities' }">
+	  </router-link>
+	  <router-link to="/fraud-vulnerabilities" :class="{ 'router-link-exact-active': $route.path === '/fraud-vulnerabilities' }">
 		<i class="fas fa-bug"></i>&nbsp;防詐破口與責任
-	 </a>
-	 <a href="/PFvue/action-plan" :class="{ 'router-link-exact-active': $route.path === '/action-plan' }">
+	  </router-link>
+	  <router-link to="/action-plan" :class="{ 'router-link-exact-active': $route.path === '/action-plan' }">
 		<i class="fas fa-fist-raised"></i>&nbsp;防制與行動方案
-	 </a>
+	  </router-link>
 	</div>
 
    <!-- ================== 導論：從隨機釣魚到心理學精算 ================== -->

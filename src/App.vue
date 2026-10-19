@@ -2,29 +2,29 @@
   <!-- 主導覽列 (強制重整，釋放 RAM 與阻擋擴充功能干擾) -->
 <nav>
   <!-- 1. 首頁 -->
-  <a href="/PFvue/" :class="{ 'router-link-active': ['/'].includes($route.path) }">
+  <router-link to="/" :class="{ 'router-link-active': ['/'].includes($route.path) }">
     <i class="fas fa-home"></i>首頁
-  </a>
+  </router-link>
 
   <!-- 2. 資料視覺化 -->
-  <a href="/PFvue/fraud-patterns" :class="{ 'router-link-active': ['/fraud-patterns', '/fraud-trends', '/fraud-interception', '/anti-fraud-results', '/one-page-scam'].includes($route.path) }">
+  <router-link to="/fraud-patterns" :class="{ 'router-link-active': ['/fraud-patterns', '/fraud-trends', '/fraud-interception', '/anti-fraud-results', '/one-page-scam'].includes($route.path) }">
     <i class="fas fa-chart-bar"></i>資料視覺化
-  </a>
+  </router-link>
 
   <!-- 3. 案例分析 -->
-  <a href="/PFvue/prevention" :class="{ 'router-link-active': ['/prevention', '/fraud-growth-stats', '/ai-fraud-news', '/top-10-frauds'].includes($route.path) }">
+  <router-link to="/prevention" :class="{ 'router-link-active': ['/prevention', '/fraud-growth-stats', '/ai-fraud-news', '/top-10-frauds'].includes($route.path) }">
     <i class="fas fa-chart-line"></i>案例分析
-  </a>
+  </router-link>
 
   <!-- 4. 165反詐影片 -->
-  <a href="/PFvue/anti-deepfake-video" :class="{ 'router-link-active': ['/anti-deepfake-video', '/anti-phishing-video', '/anti-investment-video'].includes($route.path) }">
+  <router-link to="/anti-deepfake-video" :class="{ 'router-link-active': ['/anti-deepfake-video', '/anti-phishing-video', '/anti-investment-video'].includes($route.path) }">
     <i class="fas fa-shield-alt"></i>165反詐影片
-  </a>
+  </router-link>
 
   <!-- 5. 總結 -->
-  <a href="/PFvue/summary" :class="{ 'router-link-active': ['/summary', '/victim-profile', '/fraud-vulnerabilities', '/action-plan'].includes($route.path) }">
+  <router-link to="/summary" :class="{ 'router-link-active': ['/summary', '/victim-profile', '/fraud-vulnerabilities', '/action-plan'].includes($route.path) }">
     <i class="fas fa-file-alt"></i>總結
-  </a>
+  </router-link>
 </nav>
 
   <!-- 頁面動態切換出口 -->

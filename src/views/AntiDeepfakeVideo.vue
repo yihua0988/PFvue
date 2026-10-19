@@ -7,28 +7,28 @@
      <p class="dashboard-subtitle">內政部警政署官方授權宣導：冷靜想想反詐系列，破解高科技犯罪</p>
    </div>
 
-   <!-- 新的子導覽列 (強制重整，釋放 RAM) -->
-	<div class="subpages" style="grid-template-columns: repeat(4, 1fr);">
-	 <a 
-		href="/PFvue/anti-deepfake-video" 
+   <!-- 新的子導覽列 (165反詐影片) -->
+	<div class="subpages" style="grid-template-columns: repeat(3, 1fr);">
+	  <router-link 
+		to="/anti-deepfake-video" 
 		:class="{ 'router-link-exact-active': $route.path === '/anti-deepfake-video' }"
 	  >
 		<i class="fas fa-project-diagram"></i>&nbsp;反深偽詐騙
-	 </a>
+	  </router-link>
 	  
-	 <a 
-		href="/PFvue/anti-phishing-video" 
+	  <router-link 
+		to="/anti-phishing-video" 
 		:class="{ 'router-link-exact-active': $route.path === '/anti-phishing-video' }"
 	  >
 		<i class="fas fa-user-shield"></i>&nbsp;常見詐騙手法分析
-	 </a>
+	  </router-link>
 	  
-	 <a 
-		href="/PFvue/anti-investment-video" 
+	  <router-link 
+		to="/anti-investment-video" 
 		:class="{ 'router-link-exact-active': $route.path === '/anti-investment-video' }"
 	  >
-		<i class="fas fa-bug"></i>&nbsp;假投資詐騙解
-	 </a>
+		<i class="fas fa-bug"></i>&nbsp;假投資詐騙解析
+	  </router-link>
 	</div>
 
    <!-- ================== 宣導重點解析區塊 ================== -->
