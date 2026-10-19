@@ -212,7 +212,7 @@
            <a href="https://github.com/yihua0988/PFvue" target="_blank" rel="noopener noreferrer" class="dev-btn github-btn">
              <i class="fab fa-github"></i>GitHub專案首頁
            </a>
-           <a href="https://github.com/yihua0988/PFvue/tree/main/ppt" target="_blank" rel="noopener noreferrer" class="dev-btn ppt-btn">
+           <a href="https://github.com/yihua0988/PFvue/tree/master/ppt" target="_blank" rel="noopener noreferrer" class="dev-btn ppt-btn">
              <i class="fas fa-file-powerpoint"></i>專題發表簡報PPT
            </a>
          </div>
