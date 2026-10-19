@@ -1,7 +1,8 @@
 /* =========================================================================
- * 🛡️ 宗師級 protect.js (深度環境指紋反爬蟲 + SEO 白名單 + 禁止文字選取)
- *    - 不封鎖右鍵與 F12，確保一般訪客與評審操作順暢
- *    - 針對 Selenium / Puppeteer / Playwright / 隱身外掛進行 7 層深度獵殺
+ * 🛡️ 平衡級 protect.js (核心環境指紋反爬蟲 + SEO 白名單 + 禁止文字選取)
+ *    - 已放寬檢測：移除背景分頁誤判與內建瀏覽器誤判
+ *    - 增加本地開發白名單：localhost 不受干擾
+ *    - 專注獵殺 Selenium / Puppeteer / Playwright 等自動化腳本
  * ========================================================================= */
 (function() {
     'use strict';
@@ -38,7 +39,6 @@
         try {
             window.top.location = window.self.location;
         } catch (e) {
-            // 若跨域無法轉址則直接清空畫面
             document.documentElement.innerHTML = '';
         }
     }
@@ -87,36 +87,41 @@
     ].join('|'), 'i');
 
     // ---------------------------------------------------------------------
-    // 5. 核心多維度反爬蟲檢測引擎 (7 層深度掃描)
+    // 5. 核心反爬蟲檢測引擎 (已放寬規則，減少誤殺)
     // ---------------------------------------------------------------------
     function runDeepAntiCrawler() {
+        const hostname = window.location.hostname;
+        
+        // 🌟 [新增] 放寬層：本地開發環境與本地檔案直接豁免，不執行任何阻斷！
+        if (
+            hostname === 'localhost' || 
+            hostname === '127.0.0.1' || 
+            hostname.includes('192.168.') || 
+            hostname === ''
+        ) {
+            return; 
+        }
+
         const ua = navigator.userAgent || '';
         const appVersion = navigator.appVersion || '';
 
-        // =================================================================
         // [第 0 層] User-Agent 基本檢查與 SEO 白名單判別
-        // =================================================================
         if (!ua || ua.trim().length < 15) {
             return triggerBlock('ERR_EMPTY_OR_FORGED_UA');
         }
 
-        // 若命中 Google / Bing / LINE預覽 等白名單：
-        // 額外檢查是否為「低劣偽造的假 Googlebot」（真 Googlebot 不會有 Selenium 的 cdc_ 注入變數）
         if (SEO_WHITELIST_REGEX.test(ua)) {
             if (hasAutomationGlobals()) {
                 return triggerBlock('ERR_FAKE_SEOBOT_WITH_DRIVER');
             }
-            return; // 確認為合法搜尋引擎爬蟲，直接放行以確保 SEO 收錄！
+            return; // 合法搜尋引擎直接放行
         }
 
-        // =================================================================
         // [第 1 層] User-Agent 與 UA-CH (Client Hints) 黑名單攔截
-        // =================================================================
         if (BAD_UA_BLACKLIST_REGEX.test(ua) || BAD_UA_BLACKLIST_REGEX.test(appVersion)) {
             return triggerBlock('ERR_BLACKLISTED_USER_AGENT');
         }
 
-        // 檢測新版 Chromium 專屬的 navigator.userAgentData（許多爬蟲改了 UA 字串卻忘了改這裡）
         if (navigator.userAgentData && Array.isArray(navigator.userAgentData.brands)) {
             const brandStr = navigator.userAgentData.brands.map(b => b.brand).join(' ');
             if (/Headless|Chromium.*Automation|Playwright|Puppeteer/i.test(brandStr)) {
@@ -124,16 +129,11 @@
             }
         }
 
-        // =================================================================
-        // [第 2 層] WebDriver 標準屬性與「隱身外掛竄改痕跡」檢測
-        // =================================================================
+        // [第 2 層] WebDriver 標準屬性檢測
         if (navigator.webdriver === true) {
             return triggerBlock('ERR_NAVIGATOR_WEBDRIVER_TRUE');
         }
 
-        // 針對進階隱身爬蟲 (Stealth Plugin)：
-        // 有些爬蟲會用 Object.defineProperty(navigator, 'webdriver', { get: () => false }) 覆蓋在實例上
-        // 正常瀏覽器的 webdriver 定義在 Navigator.prototype 上，不會直接成為 navigator 自身的 ownProperty
         try {
             if (Object.prototype.hasOwnProperty.call(navigator, 'webdriver')) {
                 return triggerBlock('ERR_WEBDRIVER_PROPERTY_TAMPERED');
@@ -144,38 +144,17 @@
             }
         } catch (e) {}
 
-        // =================================================================
-        // [第 3 層] 12 大自動化框架底層全域變數與 DOM 屬性殘留掃描
-        // (專殺 Selenium / ChromeDriver / Playwright / Puppeteer / PhantomJS / Nightmare)
-        // =================================================================
+        // [第 3 層] 12 大自動化框架底層全域變數殘留掃描 (核心獵殺區)
         if (hasAutomationGlobals()) {
             return triggerBlock('ERR_AUTOMATION_FRAMEWORK_GLOBALS');
         }
 
-        // =================================================================
-        // [第 4 層] 瀏覽器特徵一致性檢查 (UA 宣稱是 Chrome，底層卻缺東缺西)
-        // =================================================================
-        const isClaimingChrome = /Chrome|CriOS/i.test(ua) && !/Edg|OPR/i.test(ua);
-        const isMobile = /Mobile|Android|iPhone|iPad|iPod/i.test(ua);
-
-        // 真實 Chrome 必備 window.chrome 物件，傳統無頭模式常缺失
-        if (isClaimingChrome && !isMobile && typeof window.chrome === 'undefined') {
-            return triggerBlock('ERR_CHROME_OBJECT_MISSING');
-        }
-
-        // 語言設定檢查：真實使用者瀏覽器必定有 navigator.languages 陣列
+        // [第 4 層] 瀏覽器特徵檢查 (已移除過度嚴苛的視窗 0 尺寸檢查與 chrome 物件檢查)
         if (!navigator.languages || navigator.languages.length === 0) {
             return triggerBlock('ERR_EMPTY_LANGUAGES');
         }
 
-        // 視窗尺寸異常檢查：部分未配置 Viewport 的無頭爬蟲，outerWidth 或 outerHeight 會是 0
-        if (window.outerWidth === 0 && window.outerHeight === 0) {
-            return triggerBlock('ERR_ZERO_WINDOW_DIMENSIONS');
-        }
-
-        // =================================================================
-        // [第 5 層] WebGL 虛擬顯卡與軟體渲染器指紋檢測 (專殺無 GPU 伺服器爬蟲)
-        // =================================================================
+        // [第 5 層] WebGL 虛擬顯卡與軟體渲染器指紋檢測
         try {
             const canvas = document.createElement('canvas');
             const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
@@ -184,64 +163,32 @@
                 if (debugInfo) {
                     const vendor = String(gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) || '');
                     const renderer = String(gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || '');
-                    // Google SwiftShader / Offscreen / Brian Paul Mesa 是無頭 Chrome 在伺服器上最典型的軟體渲染特徵
                     if (/SwiftShader|SubZero|Offscreen|Brian Paul/i.test(renderer) && /Google|Brian Paul/i.test(vendor)) {
                         return triggerBlock('ERR_HEADLESS_WEBGL_SWIFTSHADER');
                     }
                 }
             }
         } catch (e) {}
-
-        // =================================================================
-        // [第 6 層] Notification 權限 API 矛盾檢測 (經典 Headless 破綻)
-        // =================================================================
-        if (window.Notification && navigator.permissions && typeof navigator.permissions.query === 'function') {
-            navigator.permissions.query({ name: 'notifications' }).then((permissionStatus) => {
-                if (Notification.permission === 'denied' && permissionStatus.state === 'prompt') {
-                    triggerBlock('ERR_PERMISSION_STATE_INCONSISTENCY');
-                }
-            }).catch(() => {});
-        }
     }
 
     // ---------------------------------------------------------------------
     // 輔助函式：掃描所有主流自動化框架注入在 window / document 的隱藏變數
     // ---------------------------------------------------------------------
     function hasAutomationGlobals() {
-        // A. 掃描特定已知框架全域變數
         const suspiciousWindowKeys = [
-            '__playwright',
-            '__pw_manual',
-            '_Selenium_IDE_Recorder',
-            '_selenium',
-            'calledSelenium',
-            '__webdriver_evaluate',
-            '__selenium_evaluate',
-            '__webdriver_script_function',
-            '__webdriver_script_func',
-            '__webdriver_script_fn',
-            '__fxdriver_evaluate',
-            '__driver_unwrapped',
-            '__webdriver_unwrapped',
-            '__driver_evaluate',
-            '__selenium_unwrapped',
-            '__fxdriver_unwrapped',
-            'callPhantom',
-            '_phantom',
-            '__phantomas',
-            '__nightmare',
-            'Cypress',
-            'domAutomation',
-            'domAutomationController'
+            '__playwright', '__pw_manual', '_Selenium_IDE_Recorder', '_selenium',
+            'calledSelenium', '__webdriver_evaluate', '__selenium_evaluate',
+            '__webdriver_script_function', '__webdriver_script_func', '__webdriver_script_fn',
+            '__fxdriver_evaluate', '__driver_unwrapped', '__webdriver_unwrapped',
+            '__driver_evaluate', '__selenium_unwrapped', '__fxdriver_unwrapped',
+            'callPhantom', '_phantom', '__phantomas', '__nightmare',
+            'Cypress', 'domAutomation', 'domAutomationController'
         ];
 
         for (let i = 0; i < suspiciousWindowKeys.length; i++) {
-            if (suspiciousWindowKeys[i] in window) {
-                return true;
-            }
+            if (suspiciousWindowKeys[i] in window) return true;
         }
 
-        // B. 正則掃描 ChromeDriver 隨機生成的 $cdc_ / cdc_ 注入變數 (包含改名變體)
         const globalPropRegex = /^(cdc_[a-zA-Z0-9]+|\$cdc_[a-zA-Z0-9]+|\$chrome_asyncScriptInfo|__\$webdriverAsyncExecutor)$/;
         try {
             const winProps = Object.getOwnPropertyNames(window);
@@ -254,13 +201,10 @@
             }
         } catch (e) {}
 
-        // C. 檢查 html / body 標籤是否被注入 selenium / webdriver 屬性
         if (document.documentElement) {
             const attrs = ['webdriver', 'selenium', 'driver'];
             for (let i = 0; i < attrs.length; i++) {
-                if (document.documentElement.getAttribute(attrs[i]) !== null) {
-                    return true;
-                }
+                if (document.documentElement.getAttribute(attrs[i]) !== null) return true;
             }
         }
 
