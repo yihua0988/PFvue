@@ -1,107 +1,101 @@
 <template>
-  <!-- 主要內容區 -->
-  <main class="content">
+ <!-- 主要內容區 -->
+ <main class="content dashboard-page">
     
-    <h1 class="main-title">重大詐騙新聞：AI 技術與黑幫組織</h1>
+   <div class="page-header" style="margin-bottom: 24px;">
+     <h1 class="main-title">重大詐騙新聞：AI技術與黑幫組織</h1>
+     <p class="dashboard-subtitle">假檢警技術升級與跨國洗錢水房串聯，剖析現代高科技犯罪鏈</p>
+   </div>
 
-    <!-- 新的子導覽列 (強制重整，釋放 RAM) -->
+   <!-- 3. 案例分析子導覽列 (強制重整) -->
 	<div class="subpages" style="grid-template-columns: repeat(4, 1fr);">
-	  <a 
-		href="/PFvue/prevention" 
-		:class="{ 'router-link-exact-active': $route.path === '/prevention' }"
-	  >
+	 <a href="/PFvue/prevention" :class="{ 'router-link-exact-active': $route.path === '/prevention' }">
 		<i class="fas fa-project-diagram"></i>&nbsp;AI深偽亂入罷免案例
-	  </a>
-	  
-	  <a 
-		href="/PFvue/fraud-growth-stats" 
-		:class="{ 'router-link-exact-active': $route.path === '/fraud-growth-stats' }"
-	  >
-		<i class="fas fa-user-shield"></i>&nbsp;AI詐騙一年暴增四倍多
-	  </a>
-	  
-	  <a 
-		href="/PFvue/ai-fraud-news" 
-		:class="{ 'router-link-exact-active': $route.path === '/ai-fraud-news' }"
-	  >
-		<i class="fas fa-bug"></i>&nbsp;AI假檢警詐騙與黑幫經營
-	  </a>
-	  
-	  <a 
-		href="/PFvue/top-10-frauds" 
-		:class="{ 'router-link-exact-active': $route.path === '/top-10-frauds' }"
-	  >
+	 </a>
+	 <a href="/PFvue/fraud-growth-stats" :class="{ 'router-link-exact-active': $route.path === '/fraud-growth-stats' }">
+		<i class="fas fa-user-shield"></i>&nbsp;AI詐騙一年暴增四倍
+	 </a>
+	 <a href="/PFvue/ai-fraud-news" :class="{ 'router-link-exact-active': $route.path === '/ai-fraud-news' }">
+		<i class="fas fa-bug"></i>&nbsp;AI假檢警與黑幫經營
+	 </a>
+	 <a href="/PFvue/top-10-frauds" :class="{ 'router-link-exact-active': $route.path === '/top-10-frauds' }">
 		<i class="fas fa-fist-raised"></i>&nbsp;十大常見詐騙解析
-	  </a>
+	 </a>
 	</div>
 
-    <!-- ================== 案例一 ================== -->
-    <div class="page-title" style="margin-top: 30px;">
-      <h2><i class="fas fa-robot"></i> 案例一：AI 合成假檢警，詐走近九千萬</h2>
-      <p>
-        這起案例凸顯 AI 技術已被詐騙集團大量濫用，<strong>假冒檢警</strong>的聲音與影像幾可亂真，讓受害者失去判斷力。婦人短短四個月內，八個帳戶共遭詐走<strong>近九千萬元</strong>，不僅存款全失，更因帳戶被當成<strong>人頭戶</strong>而受到連帶懲處。
-      </p>
-      <p>
-        這顯示銀行在風險控管與即時警示上仍有漏洞，也提醒民眾必須保持警覺，遇到檢警要求視訊或金流操作時，務必透過官方電話或親自確認，以防成為下一個受害者。
-      </p>
-    </div>
+   <!-- ================== 案例一：AI合成假檢警 ================== -->
+   <div class="panel anti-fraud-container" style="text-align: left; margin-top: 24px;">
+     <div class="panel-header">
+       <h2><i class="fas fa-robot"></i>案例一：AI合成假檢警，詐走近九千萬</h2>
+       <p class="box-subtitle">視訊造假瓦解心理防線，單一受害者遭榨乾存款並淪為人頭戶</p>
+     </div>
 
-    <div class="video-wrapper">
-      <!-- 修正重點 3：影片路徑改為 / 開頭，並強烈建議使用純英文檔名 -->
-      <video controls preload="metadata" width="100%">
-        <!-- 請將你的影片改名為 news-video-1.mp4 並放入 public 資料夾 -->
-        <source src="/videos/news-video-1.mp4" type="video/mp4" />
-        您的瀏覽器不支援 HTML5 影片播放。
-      </video>
-    </div>
-    
-    <p style="margin-top: 10px; margin-bottom: 30px; text-align: center;">
-      <a href="https://www.youtube.com/watch?v=WeoJIU3RXU0" target="_blank" rel="noopener noreferrer" class="source-link">
-        <i class="fab fa-youtube"></i> 來源：中視新聞 YouTube
-      </a>
-    </p>
+     <div class="fraud-item" style="border-bottom: none;">
+       <p class="description">
+          這起案例凸顯AI技術已被詐騙集團大量濫用，<strong class="highlight-red">假冒檢警</strong>的聲音與影像幾可亂真，讓受害者在視訊當下完全失去判斷力。婦人短短四個月內，八個帳戶共遭詐走<strong class="highlight-red">近九千萬元</strong>，不僅畢生存款全失，更因帳戶被當成<strong class="highlight-red">人頭戶</strong>而受到連帶法律懲處。<br><br>
+          這顯示出銀行在鉅額轉帳的風險控管與即時警示上仍有檢討空間；同時也強烈提醒民眾，只要遇到「檢警要求視訊」或「監管帳戶金流操作」時，務必立刻掛斷，並撥打165或透過官方電話親自確認，切勿讓恐懼支配行動。
+       </p>
+     </div>
 
-    <!-- ================== 案例二 ================== -->
-    <div class="page-title" style="margin-top: 30px;">
-      <h2><i class="fas fa-gavel"></i> 案例二：竹聯幫經營跨境詐騙與洗錢</h2>
-      <p>
-        此案例顯示犯罪集團利用社群平台與假投資網站進行精密詐騙，短短四個月就騙走超過 <strong>1億5千萬台幣</strong>，受害者超過 220 人。
-      </p>
-      <p>
-        竹聯幫弘仁會幹部涉入其中，凸顯<strong>跨國組織化與洗錢手法</strong>的升級。當傳統黑幫的執行力，結合了社群網路與假投資平台，詐騙的規模與速度便難以想像。提醒民眾提高網路投資警覺，慎防高報酬誘惑，務必核實官方管道，避免落入假網站與社群陷阱。
-      </p>
-    </div>
+     <!-- 影片區塊與新聞來源 -->
+     <div class="video-wrapper">
+       <video controls preload="metadata" width="100%">
+         <source src="/videos/news-video-1.mp4" type="video/mp4" />
+          您的瀏覽器不支援 HTML5 影片播放。
+       </video>
+     </div>
+     <div style="text-align: left; margin-top: 18px;">
+       <a href="https://www.youtube.com/watch?v=WeoJIU3RXU0" target="_blank" rel="noopener noreferrer" class="jump-unanswered-btn" style="text-decoration: none; display: inline-block; padding: 10px 20px; font-size: 16px;">
+         <i class="fab fa-youtube" style="color: #ef4444;"></i>前往中視新聞YouTube觀看原片
+       </a>
+     </div>
+   </div>
 
-    <div class="video-wrapper">
-      <!-- 修正重點 3：影片路徑改為 / 開頭 -->
-      <video controls preload="metadata" width="100%">
-        <!-- 請將你的影片改名為 news-video-2.webm 並放入 public 資料夾 -->
-        <source src="/videos/news-video-2.webm" type="video/webm" />
-        您的瀏覽器不支援 HTML5 影片播放。
-      </video>
-    </div>
-    
-    <p style="margin-top: 10px; margin-bottom: 30px; text-align: center;">
-      <a href="https://www.youtube.com/watch?v=FxEYy7gfDAk" target="_blank" rel="noopener noreferrer" class="source-link">
-        <i class="fab fa-youtube"></i> 來源：YouTube 新聞快訊
-      </a>
-    </p>
+   <!-- ================== 案例二：竹聯幫跨國洗錢 ================== -->
+   <div class="panel anti-fraud-container" style="text-align: left; margin-top: 32px;">
+     <div class="panel-header">
+       <h2><i class="fas fa-gavel"></i>案例二：竹聯幫經營跨境詐騙與洗錢</h2>
+       <p class="box-subtitle">黑幫組織轉型，假投資平台結合跨國洗錢水房榨取上億資金</p>
+     </div>
 
-    <!-- ================== 深度串聯分析 ================== -->
-    <div class="page-title" style="margin-top: 30px; border-top: 5px solid #eab308;">
-      <h2><i class="fas fa-link"></i> 深度串聯分析：當黑幫武裝了 AI 科技</h2>
-      <p>
-        綜合上述兩起重大案件，我們可以觀察到當前詐騙產業最危險的趨勢：<strong>「傳統黑幫組織化」與「AI 深偽技術」的恐怖結合</strong>。
-      </p>
-      <p>
-        過去，黑幫擁有龐大的跨國洗錢水房與人頭帳戶網絡，但前端騙人的手法依賴大量人工打電話、發簡訊，效率有限且容易被識破。如今，詐騙集團導入 <strong>AI 深偽影像與聲音複製技術</strong>，詐騙已經從「亂槍打鳥」進化為<strong>「高科技客製化的精準打擊」</strong>。
-      </p>
-      <p>
-        科技補足了黑幫的技術缺口，而黑幫提供了 AI 詐騙所需的龐大資金與洗錢管道。當受害者面對的是「長相與聲音極度真實的假檢警」，或是「包裝精美的跨國假投資平台」時，傳統的防備心極易崩潰。面對這種新型態的雙重威脅，民眾必須建立<strong>「眼見不一定為憑」</strong>的觀念，任何涉及金流的要求，務必透過實體或官方管道進行二次查證。
-      </p>
-    </div>
+     <div class="fraud-item" style="border-bottom: none;">
+       <p class="description">
+          此案例顯示犯罪集團已從單純的話術詐欺，轉型為利用社群平台與「假投資網站」進行的精密詐騙，短短四個月內就騙走超過<strong class="highlight-red">1億5千萬台幣</strong>，受害者高達220人以上。<br><br>
+          竹聯幫弘仁會幹部涉入其中，凸顯了<strong class="highlight-red">跨國組織化與洗錢手法</strong>的嚴重升級。當傳統黑道幫派的龐大執行力，結合了無遠弗屆的社群網路與包裝精美的假投資平台，其詐騙的規模與擴散速度便難以想像。提醒民眾務必提高對「網路飆股、高報酬內線」的警覺，慎防落入精心設計的假網站陷阱。
+       </p>
+     </div>
 
-  </main>
+     <!-- 影片區塊與新聞來源 -->
+     <div class="video-wrapper">
+       <video controls preload="metadata" width="100%">
+         <source src="/videos/news-video-2.webm" type="video/webm" />
+          您的瀏覽器不支援HTML5影片播放。
+       </video>
+     </div>
+     <div style="text-align: left; margin-top: 18px;">
+       <a href="https://www.youtube.com/watch?v=FxEYy7gfDAk" target="_blank" rel="noopener noreferrer" class="jump-unanswered-btn" style="text-decoration: none; display: inline-block; padding: 10px 20px; font-size: 16px;">
+         <i class="fab fa-youtube" style="color: #ef4444;"></i>前往YouTube新聞快訊觀看原片
+       </a>
+     </div>
+   </div>
+
+   <!-- ================== 深度串聯分析 ================== -->
+   <div class="panel anti-fraud-container highlight-panel" style="text-align: left; margin-top: 32px; margin-bottom: 40px;">
+     <div class="panel-header" style="border-bottom: none; margin-bottom: 12px;">
+       <h2 style="color: #b45309;"><i class="fas fa-link"></i>深度串聯分析：當黑幫武裝了AI科技</h2>
+       <p class="box-subtitle" style="color: #92400e !important;">傳統洗錢水房結合生成式AI，形成難以防範的雙重威脅</p>
+     </div>
+
+     <div class="fraud-item" style="border-bottom: none; padding-bottom: 0;">
+       <p class="description">
+          綜合上述兩起重大案件，我們可以觀察到當前詐騙產業最危險的趨勢：<strong class="highlight-red">「傳統黑幫組織化」與「AI深偽技術」的恐怖結合</strong>。<br><br>
+          過去，黑幫擁有龐大的跨國洗錢水房與人頭帳戶網絡，但前端騙人的手法依賴大量人工打電話、發簡訊，不僅效率有限且容易被識破。如今，詐騙集團導入AI深偽影像與聲音合成技術，讓詐騙從過去的「亂槍打鳥」徹底進化為<strong class="highlight-red">「高科技客製化的精準打擊」</strong>。<br><br>
+          科技補足了黑幫的技術缺口，而黑幫提供了AI詐騙所需的龐大資金運作與洗錢管道。當受害者面對的是「長相與聲音極度真實的假檢警視訊」，或是「包裝完美的跨國假投資平台」時，傳統的防備心極易崩潰。面對這種新型態威脅，民眾必須堅守<strong class="highlight-red">「眼見不一定為憑」</strong>的底線，任何涉及金錢轉帳的突發要求，絕對要透過實體或獨立的官方管道進行二次查證。
+       </p>
+     </div>
+   </div>
+
+ </main>
 </template>
 
 <script setup>
@@ -109,47 +103,91 @@
 </script>
 
 <style scoped>
-/* 針對沒有開放的按鈕樣式 */
-.disabled {
-  background-color: #e2e8f0 !important;
-  color: #94a3b8 !important;
-  cursor: not-allowed;
-  border-color: #cbd5e1 !important;
-  box-shadow: none !important;
-}
-.disabled:hover {
-  transform: none !important;
+/* =========================================================================
+   本頁面專屬微調 (繼承全站 .panel, .fraud-item 樣式，字體統一放大 1.1 倍)
+   ========================================================================= */
+
+/* 🌟 紅色粗體重點專屬樣式 */
+.highlight-red {
+  color: #dc2626;      
+  font-weight: 900;    
+  background: #fee2e2; 
+  padding: 0 4px;
+  border-radius: 4px;
 }
 
-/* 影片區塊響應式設定 */
+/* 🌟 特殊高亮分析區塊 (給最後的總結使用) */
+.highlight-panel {
+  background: #fffbeb !important; /* 淡淡的警告黃底色 */
+  border: 2px solid #fcd34d !important;
+}
+
+.panel-header h2 {
+  font-size: 32px !important;  
+  font-weight: 900 !important;
+}
+
+.panel-header .box-subtitle {
+  font-size: 20px !important;  
+  color: #dc2626 !important;   
+  font-weight: bold !important;
+  margin-top: 8px !important;
+}
+
+.anti-fraud-container .fraud-item {
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px dashed #cbd5e1;
+}
+
+.anti-fraud-container .fraud-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.anti-fraud-container .fraud-title {
+  color: #0284c7; 
+  font-weight: 900; 
+  font-size: 26px !important;     
+  margin-bottom: 12px;
+  margin-top: 0;
+}
+
+.anti-fraud-container .description {
+  font-size: 22px !important; 
+ LINE-height: 1.75 !important;
+  color: #334155 !important;
+  text-align: justify;
+  margin: 0;
+}
+
+/* 影片區塊與圓角陰影設計 */
 .video-wrapper {
-  margin: 30px auto 15px auto;
-  max-width: 800px; /* 限制影片最大寬度，不會在大螢幕上大得嚇人 */
-  border-radius: 10px;
+  margin: 20px auto 0 auto;
+  max-width: 850px; 
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.25); /* 增加高級立體陰影 */
   background: #000;
+  border: 1px solid #cbd5e1;
 }
 
-/* 影片來源超連結美化 */
-.source-link {
-  color: #0284c7;
-  text-decoration: none;
-  font-weight: bold;
-}
-.source-link:hover {
-  text-decoration: underline;
+/* 確保子導覽列在 RWD 能完美折行 */
+@media (max-width: 1000px) {
+  .subpages {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
 }
 
-/* RWD 微調 */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .subpages {
-    grid-template-columns: 1fr 1fr !important;
+    display: flex !important;
+    flex-direction: column !important;
   }
-}
-@media (max-width: 480px) {
-  .subpages {
-    grid-template-columns: 1fr !important;
-  }
+  .panel-header h2 { font-size: 26px !important; }
+  .panel-header .box-subtitle { font-size: 18px !important; }
+  .anti-fraud-container .fraud-title { font-size: 22px !important; }
+  .anti-fraud-container .description { font-size: 18px !important; }
 }
 </style>

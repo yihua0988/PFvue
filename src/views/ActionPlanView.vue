@@ -1,185 +1,466 @@
 <template>
-  <!-- 主要內容區 -->
-  <main class="content">
+ <!-- 主要內容區 -->
+ <main class="content dashboard-page">
     
-    <h1 class="main-title">防制與行動方案：我們該怎麼做？</h1>
+   <div class="page-header" style="margin-bottom: 24px;">
+     <h1 class="main-title">防制與行動方案：我們該怎麼做？</h1>
+     <p class="dashboard-subtitle">公民資安實戰與系統防禦研究：從「被動識詐」走向「主動阻斷」的五大核心行動</p>
+   </div>
 
-    <div class="subpages">
-	  <a 
-		href="/PFvue/summary" 
-		:class="{ 'router-link-exact-active': $route.path === '/summary' }"
-	  >
+   <!-- 4.總結子導覽列 (強制重整) -->
+	<div class="subpages" style="grid-template-columns: repeat(4, 1fr);">
+	 <a href="/PFvue/summary" :class="{ 'router-link-exact-active': $route.path === '/summary' }">
 		<i class="fas fa-project-diagram"></i>&nbsp;詐騙趨勢總結
-	  </a>
-	  
-	  <a 
-		href="/PFvue/victim-profile" 
-		:class="{ 'router-link-exact-active': $route.path === '/victim-profile' }"
-	  >
+	 </a>
+	 <a href="/PFvue/victim-profile" :class="{ 'router-link-exact-active': $route.path === '/victim-profile' }">
 		<i class="fas fa-user-shield"></i>&nbsp;受害人特徵分析
-	  </a>
-	  
-	  <a 
-		href="/PFvue/fraud-vulnerabilities" 
-		:class="{ 'router-link-exact-active': $route.path === '/fraud-vulnerabilities' }"
-	  >
+	 </a>
+	 <a href="/PFvue/fraud-vulnerabilities" :class="{ 'router-link-exact-active': $route.path === '/fraud-vulnerabilities' }">
 		<i class="fas fa-bug"></i>&nbsp;防詐破口與責任
-	  </a>
-	  
-	  <a 
-		href="/PFvue/action-plan" 
-		:class="{ 'router-link-exact-active': $route.path === '/action-plan' }"
-	  >
+	 </a>
+	 <a href="/PFvue/action-plan" :class="{ 'router-link-exact-active': $route.path === '/action-plan' }">
 		<i class="fas fa-fist-raised"></i>&nbsp;防制與行動方案
-	  </a>
+	 </a>
 	</div>
 
-    <!-- 前言卡片 -->
-    <div class="page-title">
-      <h2><i class="fas fa-compass"></i> 從省思到行動的防護網</h2>
-      <p>
-        面對 2026 年高度組織化、AI 武器化的詐騙產業，我們不能只停留在「知道」，更必須落實到「做到」。防範詐騙不只是警政單位的責任，更是每一位公民必須具備的現代生存技能。以下整理出五大核心防詐行動指南，幫助您在面對突如其來的威脅時，能夠冷靜應對，守護自身與家人的財產安全。
-      </p>
-    </div>
+   <!-- ================== 導論：從省思到行動的防護網 ================== -->
+   <div class="panel anti-fraud-container" style="text-align: left; margin-top: 24px;">
+     <div class="panel-header">
+       <h2><i class="fas fa-compass"></i>導論：從「認知覺醒」到「條件反射」的縱深防禦網</h2>
+       <p class="box-subtitle" style="color: #dc2626 !important;">面對自動化與AI武器化的犯罪產業，唯有將防詐SOP轉化為肌肉記憶才能全身而退</p>
+     </div>
 
-    <!-- 行動一 -->
-    <div class="page-title" style="margin-top: 30px; border-top: 5px solid #10b981;">
-      <h2><i class="fas fa-phone-slash"></i> 行動一：落實零信任，應對不明來電與視訊</h2>
-      <p>
-        過去我們常說「耳聽為憑，眼見為實」，但在 AI 語音複製與 Deepfake 變臉技術氾濫的今日，這些傳統感官已不再可靠。詐騙集團能輕易攔截來電顯示，偽裝成您的親友、主管或公務機關，利用緊急事件（如車禍、欠款、涉案）製造心理壓迫。
-      </p>
-      <div class="highlight-text">
-        面對任何索要金錢、個人資料的來電，請務必堅守「零信任原則」。切勿在通話當下做出決定，立刻掛斷電話，並透過事先約定的防偽暗號，或親自撥打對方原本的號碼進行「二次獨立查證」。
-      </div>
-      <div class="action-image-container">
-        <img src="/4-4-1.jpg" alt="接到不明電話" />
-      </div>
-    </div>
+     <div class="fraud-item">
+       <h3 class="fraud-title">1.建立個人與家庭的「標準作業程序（Incident Response SOP）」</h3>
+       <p class="description">
+          面對2026年高度組織化、深偽（Deepfake）武器化的跨國詐騙集團，我們不能僅停留在「知道有詐騙」的被動認知，更必須落實到「遇到時該如何機械式反應」的主動防禦。當人類處於恐懼或貪婪的高壓情境下，大腦的理性分析能力會瞬間降載，此時唯有依靠事先建立的<strong class="highlight-red">「防詐標準作業程序（SOP）」</strong>，才能強行切斷騙徒的心理操縱。
+       </p>
+     </div>
 
-    <!-- 行動二 -->
-    <div class="page-title" style="margin-top: 30px; border-top: 5px solid #10b981;">
-      <h2><i class="fas fa-search-dollar"></i> 行動二：阻斷洗錢金流，金錢操作前務必查證</h2>
-      <p>
-        所有詐騙的最終目的都是金錢移轉。現代詐騙常利用虛擬帳戶、加密貨幣平台或第三方支付進行秒速洗錢，一旦資金匯出，追回的機率微乎其微。不論是網購匯款、繳交投資保證金，或是替網路交友對象代墊款項，在按下「確認轉帳」前，請給自己三分鐘的黃金冷靜期。
-      </p>
-      <div class="highlight-text">
-        養成匯款前的查證習慣。遇到任何金錢交易要求，請先善用警政署「165 全民防騙網」或撥打 165 反詐騙專線，查詢該帳戶、網址或 LINE ID 是否已被通報為警示帳戶，切斷詐騙的最後一哩路。
-      </div>
-      <div class="action-image-container">
-        <img src="/4-4-2.webp" alt="查證帳戶" />
-        <p class="image-source">
-          <a href="https://www.newloan.com.tw/wp-content/uploads/2024/01/MiConv.com__01_%E8%AD%A6%E7%A4%BA%E5%B8%B3%E6%88%B6-800x800.webp" target="_blank">來源：https://www.newloan.com.tw/</a>
-        </p>
-      </div>
-    </div>
+     <div class="fraud-item" style="border-bottom: none; padding-bottom: 0;">
+       <h3 class="fraud-title">2.五大核心實戰防線：感官、金流、家庭、社群與制度</h3>
+       <p class="description">
+          防範詐騙絕非單一警政單位的責任，而是每一位數位公民必須具備的現代生存技能。以下我們將防禦體系拆解為五大具體行動方案（點擊各區塊下方之宣導圖卡皆可放大檢視），協助您在面對突如其來的社交工程威脅時，能夠冷靜啟動防禦機制，徹底守護自身與家人的財產安全。
+       </p>
+     </div>
+   </div>
 
-    <!-- 行動三 -->
-    <div class="page-title" style="margin-top: 30px; border-top: 5px solid #10b981;">
-      <h2><i class="fas fa-hands-helping"></i> 行動三：建立家庭防火牆，關心家中長輩</h2>
-      <p>
-        高齡長者往往是傳統電信詐騙與「假檢警恐嚇」的最脆弱防線。長輩們因不熟悉數位科技，且白天常獨自在家，極易陷入詐騙集團精心佈置的資訊封閉陷阱中。防詐不應只是個人的事，而是整個家庭共同的防護網。
-      </p>
-      <div class="highlight-text">
-        請主動與家中長輩分享最新的詐騙案例（如假冒戶政事務所、健保局），並協助他們在手機與家用電話安裝防詐過濾軟體。叮囑長輩：遇到任何威脅或金錢要求，第一時間先找家人討論，絕對不要聽從歹徒指示孤軍奮戰。
-      </div>
-      <div class="action-image-container">
-        <img src="/4-4-3.jpg" alt="關心長輩" />
-        <p class="image-source">
-          <a href="https://www.luzhu-hro.tycg.gov.tw/News_Content.aspx?n=13120&s=1334338" target="_blank">來源：https://www.luzhu-hro.tycg.gov.tw/</a>
-        </p>
-      </div>
-    </div>
+   <!-- ================== 行動一：落實零信任 (警告黃) ================== -->
+   <div class="panel anti-fraud-container highlight-panel" style="text-align: left; margin-top: 32px;">
+     <div class="panel-header" style="border-bottom: none; margin-bottom: 8px;">
+       <h2 style="color: #b45309;"><i class="fas fa-phone-slash"></i>行動一：落實「零信任通訊」，應對不明來電與深偽視訊</h2>
+       <p class="box-subtitle" style="color: #92400e !important;">當聲紋與臉孔皆可於3秒內被AI完美克隆，感官直覺已不再是安全的驗證憑證</p>
+     </div>
+      
+     <div class="fraud-item">
+       <h3 class="fraud-title" style="color: #b45309;">1.破除「眼見為憑」：防範來電顯示竄改（Spoofing）與即時變臉</h3>
+       <p class="description">
+          過去我們常說「耳聽為憑，眼見為實」，但在AI零樣本語音克隆（Zero-shot Voice Cloning）與神經渲染變臉技術氾濫的今日，傳統感官已徹底失效。詐騙集團不僅能透過境外VoIP網路電話輕易竄改來電顯示（偽裝成公務機關或銀行客服號碼），更能盜用親友社群帳號發起深偽視訊，利用「車禍急需和解金、遭綁架拘禁、臨時周轉」等極端緊急事件製造高壓恐慌。
+       </p>
+     </div>
 
-    <!-- 行動四 -->
-    <div class="page-title" style="margin-top: 30px; border-top: 5px solid #10b981;">
-      <h2><i class="fas fa-bullhorn"></i> 行動四：鞏固全民防線，勇敢分享防詐案例</h2>
-      <p>
-        詐騙集團最大的武器就是「資訊不對稱」。許多被害人在受騙後，常因感到羞恥或自責而選擇隱忍，這反而讓詐騙集團得以繼續使用同一套劇本禍害下一個人。打破這個優勢的最好方法，就是建立全民識詐的社會氛圍。
-      </p>
-      <div class="highlight-text">
-        勇敢將真實遭遇或看到的詐騙案例，分享到社群平台（Facebook、Instagram、Threads）或家庭 LINE 群組。您的一次轉傳與提醒，可能就能拯救無數個家庭免於破產與心碎的悲劇。
-      </div>
-      <div class="action-image-container">
-        <img src="/4-4-4.png" alt="分享案例" />
-        <p class="image-source">
-          <a href="https://www.instagram.com/p/DHkiqpOu-KW/?img_index=8" target="_blank">來源：https://www.instagram.com/</a>
-        </p>
-      </div>
-    </div>
+     <div class="fraud-item" style="border-bottom: none; padding-bottom: 0;">
+       <h3 class="fraud-title" style="color: #b45309;">2.實戰行動準則：雙通道獨立驗證（Out-of-Band Verification）與家庭通關密語</h3>
+       <p class="description">
+          面對任何索要金錢、探詢個人資料或要求交付驗證碼的通訊，請務必堅守<strong class="highlight-red">「零信任原則（Zero Trust）」</strong>。切勿在當下的通話或視訊中做出任何決定：<br>
+         <strong class="highlight-red">💡第一步（物理斷聯）：</strong>不論對方語氣多麼焦急或權威，立即掛斷電話或關閉視訊。<br>
+         <strong class="highlight-red">💡第二步（暗號測試）：</strong>事先與家人約定一個「絕對不會出現在社群媒體上的實體通關密語」（例如：家裡第一隻寵物的綽號、特定的荒謬問題），無法回答者一律視為AI詐騙。<br>
+         <strong class="highlight-red">💡第三步（反向回撥）：</strong>主動使用自己手機通訊錄中原先儲存的傳統門號「反向回撥」給親友，或自行上網查詢官方代表號進行二次獨立查證。
+       </p>
 
-    <!-- 行動五 -->
-    <div class="page-title" style="margin-top: 30px; border-top: 5px solid #10b981;">
-      <h2><i class="fas fa-university"></i> 行動五：破解公權力迷思，官方絕不要求操作 ATM</h2>
-      <p>
-        無論是「假網購客服」謊稱訂單誤設為分期付款，還是「假檢警」聲稱需要監管您的資金，他們最終都會引導您走向 ATM 或開啟手機網路銀行。請記住一個鐵律：公務機關的罰款、稅金，或是銀行的退款機制，都有嚴格的書面與實體流程。
-      </p>
-      <div class="highlight-text">
-        警察、檢察官、法官、國稅局，甚至是銀行客服與電商平台，<strong>「絕對不會」</strong>透過電話指示您前往 ATM 操作，也<strong>「絕對不會」</strong>要求您開啟網銀進行「解除分期」或「實名認證」。ATM 只有把錢轉出去的功能，沒有任何解除設定的機制！
-      </div>
-      <div class="action-image-container">
-        <img src="/4-4-5.jpg" alt="公家機關不會要求操作ATM" />
-      </div>
-    </div>
+       <!-- 圖片展示區 1 -->
+       <div class="action-image-container" @click="openModal('/images/4-4-1.jpg', '行動一：落實零信任，接到不明來電與視訊務必掛斷反查')">
+         <img src="/images/4-4-1.jpg" alt="接到不明電話" class="zoomable-img" />
+         <div class="zoom-hint"><i class="fas fa-search-plus"></i>點擊放大檢視宣導圖卡</div>
+       </div>
+     </div>
+   </div>
 
-    <!-- 結語 -->
-    <div class="page-title" style="margin-top: 40px; text-align: center; background: linear-gradient(135deg, #dcfce7 0%, #f0fdf4 100%); border-top: 5px solid #059669;">
-      <h2 style="color: #059669; font-weight: 900; font-size: 2.2rem; margin-bottom: 20px;">
-        <i class="fas fa-shield-alt"></i> 結語：建立大腦的抗詐防火牆
-      </h2>
-      <p style="font-size: 1.25rem; line-height: 1.8; color: #166534; font-weight: bold; margin-bottom: 0;">
-        詐騙集團不會停止進化，我們的防備也不能停止更新。<br>
-        提高警覺、查證為先、冷靜面對，是守住財產與尊嚴的第一步。<br>
-        讓我們共同攜手，打造一個對詐騙「零容忍、零信任」的堅實社會！
-      </p>
-    </div>
+   <!-- ================== 行動二：阻斷洗錢金流 ================== -->
+   <div class="panel anti-fraud-container" style="text-align: left; margin-top: 32px;">
+     <div class="panel-header">
+       <h2 style="color: #4f46e5;"><i class="fas fa-search-dollar"></i>行動二：建立「金流熔斷機制」，資金轉移前強制冷靜與查證</h2>
+       <p class="box-subtitle" style="color: #4338ca !important;">對抗自動化水房與虛擬貨幣跨鏈洗錢，守住按下「確認轉帳」前的最後一哩路</p>
+     </div>
 
-  </main>
+     <div class="fraud-item">
+       <h3 class="fraud-title" style="color: #4f46e5;">1.識破「不可逆金流」陷阱：一次性虛擬帳戶與 USDT 場外交易</h3>
+       <p class="description">
+          所有千變萬化的詐騙劇本，最終的收網動作必然是「資金移轉」。現代詐騙水房高度依賴第三方支付生成的「一次性虛擬收款代碼」、無實質交易背景的個人人頭帳戶，或是要求受害者購買加密貨幣（USDT）打入指定錢包。由於區塊鏈轉帳與跨行快付具備<strong class="highlight-red">「高度隱匿性與不可逆性」</strong>，一旦資金匯出，自動化腳本會在數十秒內完成分流洗白，事後報警追回的機率微乎其微。
+       </p>
+     </div>
+
+     <div class="fraud-item" style="border-bottom: none; padding-bottom: 0;">
+       <h3 class="fraud-title" style="color: #4f46e5;">2.實戰行動準則：黃金三分鐘冷靜期與「165打詐儀表板」黑名單比對</h3>
+       <p class="description">
+          不論是網購匯款、繳交投資獲利保證金、或是替網路交友對象代墊海關費用，在開啟網銀按下「確認轉帳」前，請強制執行<strong class="highlight-red">「個人金流熔斷機制」</strong>：<br>
+         <strong class="highlight-red">💡強制延遲決策：</strong>只要金額超過日常消費水準，強迫自己放下手機離開現場15分鐘，讓大腦前額葉恢復邏輯運作。<br>
+         <strong class="highlight-red">💡官方資料庫比對：</strong>立即前往內政部警政署「165全民防騙網」或加入「165防騙宣導LINE官方帳號」，將對方提供的<strong class="highlight-red">匯款帳號、投資網站網址、應用程式名稱或LINE ID</strong>輸入系統進行黑名單比對，切斷洗錢集團的最後一哩路。
+       </p>
+
+       <!-- 圖片展示區 2 -->
+       <div class="action-image-container" @click="openModal('/images/4-4-2.webp', '行動二：金錢操作前務必查詢是否為警示帳戶')">
+         <img src="/images/4-4-2.webp" alt="查證帳戶" class="zoomable-img" />
+         <div class="zoom-hint"><i class="fas fa-search-plus"></i>點擊放大檢視宣導圖卡</div>
+       </div>
+
+       <!-- 🌟 來源超連結靠左對齊 -->
+       <div style="text-align: left; margin-top: 18px;">
+         <a href="https://www.newloan.com.tw/wp-content/uploads/2024/01/MiConv.com__01_%E8%AD%A6%E7%A4%BA%E5%B8%B3%E6%88%B6-800x800.webp" target="_blank" rel="noopener noreferrer" class="source-btn">
+           <i class="fas fa-external-link-alt"></i>圖片來源：新貸網NewLoan(點擊查看原圖)
+         </a>
+       </div>
+     </div>
+   </div>
+
+   <!-- ================== 行動三：建立家庭防火牆 ================== -->
+   <div class="panel anti-fraud-container" style="text-align: left; margin-top: 32px;">
+     <div class="panel-header">
+       <h2 style="color: #e11d48;"><i class="fas fa-hands-helping"></i>行動三：構築「家庭防禦矩陣」，主動保護高齡與數位弱勢長輩</h2>
+       <p class="box-subtitle" style="color: #be123c !important;">以科技工具加上無條件的情感支持，打破詐騙集團對長輩的「密室資訊隔離」</p>
+     </div>
+
+     <div class="fraud-item">
+       <h3 class="fraud-title" style="color: #e11d48;">1.彌補生理與數位落差：為何長輩最容易陷入「孤軍奮戰」？</h3>
+       <p class="description">
+          高齡長者擁有畢生積蓄與不動產，卻因大腦前額葉懷疑機制自然退化以及對新興科技的不熟悉，成為「假檢警恐嚇」、「假投資群組」與「假親友深偽求救」的頭號獵物。由於長輩白天常獨自在家，詐騙集團會利用高強度密集通話進行<strong class="highlight-red">「資訊隔離（Information Isolation）」</strong>，甚至教導長輩如何編造理由（如：買古董、房屋修繕）來欺騙銀行行員與警察的關懷提問。
+       </p>
+     </div>
+
+     <div class="fraud-item" style="border-bottom: none; padding-bottom: 0;">
+       <h3 class="fraud-title" style="color: #e11d48;">2.實戰行動準則：端點防護軟體部署與「去責化」的家庭溝通</h3>
+       <p class="description">
+          防詐絕非長輩個人的事，年輕一輩必須主動為父母建立硬體與心理的雙重防火牆：<br>
+         <strong class="highlight-red">💡硬體端點防護：</strong>主動幫長輩的智慧型手機安裝具備AI資料庫的來電辨識與防毒軟體（如Whoscall、趨勢科技防詐達人），並於LINE設定中<strong class="highlight-red">關閉「允許自其他裝置登入」與「自動加入好友」</strong>功能，阻斷陌生投資群組的拉攏。<br>
+         <strong class="highlight-red">💡財務預警機制：</strong>與長輩溝通，將其大額定存或房產設定「地籍異動即時通」（防止地面師盜賣抵押），並調降網銀單日非約定轉帳額度。<br>
+         <strong class="highlight-red">💡建立不指責的溝通環境：</strong>許多長輩受騙後不敢告訴子女，是害怕遭到責罵。請定期在家庭聚餐時分享最新案例（如假冒戶政事務所、健保卡盜用），並溫柔叮囑長輩：「遇到任何事情都有我們一起扛，匯款前先問我們，絕對不會怪你。」
+       </p>
+
+       <!-- 圖片展示區 3 -->
+       <div class="action-image-container" @click="openModal('/images/4-4-3.jpg', '行動三：建立家庭防火牆，主動關心家中長輩')">
+         <img src="/images/4-4-3.jpg" alt="關心長輩" class="zoomable-img" />
+         <div class="zoom-hint"><i class="fas fa-search-plus"></i>點擊放大檢視宣導圖卡</div>
+       </div>
+
+       <!-- 🌟 來源超連結靠左對齊 -->
+       <div style="text-align: left; margin-top: 18px;">
+         <a href="https://www.luzhu-hro.tycg.gov.tw/News_Content.aspx?n=13120&s=1334338" target="_blank" rel="noopener noreferrer" class="source-btn">
+           <i class="fas fa-external-link-alt"></i>圖片來源：桃園市蘆竹區戶政事務所 (點擊查看原文)
+         </a>
+       </div>
+     </div>
+   </div>
+
+   <!-- ================== 行動四：鞏固全民防線 ================== -->
+   <div class="panel anti-fraud-container" style="text-align: left; margin-top: 32px;">
+     <div class="panel-header">
+       <h2 style="color: #c2410c;"><i class="fas fa-bullhorn"></i>行動四：打破「資訊不對稱」，去污名化並建構社會「群體免疫」</h2>
+       <p class="box-subtitle" style="color: #9a3412 !important;">將個人的防詐識讀轉化為公開情報，讓詐騙集團的新劇本在曝光瞬間失效</p>
+     </div>
+
+     <div class="fraud-item">
+       <h3 class="fraud-title" style="color: #c2410c;">1.沉默螺旋與二次傷害：為何「羞於啟齒」是詐騙集團最大的保護傘？</h3>
+       <p class="description">
+          詐騙集團最仰賴的戰略優勢就是<strong class="highlight-red">「資訊不對稱（Information Asymmetry）」</strong>。當一套全新的AI釣魚劇本被開發出來時，其初期的欺騙成功率極高。然而，許多受害者在發覺受騙後，往往因為社會上錯誤的「受害者有罪論（嘲笑受害者貪心或愚蠢）」，陷入強烈的羞恥感與自我懷疑，進而選擇隱忍不報。這種「沉默螺旋」正好成為犯罪集團最完美的保護傘，讓同一套劇本得以在暗處繼續收割數千個家庭。
+       </p>
+     </div>
+
+     <div class="fraud-item" style="border-bottom: none; padding-bottom: 0;">
+       <h3 class="fraud-title" style="color: #c2410c;">2.實戰行動準則：開源情報共享（Crowdsourced Intelligence）與數位疫苗傳播</h3>
+       <p class="description">
+          要徹底瓦解詐欺產業的獲利模型，我們必須在全社會建立如同流行病學般的<strong class="highlight-red">「認知群體免疫（Cognitive Herd Immunity）」</strong>：<br>
+         <strong class="highlight-red">💡停止檢討受害者：</strong>面對身邊受騙的親友，給予同理心與法律協助，而非冷嘲熱諷。唯有消除社會污名，才能讓犯罪黑數浮出水面。<br>
+         <strong class="highlight-red">💡隨手檢舉與曝光：</strong>當您在 Facebook、Instagram、Threads 或YouTube滑到疑似深偽名人的假投資廣告、或是收到釣魚簡訊時，不要只是滑過！請花5秒鐘按下「檢舉廣告」，並將截圖與破綻解析分享至家庭群組與社群平台。您的一次轉傳，就是為身邊的人接種一劑最有效的「防詐數位疫苗」。
+       </p>
+
+       <!-- 圖片展示區 4 -->
+       <div class="action-image-container" @click="openModal('/images/4-4-4.png', '行動四：鞏固全民防線，勇敢分享防詐案例與新手法')">
+         <img src="/images/4-4-4.png" alt="分享案例" class="zoomable-img" />
+         <div class="zoom-hint"><i class="fas fa-search-plus"></i>點擊放大檢視宣導圖卡</div>
+       </div>
+
+       <!-- 🌟 來源超連結靠左對齊 -->
+       <div style="text-align: left; margin-top: 18px;">
+         <a href="https://www.instagram.com/p/DHkiqpOu-KW/?img_index=8" target="_blank" rel="noopener noreferrer" class="source-btn">
+           <i class="fab fa-instagram" style="color: #e11d48;"></i>圖片來源：Instagram防詐宣導專頁(點擊查看原貼文)
+         </a>
+       </div>
+     </div>
+   </div>
+
+   <!-- ================== 行動五：破解公權力迷思 ================== -->
+   <div class="panel anti-fraud-container" style="text-align: left; margin-top: 32px;">
+     <div class="panel-header">
+       <h2 style="color: #0284c7;"><i class="fas fa-university"></i>行動五：恪守「制度與機器鐵律」，公權力與客服絕不要求操作ATM</h2>
+       <p class="box-subtitle" style="color: #0369a1 !important;">看穿假客服與假檢警的終極收網話術：ATM與網銀只有「把錢匯出」的功能</p>
+     </div>
+
+     <div class="fraud-item">
+       <h3 class="fraud-title" style="color: #0284c7;">1.拆解話術迷霧：「輸入代碼解除分期」與「安全帳戶監管」的荒謬性</h3>
+       <p class="description">
+          無論前端劇本是「網購系統遭駭誤設為批發商／連續扣款12期」、「賣家未簽署金流託管協議導致買家資金凍結」，還是「假檢察官聲稱您涉及洗錢案，必須將資金轉入法院安全監管帳戶以證清白」，這些騙局在最後一刻，都會引導受害者走向實體ATM提款機，或開啟手機網路銀行轉帳介面。<br><br>
+          騙徒會利用受害者對金融底層系統的不了解，謊稱：<strong class="highlight-red">「在轉帳帳號欄輸入012345是連結金管會解除協定，在金額欄輸入29988是驗證碼，不會真的扣款！」</strong>一旦按下確認，您的辛苦錢就會直接匯入車手的人頭帳戶。
+       </p>
+     </div>
+
+     <div class="fraud-item" style="border-bottom: none; padding-bottom: 0;">
+       <h3 class="fraud-title" style="color: #0284c7;">2.實戰行動準則：牢記國家司法程序與銀行系統的「三個絕對不會」</h3>
+       <p class="description">
+          請在腦中刻下不可動搖的制度鐵律，只要違反以下任何一條，100%為詐騙集團：<br>
+         <strong class="highlight-red">🚫鐵律一（ATM無解除功能）：</strong>自動櫃員機（ATM）與網路銀行的轉帳頁面，在程式設計上「只有把錢匯給別人」與「查詢餘額」的功能，<strong class="highlight-red">絕對沒有任何「解除分期付款、取消扣款、身分認證或簽署金流協議」的機制！</strong><br>
+         <strong class="highlight-red">🚫鐵律二（公文不會用LINE傳）：</strong>警察、檢察官、法官與國稅局辦案，皆有嚴格的刑事訴訟法書面送達程序，<strong class="highlight-red">絕對不會透過LINE傳送傳票或拘票，更不會要求視訊做筆錄！</strong><br>
+         <strong class="highlight-red">🚫鐵律三（國家不會監管現金）：</strong>司法機關扣押不法所得會直接透過公文行文銀行進行帳戶凍結，<strong class="highlight-red">絕對不會要求民眾自己去領出現金交給專員（車手），或要求將錢匯入任何「安全監管帳戶」！</strong>
+       </p>
+
+       <!-- 圖片展示區 5 -->
+       <div class="action-image-container" @click="openModal('/images/4-4-5.jpg', '行動五：公家機關與客服絕對不會要求操作ATM或網銀')">
+         <img src="/images/4-4-5.jpg" alt="公家機關不會要求操作ATM" class="zoomable-img" />
+         <div class="zoom-hint"><i class="fas fa-search-plus"></i>點擊放大檢視宣導圖卡</div>
+       </div>
+     </div>
+   </div>
+
+   <!-- ================== 結語：全站總結 (安全綠) ================== -->
+   <div class="panel anti-fraud-container safe-panel" style="text-align: left; margin-top: 32px; margin-bottom: 40px;">
+     <div class="panel-header" style="border-bottom: none; margin-bottom: 8px;">
+       <h2 style="color: #065f46;"><i class="fas fa-shield-alt"></i>結語：建立大腦的抗詐防火牆，邁向「零容忍、零信任」的堅實社會</h2>
+       <p class="box-subtitle" style="color: #047857 !important;">科技與詐騙的演化永無止境，但理性的查證永遠是最強大的盾牌</p>
+     </div>
+
+     <div class="fraud-item" style="border-bottom: none; padding-bottom: 0;">
+       <p class="description">
+          綜觀本網站從「一頁式假網購拆解」、「165即時數據儀表板」、「AI深偽與黑幫跨國案例」到「心理學與制度破口研究」的完整剖析，我們可以清楚看見：2026年的詐欺犯罪已是一場結合尖端科技與人性剝削的超限戰。<br><br>
+          然而，不論AI偽造的影音多麼逼真、投資群組的劇本多麼誘人、假檢警的話術多麼令人恐懼，詐騙集團永遠無法繞過最後一道關卡——那就是<strong class="highlight-red">「取得您的授權，讓您親手將錢匯出」</strong>。<br><br>
+          請永遠記住防詐三步驟：<strong class="highlight-red">「一聽（聽清楚對方是否提及金錢、驗證碼與ATM）、二掛（立刻掛斷電話切斷情緒操縱）、三查證（撥打165反詐騙專線或向家人獨立求證）」</strong>。詐騙集團不會停止進化，我們的防備也不能停止更新。讓我們將這份防詐意識傳遞給身邊的每一個人，共同攜手打造一個讓詐騙無所遁形的堅實社會！
+       </p>
+     </div>
+   </div>
+
+   <!-- ============================================== -->
+   <!-- 點擊放大檢視圖片 Lightbox 燈箱 (Teleport 至 body) -->
+   <!-- ============================================== -->
+   <Teleport to="body">
+     <div v-if="activeModal" class="img-lightbox-backdrop" @click="closeModal">
+       <div class="img-lightbox-Modal" @click.stop>
+         <div class="lightbox-header">
+           <h3>{{ activeModal.text }}</h3>
+           <button class="lightbox-close-btn" @click="closeModal">✕ 關閉</button>
+         </div>
+         <img :src="activeModal.img" :alt="activeModal.text" class="lightbox-full-img" />
+       </div>
+     </div>
+   </Teleport>
+
+ </main>
 </template>
 
 <script setup>
-// 這頁是純靜態內容展示，Script 區塊留空即可
+import { ref } from 'vue'
+
+// 自動取得 Vite base 路徑 (在 GitHub Pages 會是 '/PFvue/'，本地是 '/')
+const BASE_URL = import.meta.env.BASE_URL || '/'
+
+const activeModal = ref(null)
+
+function openModal(relativePath, title) {
+  // 自動補上 BASE_URL，避免重複斜線
+  const fullPath = relativePath.startsWith('/')
+    ? `${BASE_URL.replace(/\/$/, '')}${relativePath}`
+    : `${BASE_URL}${relativePath}`
+    
+  activeModal.value = {
+    img: fullPath,
+    text: title
+  }
+}
+
+function closeModal() {
+  activeModal.value = null
+}
 </script>
 
 <style scoped>
-/* 針對這頁專屬的特別樣式：強調文字與圖片容器 */
-.highlight-text {
-  background-color: #f8fafc;
-  border-left: 4px solid #10b981;
-  padding: 15px 20px;
-  margin: 20px 0;
-  font-weight: bold;
-  color: #0f172a;
-  border-radius: 0 8px 8px 0;
-  text-align: justify;
+/* =========================================================================
+   本頁面專屬微調 (繼承全站 .panel, .fraud-item 樣式，字體統一放大 1.1 倍)
+   ========================================================================= */
+
+/* 🌟 紅色粗體重點專屬樣式 */
+:deep(.highlight-red),
+.highlight-red {
+  color: #dc2626;      
+  font-weight: 900;    
+  background: #fee2e2; 
+  padding: 0 5px;
+  border-radius: 4px;
 }
 
+/* 🌟 特殊高亮面板 (行動一：警告黃) */
+.highlight-panel {
+  background: #fffbeb !important; 
+  border: 2px solid #fcd34d !important;
+}
+
+/* 🌟 特殊安全面板 (結語：安全綠) */
+.safe-panel {
+  background: #ecfdf5 !important; 
+  border: 2px solid #34d399 !important;
+}
+
+.panel-header h2 {
+  font-size: 32px !important;  
+  font-weight: 900 !important;
+}
+
+.panel-header .box-subtitle {
+  font-size: 20px !important;  
+  font-weight: bold !important;
+  margin-top: 8px !important;
+}
+
+.anti-fraud-container .fraud-item {
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px dashed #cbd5e1;
+}
+
+.anti-fraud-container .fraud-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* 🌟 子項目小標題樣式 (放大 1.1倍至 25px) */
+.anti-fraud-container .fraud-title {
+  color: #0284c7; 
+  font-weight: 900; 
+  font-size: 25px !important;     
+  margin-bottom: 14px;
+  margin-top: 0;
+}
+
+.anti-fraud-container .description {
+  font-size: 22px !important; 
+  line-height: 1.85 !important;
+  color: #334155 !important;
+  text-align: justify;
+  margin: 0;
+}
+
+/* 🖼️ 行動方案圖片容器美化 */
 .action-image-container {
   text-align: center;
-  margin-top: 25px;
+  margin-top: 28px;
+  cursor: pointer;
+  position: relative;
 }
 
-.action-image-container img {
-  max-width: 100%;
+.zoomable-img {
+  max-width: 850px;
+  width: 100%;
   height: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.15);
+  border: 2px solid #e2e8f0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: block;
+  margin: 0 auto;
 }
 
-.image-source {
-  font-size: 0.85rem;
-  color: #64748b;
+.action-image-container:hover .zoomable-img {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
+  border-color: #38bdf8;
+}
+
+.zoom-hint {
   margin-top: 10px;
+  font-size: 16px;
+  font-weight: 800;
+  color: #0284c7;
 }
 
-.image-source a {
-  color: #0ea5e9;
+/* 🔗 來源連結按鈕美化 (靠左對齊) */
+.source-btn {
   text-decoration: none;
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #0284c7;
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
-.image-source a:hover {
-  text-decoration: underline;
+.source-btn:hover {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border-color: #7dd3fc;
+  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.12);
+  transform: translateY(-2px);
 }
 
+/* 確保子導覽列在 RWD 能完美折行 */
+@media (max-width: 1000px) {
+  .subpages {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
 
+@media (max-width: 600px) {
+  .subpages {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .panel-header h2 { font-size: 26px !important; }
+  .panel-header .box-subtitle { font-size: 18px !important; }
+  .anti-fraud-container .fraud-title { font-size: 21px !important; }
+  .anti-fraud-container .description { font-size: 18px !important; }
+}
+/* 行動方案圖片容器：電腦版適度縮小並置中 */
+.action-image-container {
+  max-width: 680px !important; /* 限制寬度，避免電腦螢幕上圖片過大 */
+  margin: 24px auto !important; /* 水平置中並留出上下間距 */
+  text-align: center;
+  cursor: pointer;
+}
+
+/* 宣導圖片本體：精緻圓角與懸浮立體陰影 */
+.action-image-container img.zoomable-img {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+}
+
+/* 滑鼠移入時微微上浮與提亮，提示可點擊 */
+.action-image-container:hover img.zoomable-img {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.14);
+  border-color: #38bdf8;
+}
+
+/* 點擊放大提示標籤 */
+.zoom-hint {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0284c7;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  padding: 4px 14px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+}
+
+.action-image-container:hover .zoom-hint {
+  background: #0284c7;
+  color: #ffffff;
+  border-color: #0284c7;
+}
 </style>

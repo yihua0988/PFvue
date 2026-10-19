@@ -13,7 +13,10 @@ import VictimProfile from '../views/VictimProfile.vue'
 import FraudPatterns from '../views/FraudPatterns.vue'
 import FraudGrowthStats from '../views/FraudGrowthStats.vue'
 import FraudVulnerabilities from '../views/FraudVulnerabilities.vue'
-
+import FraudTrends from '../views/FraudTrends.vue'
+import FraudInterception from '../views/FraudInterception.vue'
+import AntiFraudResults from '../views/AntiFraudResults.vue'
+import OnePageScam from '../views/OnePageScam.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,7 +33,11 @@ const router = createRouter({
     { path: '/victim-profile', name: 'victim', component: VictimProfile },
     { path: '/fraud-vulnerabilities', name: 'vulnerabilities', component: FraudVulnerabilities },
     { path: '/action-plan', name: 'actionPlan', component: ActionPlanView },
-	{ path: '/anti-investment-video', name: 'antiInvestment', component: AntiInvestmentVideo }
+	{ path: '/anti-investment-video', name: 'antiinvestmentvideo', component: AntiInvestmentVideo },
+	{ path: '/fraud-interception', name: 'antiinvestment', component: FraudInterception },
+	{ path: '/anti-fraud-results', name: 'Antifraud', component: AntiFraudResults },
+	{ path: '/one-page-scam', name: 'Onepagescam', component: OnePageScam },
+	{ path: '/fraud-trends', name: 'fraudtrends', component: FraudTrends }
   ]
 })
 
