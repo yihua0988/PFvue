@@ -10,7 +10,7 @@
 本專案是一個結合政府開放資料（Open Data）、AI 新型態犯罪拆解與零信任（Zero Trust）防禦觀念的防詐教育專題網站。旨在透過前端工程與資料視覺化技術，將龐雜的詐騙案例與資安觀念，轉化為大眾易讀、易懂的實戰防護指南。
 
 🔗 **[點此觀看網站 Live Demo](https://yihua0988.github.io/PFvue/)**
-📝 **[專題簡報 PPT 檔案連結](https://github.com/yihua0988/PFvue/tree/main/ppt)**
+📝 **[專題簡報 PPT 檔案連結](https://github.com/yihua0988/PFvue/tree/master/ppt)**
 
 ---
 
