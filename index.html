@@ -29,6 +29,20 @@
         }
       }
       </script>
+	  <!-- 加入這段 SPA 還原腳本 -->
+	  <script>
+		  (function(l) {
+			if (l.search[1] === '/' ) {
+			  var decoded = l.search.slice(1).split('&').map(function(s) { 
+				return s.replace(/~and~/g, '&') 
+			  }).join('?');
+			  window.history.replaceState(null, null,
+				  l.pathname.slice(0, -1) + decoded + l.hash
+			  );
+			}
+		  }(window.location));
+	  </script>
+    <!-- 腳本結束 -->
       <link rel="stylesheet" href="/css/all.min.css">
       <script src="/protect.js?v=2"></script>
   </head>
