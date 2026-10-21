@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <!-- 盾牌外框漸層 (科技藍) -->
+    <linearGradient id="shieldBorder" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+    <!-- 盾牌內底漸層 (深邃藍) -->
+    <linearGradient id="shieldBg" x1="32" y1="6" x2="32" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+  </defs>
+
+  <!-- 盾牌主體 -->
+  <path d="M32 4L8 14V30C8 45.5 18.2 58.6 32 62C45.8 58.6 56 45.5 56 30V14L32 4Z" fill="url(#shieldBg)" stroke="url(#shieldBorder)" stroke-width="4.5" stroke-linejoin="round" />
+
+  <!-- 內部數據長條圖 (綠 -> 黃 -> 橘紅，放大並居中) -->
+  <rect x="17" y="34" width="7" height="14" rx="2" fill="#10b981" />
+  <rect x="28.5" y="26" width="7" height="22" rx="2" fill="#facc15" />
+  <rect x="40" y="18" width="7" height="30" rx="2" fill="#f97316" />
+</svg>
