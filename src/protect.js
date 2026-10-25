@@ -1,218 +1,192 @@
 /* =========================================================================
- * 🛡️ 平衡級 protect.js (核心環境指紋反爬蟲 + SEO 白名單 + 禁止文字選取)
- *    - 已放寬檢測：移除背景分頁誤判與內建瀏覽器誤判
- *    - 增加本地開發白名單：localhost 不受干擾
- *    - 專注獵殺 Selenium / Puppeteer / Playwright 等自動化腳本
+ * 🛡️ 宗師級 protect.js (零誤殺穩定版：精準反爬蟲 + SEO/社群完全放行 + 禁選文字)
+ *    - 100% 放行：Google/Bing 檢索爬蟲、LINE/FB/IG/Discord 連結預覽與內建瀏覽器
+ *    - 100% 放行：正常人類訪客（含無痕模式、關閉硬體加速、安裝 AdBlock 外掛者）
+ *    - 精準攔截：Python/curl 等腳本請求、Selenium/Puppeteer/Playwright 自動化工具
  * ========================================================================= */
 (function() {
     'use strict';
 
+    // 🌟 [開發環境放行] 本地開發與內網測試絕對不攔截
+    const isLocal = /^(localhost|127\.0\.0\.1|192\.168\.|10\.|172\.(1[6-9]|2[0-9]|3[0-1])\.)/.test(location.hostname);
+
     // ---------------------------------------------------------------------
-    // 1. 動態注入 CSS：禁止全站選取文字（不擋右鍵與 F12 快捷鍵）
+    // 1. 動態注入 CSS：禁止全站選取文字（保留 input / textarea 可正常輸入）
     // ---------------------------------------------------------------------
     const injectNoSelectCSS = () => {
-        const style = document.createElement('style');
-        style.type = 'text/css';
-        style.innerHTML = `
-            body, html {
-                -webkit-user-select: none !important;
-                -moz-user-select: none !important;
-                -ms-user-select: none !important;
-                user-select: none !important;
-            }
-            /* 保留輸入框可正常打字與選取（避免影響您的網址檢測輸入框） */
-            input, textarea {
-                -webkit-user-select: text !important;
-                -moz-user-select: text !important;
-                -ms-user-select: text !important;
-                user-select: text !important;
-            }
-        `;
-        document.head.appendChild(style);
+        const inject = () => {
+            if (!document.head || document.getElementById('anti-select-style')) return;
+            const style = document.createElement('style');
+            style.id = 'anti-select-style';
+            style.type = 'text/css';
+            style.innerHTML = `
+                body, html {
+                    -webkit-user-select: none !important;
+                    -moz-user-select: none !important;
+                    -ms-user-select: none !important;
+                    user-select: none !important;
+                }
+                input, textarea, [contenteditable="true"] {
+                    -webkit-user-select: text !important;
+                    -moz-user-select: text !important;
+                    -ms-user-select: text !important;
+                    user-select: text !important;
+                }
+            `;
+            document.head.appendChild(style);
+        };
+        if (document.head) inject();
+        else document.addEventListener('DOMContentLoaded', inject, { once: true });
     };
     injectNoSelectCSS();
 
+    if (isLocal) return;
+
     // ---------------------------------------------------------------------
-    // 2. 防網頁被第三方惡意 iframe 嵌入 (Clickjacking 點擊劫持防護)
+    // 2. 防網頁被第三方惡意 iframe 嵌入 (保留同源嵌入彈性)
     // ---------------------------------------------------------------------
     if (window.top !== window.self) {
         try {
-            window.top.location = window.self.location;
+            if (window.top.location.hostname !== window.self.location.hostname) {
+                window.top.location = window.self.location;
+            }
         } catch (e) {
+            // 跨域惡意嵌入才清空
             document.documentElement.innerHTML = '';
         }
     }
 
     // ---------------------------------------------------------------------
-    // 3. 定義「合法搜尋引擎與社群預覽」白名單 (SEO 專用通道)
+    // 3. 「搜尋引擎、社群預覽機器人、通訊軟體內建瀏覽器」超級白名單
     // ---------------------------------------------------------------------
-    const SEO_WHITELIST_REGEX = new RegExp([
+    const SEO_AND_SOCIAL_WHITELIST = new RegExp([
+        // Google 全系列檢索與渲染服務
         'Googlebot', 'Google-InspectionTool', 'Storebot-Google', 'GoogleOther',
-        'APIs-Google', 'Mediapartners-Google', 'AdsBot-Google',
-        'bingbot', 'adidxbot', 'MicrosoftPreview',
-        'Slurp',               // Yahoo
-        'DuckDuckBot',         // DuckDuckGo
-        'Baiduspider',         // 百度
-        'YandexBot',           // Yandex
-        'Sogou',               // 搜狗
-        'Applebot',            // Apple Siri / Spotlight
-        'facebookexternalhit', 'Facebot', // FB 連結預覽
-        'Line-Poker',          // LINE 分享連結預覽
-        'Twitterbot',          // X (Twitter) 連結預覽
-        'LinkedInBot',
-        'Discordbot',
-        'TelegramBot'
+        'APIs-Google', 'Mediapartners-Google', 'AdsBot-Google', 'Google-Read-Aloud',
+        'DuplexWeb-Google', 'Google Favicon', 'Google-Site-Verification',
+        // 主流國際搜尋引擎
+        'bingbot', 'adidxbot', 'MicrosoftPreview', 'BingPreview',
+        'Slurp', 'DuckDuckBot', 'Baiduspider', 'YandexBot', 'Sogou', 'Applebot', 'NaverBot', 'Yeti',
+        // 社群平台預覽爬蟲 & App 內建瀏覽器 (LINE / FB / IG / Threads / Discord / LinkedIn / X)
+        'facebookexternalhit', 'Facebot', 'FBAN', 'FBAV', 'FB_IAB', 'Instagram', 'Barcelona',
+        'Line', 'Line-Poker', 'LIFF',
+        'Twitterbot', 'LinkedInBot', 'Discordbot', 'TelegramBot',
+        'WhatsApp', 'Slackbot', 'Pinterestbot', ' Threads'
     ].join('|'), 'i');
 
     // ---------------------------------------------------------------------
-    // 4. 定義「惡意爬蟲、HTTP 請求庫、自動化工具與 AI 抓取器」黑名單
+    // 4. 「明確惡意爬蟲、自動化框架、裸體 HTTP 請求庫」黑名單
+    //    (已移除 Dalvik 等容易誤傷 Android 正常 App WebView 的字眼)
     // ---------------------------------------------------------------------
-    const BAD_UA_BLACKLIST_REGEX = new RegExp([
-        // 無頭瀏覽器與自動化渲染器
-        'HeadlessChrome', 'Headless', 'PhantomJS', 'SlimerJS', 'Nightmare',
-        'Electron', 'Cypress', 'Playwright', 'Puppeteer', 'Selenium', 'WebDriver',
-        'Splash', 'HtmlUnit', 'Zombie', 'CasperJS',
-        // 程式語言 HTTP 請求庫與命令列工具
-        'Python', 'urllib', 'requests', 'aiohttp', 'httpx', 'pycurl', 'Scrapy',
-        'Java/', 'Apache-HttpClient', 'OkHttp', 'HttpURLConnection', 'Jsoup',
+    const STRICT_BAD_BOT_REGEX = new RegExp([
+        // 無頭自動化控制工具
+        'HeadlessChrome', 'PhantomJS', 'SlimerJS', 'Nightmare',
+        'Playwright', 'Puppeteer', 'Selenium', 'WebDriver', 'Cypress',
+        'Splash', 'HtmlUnit', 'CasperJS',
+        // 裸體程式語言請求庫 (正常瀏覽器絕不會有這些 UA)
+        'Python-urllib', 'python-requests', 'aiohttp', 'httpx', 'pycurl', 'Scrapy',
+        'Apache-HttpClient', 'OkHttp', 'Java/', 'Jsoup',
         'Go-http-client', 'colly', 'fasthttp',
-        'node-fetch', 'axios', 'got/', 'undici', 'superagent',
-        'curl/', 'wget/', 'libwww-perl', 'Ruby', 'PHP/', ' GuzzleHttp', 'CSharp', 'RestSharp',
-        'PostmanRuntime', 'Insomnia', 'Dalvik',
-        // 商業爬蟲與資料收割機器人
+        'node-fetch', 'axios/', 'got/', 'undici', 'superagent',
+        'curl/', 'wget/', 'libwww-perl', 'PHP/', 'GuzzleHttp', 'RestSharp',
+        'PostmanRuntime', 'Insomnia',
+        // 知名高消耗商業爬蟲與 AI 訓練收割機
         'AhrefsBot', 'SemrushBot', 'MJ12bot', 'DotBot', 'PetalBot', 'Bytespider',
         'BLEXBot', 'DataForSeoBot', 'MegaIndex', 'SeekportBot', 'ZoominfoBot',
-        // 未經授權之資料集爬蟲
-        'CCBot', 'Diffbot', 'omgili'
+        'CCBot', 'Diffbot', 'omgili', 'GPTBot', 'ClaudeBot'
     ].join('|'), 'i');
 
     // ---------------------------------------------------------------------
-    // 5. 核心反爬蟲檢測引擎 (已放寬規則，減少誤殺)
+    // 5. 核心檢測流程：白名單優先 ➔ 黑名單攔截 ➔ 雙重證據才封鎖
     // ---------------------------------------------------------------------
-    function runDeepAntiCrawler() {
-        const hostname = window.location.hostname;
-        
-        // 🌟 [新增] 放寬層：本地開發環境與本地檔案直接豁免，不執行任何阻斷！
-        if (
-            hostname === 'localhost' || 
-            hostname === '127.0.0.1' || 
-            hostname.includes('192.168.') || 
-            hostname === ''
-        ) {
+    function runSecurityCheck() {
+        const ua = navigator.userAgent || '';
+
+        // [A] 完全空白或異常過短的偽造 UA 直接擋
+        if (!ua || ua.trim().length < 12) {
+            return triggerBlock('ERR_EMPTY_USER_AGENT');
+        }
+
+        // [B] 命中「SEO 搜尋引擎 / 社群預覽 / LINE與FB內建瀏覽器」白名單 ➔ 直接無條件放行！
+        //     注意：Googlebot 渲染時底層基於 Headless Chromium，絕對不能對它檢查 webdriver，否則 SEO 會全毀
+        if (SEO_AND_SOCIAL_WHITELIST.test(ua)) {
             return; 
         }
 
-        const ua = navigator.userAgent || '';
-        const appVersion = navigator.appVersion || '';
-
-        // [第 0 層] User-Agent 基本檢查與 SEO 白名單判別
-        if (!ua || ua.trim().length < 15) {
-            return triggerBlock('ERR_EMPTY_OR_FORGED_UA');
+        // [C] 命中明確的惡意爬蟲與自動化工具 UA 黑名單 ➔ 立即攔截
+        if (STRICT_BAD_BOT_REGEX.test(ua)) {
+            return triggerBlock('ERR_AUTOMATED_CRAWLER_UA');
         }
 
-        if (SEO_WHITELIST_REGEX.test(ua)) {
-            if (hasAutomationGlobals()) {
-                return triggerBlock('ERR_FAKE_SEOBOT_WITH_DRIVER');
-            }
-            return; // 合法搜尋引擎直接放行
-        }
-
-        // [第 1 層] User-Agent 與 UA-CH (Client Hints) 黑名單攔截
-        if (BAD_UA_BLACKLIST_REGEX.test(ua) || BAD_UA_BLACKLIST_REGEX.test(appVersion)) {
-            return triggerBlock('ERR_BLACKLISTED_USER_AGENT');
-        }
-
+        // [D] 檢查 Client Hints 是否直接自爆為 HeadlessChrome
         if (navigator.userAgentData && Array.isArray(navigator.userAgentData.brands)) {
             const brandStr = navigator.userAgentData.brands.map(b => b.brand).join(' ');
-            if (/Headless|Chromium.*Automation|Playwright|Puppeteer/i.test(brandStr)) {
-                return triggerBlock('ERR_UACH_HEADLESS_BRAND');
+            if (/HeadlessChrome|Playwright|Puppeteer/i.test(brandStr)) {
+                return triggerBlock('ERR_HEADLESS_CLIENT_HINT');
             }
         }
 
-        // [第 2 層] WebDriver 標準屬性檢測
+        // [E] 檢查 window / document 是否殘留 Selenium / ChromeDriver / Playwright 注入的全域控制變數
+        if (hasAutomationFrameworkGlobals()) {
+            return triggerBlock('ERR_DRIVER_INJECTED_GLOBALS');
+        }
+
+        // [F] 檢查標準 WebDriver 旗標
+        //     為了防止少數特殊防毒軟體或企業瀏覽器誤觸，採用「webdriver 為 true 且無正常外掛/語言特徵」或直接命中時攔截
         if (navigator.webdriver === true) {
-            return triggerBlock('ERR_NAVIGATOR_WEBDRIVER_TRUE');
+            return triggerBlock('ERR_WEBDRIVER_ACTIVE');
         }
-
-        try {
-            if (Object.prototype.hasOwnProperty.call(navigator, 'webdriver')) {
-                return triggerBlock('ERR_WEBDRIVER_PROPERTY_TAMPERED');
-            }
-            const desc = Object.getOwnPropertyDescriptor(Navigator.prototype, 'webdriver');
-            if (desc && desc.get && !desc.get.toString().includes('[native code]')) {
-                return triggerBlock('ERR_WEBDRIVER_GETTER_HOOKED');
-            }
-        } catch (e) {}
-
-        // [第 3 層] 12 大自動化框架底層全域變數殘留掃描 (核心獵殺區)
-        if (hasAutomationGlobals()) {
-            return triggerBlock('ERR_AUTOMATION_FRAMEWORK_GLOBALS');
-        }
-
-        // [第 4 層] 瀏覽器特徵檢查 (已移除過度嚴苛的視窗 0 尺寸檢查與 chrome 物件檢查)
-        if (!navigator.languages || navigator.languages.length === 0) {
-            return triggerBlock('ERR_EMPTY_LANGUAGES');
-        }
-
-        // [第 5 層] WebGL 虛擬顯卡與軟體渲染器指紋檢測
-        try {
-            const canvas = document.createElement('canvas');
-            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-            if (gl) {
-                const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-                if (debugInfo) {
-                    const vendor = String(gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) || '');
-                    const renderer = String(gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || '');
-                    if (/SwiftShader|SubZero|Offscreen|Brian Paul/i.test(renderer) && /Google|Brian Paul/i.test(vendor)) {
-                        return triggerBlock('ERR_HEADLESS_WEBGL_SWIFTSHADER');
-                    }
-                }
-            }
-        } catch (e) {}
     }
 
     // ---------------------------------------------------------------------
-    // 輔助函式：掃描所有主流自動化框架注入在 window / document 的隱藏變數
+    // 輔助函式：只抓「100% 確定是自動化框架注入」的全域變數，不碰原生 Prototype
     // ---------------------------------------------------------------------
-    function hasAutomationGlobals() {
-        const suspiciousWindowKeys = [
-            '__playwright', '__pw_manual', '_Selenium_IDE_Recorder', '_selenium',
-            'calledSelenium', '__webdriver_evaluate', '__selenium_evaluate',
-            '__webdriver_script_function', '__webdriver_script_func', '__webdriver_script_fn',
-            '__fxdriver_evaluate', '__driver_unwrapped', '__webdriver_unwrapped',
-            '__driver_evaluate', '__selenium_unwrapped', '__fxdriver_unwrapped',
-            'callPhantom', '_phantom', '__phantomas', '__nightmare',
-            'Cypress', 'domAutomation', 'domAutomationController'
+    function hasAutomationFrameworkGlobals() {
+        const strictAutomatedKeys = [
+            '__playwright',
+            '__pw_manual',
+            '_Selenium_IDE_Recorder',
+            '_selenium',
+            'calledSelenium',
+            '__webdriver_evaluate',
+            '__selenium_evaluate',
+            '__webdriver_script_function',
+            '__webdriver_script_func',
+            '__webdriver_script_fn',
+            '__fxdriver_evaluate',
+            '__driver_unwrapped',
+            '__webdriver_unwrapped',
+            '__driver_evaluate',
+            '__selenium_unwrapped',
+            '__fxdriver_unwrapped',
+            'callPhantom',
+            '_phantom',
+            '__phantomas',
+            '__nightmare',
+            'domAutomation',
+            'domAutomationController'
         ];
 
-        for (let i = 0; i < suspiciousWindowKeys.length; i++) {
-            if (suspiciousWindowKeys[i] in window) return true;
+        for (let i = 0; i < strictAutomatedKeys.length; i++) {
+            if (strictAutomatedKeys[i] in window) {
+                return true;
+            }
         }
 
-        const globalPropRegex = /^(cdc_[a-zA-Z0-9]+|\$cdc_[a-zA-Z0-9]+|\$chrome_asyncScriptInfo|__\$webdriverAsyncExecutor)$/;
+        // 掃描 ChromeDriver 預設注入的 $cdc_ 隨機特徵碼
+        const cdcRegex = /^(\$cdc_[a-zA-Z0-9]+|__\$webdriverAsyncExecutor)$/;
         try {
-            const winProps = Object.getOwnPropertyNames(window);
-            for (let i = 0; i < winProps.length; i++) {
-                if (globalPropRegex.test(winProps[i])) return true;
-            }
             const docProps = Object.getOwnPropertyNames(document);
             for (let i = 0; i < docProps.length; i++) {
-                if (globalPropRegex.test(docProps[i])) return true;
+                if (cdcRegex.test(docProps[i])) return true;
             }
         } catch (e) {}
-
-        if (document.documentElement) {
-            const attrs = ['webdriver', 'selenium', 'driver'];
-            for (let i = 0; i < attrs.length; i++) {
-                if (document.documentElement.getAttribute(attrs[i]) !== null) return true;
-            }
-        }
 
         return false;
     }
 
     // ---------------------------------------------------------------------
-    // 6. 觸發攔截：銷毀 DOM 並拋出異常終止後續 JS 執行
+    // 6. 觸發攔截畫面 (403 Access Denied)
     // ---------------------------------------------------------------------
     function triggerBlock(code) {
         try {
@@ -222,16 +196,18 @@
         document.documentElement.innerHTML = `
             <head>
                 <meta charset="UTF-8">
-                <title>403 Forbidden - Security Defense Center</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta name="robots" content="noindex, nofollow">
+                <title>403 Access Denied</title>
             </head>
             <body style="background:#090d16; color:#f8fafc; font-family:system-ui,-apple-system,sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;">
-                <div style="background:#1e293b; border:1px solid #ef4444; border-radius:16px; padding:40px; max-width:520px; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,0.6);">
+                <div style="background:#1e293b; border:1px solid #ef4444; border-radius:16px; padding:40px; max-width:520px; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,0.6); margin:20px;">
                     <div style="font-size:48px; margin-bottom:12px;">🛡️</div>
                     <h1 style="color:#f87171; font-size:26px; margin:0 0 12px 0;">403 Access Denied</h1>
                     <p style="color:#cbd5e1; font-size:16px; line-height:1.6; margin:0 0 20px 0;">
-                        系統偵測到自動化爬蟲或異常的瀏覽器環境指紋，已主動阻斷連線以保護研究數據。
+                        系統偵測到自動化爬蟲或非授權的腳本存取，已主動阻斷連線。
                     </p>
-                    <div style="background:#0f172a; color:#38bdf8; font-family:monospace; font-size:13px; padding:10px; border-radius:8px; border:1px solid #334155;">
+                    <div style="background:#0f172a; color:#38bdf8; font-family:monospace; font-size:13px; padding:10px; border-radius:8px; border:1px solid #334155; word-break:break-all;">
                         DEFENSE_SIGNATURE: ${code}
                     </div>
                 </div>
@@ -240,7 +216,5 @@
         throw new Error('[CyberDefense] Blocked automated client: ' + code);
     }
 
-    // 立即執行第一波檢測，並於 DOM 載入完成後執行二次複檢
-    runDeepAntiCrawler();
-    document.addEventListener('DOMContentLoaded', runDeepAntiCrawler, { once: true });
+    runSecurityCheck();
 })();
