@@ -8,28 +8,28 @@
    </div>
 
    <!-- 新的子導覽列 (165反詐影片) -->
-	<div class="subpages" style="grid-template-columns: repeat(3, 1fr);">
-	  <router-link 
-		to="/anti-deepfake-video" 
-		:class="{ 'router-link-exact-active': $route.path === '/anti-deepfake-video' }"
-	  >
-		<i class="fas fa-project-diagram"></i>&nbsp;反深偽詐騙
-	  </router-link>
-	  
-	  <router-link 
-		to="/anti-phishing-video" 
-		:class="{ 'router-link-exact-active': $route.path === '/anti-phishing-video' }"
-	  >
-		<i class="fas fa-user-shield"></i>&nbsp;常見詐騙手法分析
-	  </router-link>
-	  
-	  <router-link 
-		to="/anti-investment-video" 
-		:class="{ 'router-link-exact-active': $route.path === '/anti-investment-video' }"
-	  >
-		<i class="fas fa-bug"></i>&nbsp;假投資詐騙解析
-	  </router-link>
-	</div>
+   <div class="subpages" style="grid-template-columns: repeat(3, 1fr);">
+     <router-link 
+       to="/anti-deepfake-video" 
+       :class="{ 'router-link-exact-active': $route.path === '/anti-deepfake-video' }"
+     >
+       <i class="fas fa-project-diagram"></i>&nbsp;反深偽詐騙
+     </router-link>
+      
+     <router-link 
+       to="/anti-phishing-video" 
+       :class="{ 'router-link-exact-active': $route.path === '/anti-phishing-video' }"
+     >
+       <i class="fas fa-user-shield"></i>&nbsp;常見詐騙手法分析
+     </router-link>
+      
+     <router-link 
+       to="/anti-investment-video" 
+       :class="{ 'router-link-exact-active': $route.path === '/anti-investment-video' }"
+     >
+       <i class="fas fa-bug"></i>&nbsp;假投資詐騙解析
+     </router-link>
+   </div>
 
    <!-- ================== 動態影片展示區塊 ================== -->
    <div 
@@ -46,10 +46,17 @@
        <p class="description" v-html="video.description"></p>
      </div>
 
-     <!-- 影片播放器容器 -->
+     <!-- 影片播放器容器 (不加 playsinline，綁定全螢幕與音訊釋放事件) -->
      <div class="video-wrapper">
-       <video controls :src="video.filename" class="video-player" preload="metadata">
-          您的瀏覽器不支援影片播放。
+       <video 
+         controls 
+         :src="video.filename" 
+         class="video-player" 
+         preload="metadata"
+         @play="handleVideoPlay"
+         @ended="handleVideoEnded"
+       >
+         您的瀏覽器不支援影片播放。
        </video>
      </div>
 
@@ -103,23 +110,23 @@ import { ref } from 'vue';
 
 const baseUrl = import.meta.env.BASE_URL;
 
-// 🌟 將資料中的重點標籤升級為 `<strong class="highlight-red">` 以配合新版 CSS
+// 🌟 統一於影片檔名結尾加上 #t=0.001，解決 iOS Safari 無法預覽開頭畫面的問題
 const videoList = ref([
   {
     title: '一、 社群帳號盜用與親友借款釣魚',
-    filename: `${baseUrl}videos/LINE.mp4`,
+    filename: `${baseUrl}videos/LINE.mp4#t=0.001`,
     sourceUrl: 'https://www.youtube.com/watch?v=xMPiuuqixDA',
     description: '詐騙集團會盜用親友的IG或FB帳號，以「<strong class="highlight-red">參加比賽需要幫忙衝票數</strong>」等藉口發送釣魚連結。<br><br>點擊後會跳出偽造的LINE登入頁面，一旦您輸入了「帳號密碼」與最重要的「<strong class="highlight-red">OTP 驗證碼</strong>」，您的LINE帳號就會立刻<strong class="highlight-red">被駭客接管</strong>。這不僅會導致您的綁定支付工具遭盜刷，詐騙集團還會假冒您的身分向親友借款，造成連鎖性的嚴重財損。'
   },
   {
     title: '二、 偽造政府機關釣魚簡訊陷阱',
-    filename: `${baseUrl}videos/Phishing-SMS.mp4`,
+    filename: `${baseUrl}videos/Phishing-SMS.mp4#t=0.001`,
     sourceUrl: 'https://www.youtube.com/watch?v=DDGWY3TevAg',
     description: '詐騙集團會發送假冒監理站、自來水公司等政府機關的簡訊，利用「<strong class="highlight-red">交通罰款逾期未繳</strong>」、「<strong class="highlight-red">即將產生滯納金</strong>」等恐嚇字眼製造焦慮感。<br><br>簡訊內會附上如「t.ly/」開頭的縮網址，誘騙民眾點擊進入<strong class="highlight-red">一頁式的假官方網站</strong>。若民眾一時不察，急著想繳清罰款而在該網頁輸入信用卡卡號與驗證碼，就會立刻遭到盜刷。'
   },
   {
     title: '三、 高獲利假投資群組與房產抵押',
-    filename: `${baseUrl}videos/Investment-groups.mp4`,
+    filename: `${baseUrl}videos/Investment-groups.mp4#t=0.001`,
     sourceUrl: 'https://www.youtube.com/watch?v=_utG4C7RrhY',
     description: '詐騙集團透過廣告誘騙民眾加入投資LINE群組，營造出每天都在賺錢的假象。<br><br>當被害人投入資金並想要獲利了結時，詐騙集團會以「<strong class="highlight-red">需先繳交200萬保證金才能優先撥款</strong>」等荒謬理由拒絕出金。為了榨乾最後一滴血，甚至會介紹假金主與假代書，慫恿被害人將名下<strong class="highlight-red">房產設定抵押</strong>來借款，最終導致被害人血本無歸，連房子都慘遭收走。'
   }
@@ -137,13 +144,47 @@ const preventionMethods = ref([
   '<strong style="color: #065f46;">防線三｜識破投資與借貸的致命陷阱：</strong>合法的投資平台<strong class="highlight-red">絕對不會要求您「先匯鉅額保證金」</strong>才能拿回獲利；若遇到慫恿您找來路不明的金主抵押房產借貸，百分之百是詐騙。',
   '<strong style="color: #065f46;">防線四｜善用165專線，打破當局者迷：</strong>遇到疑似詐騙狀況，請立刻放下手機，<strong class="highlight-red">撥打「165反詐騙諮詢專線」</strong>，讓受過專業訓練的人員協助您釐清狀況。'
 ]);
+
+// 📱 1. 點擊播放時：自動觸發全螢幕並切換為橫向
+async function handleVideoPlay(event) {
+  const video = event.target;
+  try {
+    if (video.webkitEnterFullscreen) {
+      video.webkitEnterFullscreen();
+    } else if (video.requestFullscreen) {
+      await video.requestFullscreen();
+    }
+    if (screen.orientation && screen.orientation.lock) {
+      await screen.orientation.lock('landscape').catch(() => {});
+    }
+  } catch (err) {
+    console.warn('全螢幕切換略過:', err);
+  }
+}
+
+// 📱 2. 影片播完時：退出全螢幕並釋放系統音訊通道，讓背景音樂恢復
+function handleVideoEnded(event) {
+  const video = event.target;
+  try {
+    if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (video.webkitExitFullscreen) {
+      video.webkitExitFullscreen();
+    }
+    if (screen.orientation && screen.orientation.unlock) {
+      screen.orientation.unlock();
+    }
+  } catch (e) {}
+
+  video.pause();
+  setTimeout(() => {
+    video.currentTime = 0.001;
+    video.load();
+  }, 300);
+}
 </script>
 
 <style scoped>
-/* =========================================================================
-   本頁面專屬微調 (繼承全站 .panel, .fraud-item 樣式，字體統一放大 1.1 倍)
-   ========================================================================= */
-
 /* 🌟 紅色粗體重點專屬樣式 (加上 :deep 才能穿透 v-html 成功渲染！) */
 :deep(.highlight-red) {
   color: #dc2626;      
@@ -153,19 +194,16 @@ const preventionMethods = ref([
   border-radius: 4px;
 }
 
-/* 🌟 特殊高亮分析區塊 (深度解析：警告黃) */
 .highlight-panel {
   background: #fffbeb !important; 
   border: 2px solid #fcd34d !important;
 }
 
-/* 🌟 特殊安全防護區塊 (防範守則：安全綠) */
 .safe-panel {
   background: #ecfdf5 !important; 
   border: 2px solid #34d399 !important;
 }
 
-/* 以下維持不變...*/
 .panel-header h2 {
   font-size: 32px !important;  
   font-weight: 900 !important;
@@ -192,13 +230,12 @@ const preventionMethods = ref([
 
 .anti-fraud-container .description {
   font-size: 22px !important; 
- LINE-height: 1.8 !important;
+  line-height: 1.8 !important;
   color: #334155 !important;
   text-align: justify;
   margin: 0;
 }
 
-/* 影片區塊與圓角陰影設計 */
 .video-wrapper {
   margin: 20px auto 0 auto;
   max-width: 900px; 
@@ -215,7 +252,6 @@ const preventionMethods = ref([
   border: none;
 }
 
-/* 專屬按鈕樣式 */
 .source-btn {
   text-decoration: none;
   display: inline-block;
@@ -237,7 +273,6 @@ const preventionMethods = ref([
   transform: translateY(-2px);
 }
 
-/* 確保子導覽列在 RWD 能完美折行 */
 @media (max-width: 1000px) {
   .subpages {
     grid-template-columns: repeat(3, 1fr) !important;

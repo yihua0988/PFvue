@@ -8,28 +8,28 @@
    </div>
 
    <!-- 新的子導覽列 (165反詐影片) -->
-	<div class="subpages" style="grid-template-columns: repeat(3, 1fr);">
-	  <router-link 
-		to="/anti-deepfake-video" 
-		:class="{ 'router-link-exact-active': $route.path === '/anti-deepfake-video' }"
-	  >
-		<i class="fas fa-project-diagram"></i>&nbsp;反深偽詐騙
-	  </router-link>
-	  
-	  <router-link 
-		to="/anti-phishing-video" 
-		:class="{ 'router-link-exact-active': $route.path === '/anti-phishing-video' }"
-	  >
-		<i class="fas fa-user-shield"></i>&nbsp;常見詐騙手法分析
-	  </router-link>
-	  
-	  <router-link 
-		to="/anti-investment-video" 
-		:class="{ 'router-link-exact-active': $route.path === '/anti-investment-video' }"
-	  >
-		<i class="fas fa-bug"></i>&nbsp;假投資詐騙解析
-	  </router-link>
-	</div>
+   <div class="subpages" style="grid-template-columns: repeat(3, 1fr);">
+     <router-link 
+       to="/anti-deepfake-video" 
+       :class="{ 'router-link-exact-active': $route.path === '/anti-deepfake-video' }"
+     >
+       <i class="fas fa-project-diagram"></i>&nbsp;反深偽詐騙
+     </router-link>
+      
+     <router-link 
+       to="/anti-phishing-video" 
+       :class="{ 'router-link-exact-active': $route.path === '/anti-phishing-video' }"
+     >
+       <i class="fas fa-user-shield"></i>&nbsp;常見詐騙手法分析
+     </router-link>
+      
+     <router-link 
+       to="/anti-investment-video" 
+       :class="{ 'router-link-exact-active': $route.path === '/anti-investment-video' }"
+     >
+       <i class="fas fa-bug"></i>&nbsp;假投資詐騙解析
+     </router-link>
+   </div>
 
    <!-- ================== 動態影片展示區塊 ================== -->
    <div 
@@ -46,9 +46,16 @@
        <p class="description" v-html="video.description"></p>
      </div>
 
-     <!-- 影片播放器容器 -->
+     <!-- 影片播放器容器 (加入手機優化事件) -->
      <div class="video-wrapper">
-       <video controls :src="video.filename" class="video-player" preload="metadata">
+       <video 
+         controls 
+         :src="video.filename" 
+         class="video-player" 
+         preload="metadata"
+         @play="handleVideoPlay"
+         @ended="handleVideoEnded"
+       >
           您的瀏覽器不支援影片播放。
        </video>
      </div>
@@ -103,11 +110,11 @@ import { ref } from 'vue';
 
 const baseUrl = import.meta.env.BASE_URL;
 
-// 影片資料陣列：載入兆豐證券防詐影片
+// 影片資料陣列：載入兆豐證券防詐影片 (已加上 #t=0.001 破解 iOS 限制)
 const videoList = ref([
   {
     title: '兆豐證券防詐：破解投資群組與假認股陷阱',
-    filename: `${baseUrl}videos/Mega-Securities.mp4`,
+    filename: `${baseUrl}videos/Mega-Securities.mp4#t=0.001`,
     sourceUrl: 'https://www.youtube.com/watch?v=tHk7OLGGATw', 
     description: '此宣導影片生動揭露了三大假投資詐騙手法。<br><br>首先是標榜「<strong class="highlight-red">帶你飛、多賺一倍</strong>」的投資LINE群組，常以高獲利誘騙長輩匯款。其次是偽造的「<strong class="highlight-red">認股通知書</strong>」，詐騙集團會發送帶有不明連結或<strong class="highlight-red">簡體字</strong>的假通知，誘使民眾點擊。最後則是推銷「<strong class="highlight-red">保證獲利的未上市股票</strong>」，利用民眾想一夜致富的心態騙取大筆資金。'
   }
@@ -127,6 +134,44 @@ const preventionMethods = ref([
   '<strong style="color: #065f46;">防線三｜拒絕未經核准的投資群組：</strong>請勿輕易加入來源不明的LINE或 Telegram 投資群組。合法的證券商或投顧公司<strong class="highlight-red">絕對不會透過私人社群軟體推銷未上市股票</strong>，更不會要求您匯款至「個人帳戶」或要求抵押房產。',
   '<strong style="color: #065f46;">防線四｜善用165專線，打破當局者迷：</strong>在進行任何大筆匯款或投資決策前，若心中有任何疑慮，請務必先與家人討論，並<strong class="highlight-red">撥打「165反詐騙諮詢專線」</strong>尋求專業協助，多一分查證，少一分損失。'
 ]);
+
+// 📱 1. 點擊播放時：自動觸發全螢幕並切換為橫向
+async function handleVideoPlay(event) {
+  const video = event.target;
+  try {
+    if (video.webkitEnterFullscreen) {
+      video.webkitEnterFullscreen();
+    } else if (video.requestFullscreen) {
+      await video.requestFullscreen();
+    }
+    if (screen.orientation && screen.orientation.lock) {
+      await screen.orientation.lock('landscape').catch(() => {});
+    }
+  } catch (err) {
+    console.warn('全螢幕切換略過:', err);
+  }
+}
+
+// 📱 2. 影片播完時：退出全螢幕並釋放系統音訊通道，讓背景音樂恢復
+function handleVideoEnded(event) {
+  const video = event.target;
+  try {
+    if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (video.webkitExitFullscreen) {
+      video.webkitExitFullscreen();
+    }
+    if (screen.orientation && screen.orientation.unlock) {
+      screen.orientation.unlock();
+    }
+  } catch (e) {}
+
+  video.pause();
+  setTimeout(() => {
+    video.currentTime = 0.001;
+    video.load();
+  }, 300);
+}
 </script>
 
 <style scoped>
@@ -181,7 +226,7 @@ const preventionMethods = ref([
 
 .anti-fraud-container .description {
   font-size: 22px !important; 
- LINE-height: 1.8 !important;
+  line-height: 1.8 !important;
   color: #334155 !important;
   text-align: justify;
   margin: 0;

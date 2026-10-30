@@ -8,73 +8,54 @@
    </div>
 
    <!-- 3. 案例分析子導覽列 -->
-	<div class="subpages" style="grid-template-columns: repeat(4, 1fr);">
-	  <router-link to="/prevention" :class="{ 'router-link-exact-active': $route.path === '/prevention' }">
-		<i class="fas fa-project-diagram"></i>&nbsp;AI深偽亂入罷免案例
-	  </router-link>
-	  <router-link to="/fraud-growth-stats" :class="{ 'router-link-exact-active': $route.path === '/fraud-growth-stats' }">
-		<i class="fas fa-user-shield"></i>&nbsp;AI詐騙一年暴增四倍
-	  </router-link>
-	  <router-link to="/ai-fraud-news" :class="{ 'router-link-exact-active': $route.path === '/ai-fraud-news' }">
-		<i class="fas fa-bug"></i>&nbsp;AI假檢警與黑幫經營
-	  </router-link>
-	  <router-link to="/top-10-frauds" :class="{ 'router-link-exact-active': $route.path === '/top-10-frauds' }">
-		<i class="fas fa-fist-raised"></i>&nbsp;十大常見詐騙解析
-	  </router-link>
-	</div>
-
-   <!-- ================== 案例一：AI合成假檢警 ================== -->
-   <div class="panel anti-fraud-container" style="text-align: left; margin-top: 24px;">
-     <div class="panel-header">
-       <h2><i class="fas fa-robot"></i>案例一：AI合成假檢警，詐走近九千萬</h2>
-       <p class="box-subtitle">視訊造假瓦解心理防線，單一受害者遭榨乾存款並淪為人頭戶</p>
-     </div>
-
-     <div class="fraud-item" style="border-bottom: none;">
-       <p class="description">
-          這起案例凸顯AI技術已被詐騙集團大量濫用，<strong class="highlight-red">假冒檢警</strong>的聲音與影像幾可亂真，讓受害者在視訊當下完全失去判斷力。婦人短短四個月內，八個帳戶共遭詐走<strong class="highlight-red">近九千萬元</strong>，不僅畢生存款全失，更因帳戶被當成<strong class="highlight-red">人頭戶</strong>而受到連帶法律懲處。<br><br>
-          這顯示出銀行在鉅額轉帳的風險控管與即時警示上仍有檢討空間；同時也強烈提醒民眾，只要遇到「檢警要求視訊」或「監管帳戶金流操作」時，務必立刻掛斷，並撥打165或透過官方電話親自確認，切勿讓恐懼支配行動。
-       </p>
-     </div>
-
-     <!-- 影片區塊與新聞來源 -->
-     <div class="video-wrapper">
-       <video controls preload="metadata" width="100%">
-         <source src="/videos/news-video-1.mp4" type="video/mp4" />
-          您的瀏覽器不支援 HTML5 影片播放。
-       </video>
-     </div>
-     <div style="text-align: left; margin-top: 18px;">
-       <a href="https://www.youtube.com/watch?v=WeoJIU3RXU0" target="_blank" rel="noopener noreferrer" class="jump-unanswered-btn" style="text-decoration: none; display: inline-block; padding: 10px 20px; font-size: 16px;">
-         <i class="fab fa-youtube" style="color: #ef4444;"></i>前往中視新聞YouTube觀看原片
-       </a>
-     </div>
+   <div class="subpages" style="grid-template-columns: repeat(4, 1fr);">
+     <router-link to="/prevention" :class="{ 'router-link-exact-active': $route.path === '/prevention' }">
+       <i class="fas fa-project-diagram"></i>&nbsp;AI深偽亂入罷免案例
+     </router-link>
+     <router-link to="/fraud-growth-stats" :class="{ 'router-link-exact-active': $route.path === '/fraud-growth-stats' }">
+       <i class="fas fa-user-shield"></i>&nbsp;AI詐騙一年暴增四倍
+     </router-link>
+     <router-link to="/ai-fraud-news" :class="{ 'router-link-exact-active': $route.path === '/ai-fraud-news' }">
+       <i class="fas fa-bug"></i>&nbsp;AI假檢警與黑幫經營
+     </router-link>
+     <router-link to="/top-10-frauds" :class="{ 'router-link-exact-active': $route.path === '/top-10-frauds' }">
+       <i class="fas fa-fist-raised"></i>&nbsp;十大常見詐騙解析
+     </router-link>
    </div>
 
-   <!-- ================== 案例二：竹聯幫跨國洗錢 ================== -->
-   <div class="panel anti-fraud-container" style="text-align: left; margin-top: 32px;">
-     <div class="panel-header">
-       <h2><i class="fas fa-gavel"></i>案例二：竹聯幫經營跨境詐騙與洗錢</h2>
-       <p class="box-subtitle">黑幫組織轉型，假投資平台結合跨國洗錢水房榨取上億資金</p>
+   <!-- ================== 動態新聞影片展示區塊 ================== -->
+   <div 
+     v-for="(video, index) in videoList" 
+     :key="index" 
+     class="panel anti-fraud-container" 
+     style="text-align: left; margin-top: 24px;"
+   >
+     <div class="panel-header" style="border-bottom: none; margin-bottom: 0;">
+       <h2><i :class="video.icon"></i>{{ video.title }}</h2>
+       <p class="box-subtitle">{{ video.subtitle }}</p>
      </div>
 
-     <div class="fraud-item" style="border-bottom: none;">
-       <p class="description">
-          此案例顯示犯罪集團已從單純的話術詐欺，轉型為利用社群平台與「假投資網站」進行的精密詐騙，短短四個月內就騙走超過<strong class="highlight-red">1億5千萬台幣</strong>，受害者高達220人以上。<br><br>
-          竹聯幫弘仁會幹部涉入其中，凸顯了<strong class="highlight-red">跨國組織化與洗錢手法</strong>的嚴重升級。當傳統黑道幫派的龐大執行力，結合了無遠弗屆的社群網路與包裝精美的假投資平台，其詐騙的規模與擴散速度便難以想像。提醒民眾務必提高對「網路飆股、高報酬內線」的警覺，慎防落入精心設計的假網站陷阱。
-       </p>
+     <div class="fraud-item" style="border-bottom: none; padding-bottom: 0;">
+       <p class="description" v-html="video.description"></p>
      </div>
 
-     <!-- 影片區塊與新聞來源 -->
+     <!-- 影片播放器容器 -->
      <div class="video-wrapper">
-       <video controls preload="metadata" width="100%">
-         <source src="/videos/news-video-2.webm" type="video/webm" />
-          您的瀏覽器不支援HTML5影片播放。
+       <video 
+         controls 
+         :src="video.filename" 
+         class="video-player" 
+         preload="metadata"
+         @play="handleVideoPlay"
+         @ended="handleVideoEnded"
+       >
+         您的瀏覽器不支援影片播放。
        </video>
      </div>
+
      <div style="text-align: left; margin-top: 18px;">
-       <a href="https://www.youtube.com/watch?v=FxEYy7gfDAk" target="_blank" rel="noopener noreferrer" class="jump-unanswered-btn" style="text-decoration: none; display: inline-block; padding: 10px 20px; font-size: 16px;">
-         <i class="fab fa-youtube" style="color: #ef4444;"></i>前往YouTube新聞快訊觀看原片
+       <a :href="video.sourceUrl" target="_blank" rel="noopener noreferrer" class="source-btn">
+         <i class="fab fa-youtube" style="color: #ef4444;"></i>{{ video.btnText }}
        </a>
      </div>
    </div>
@@ -99,16 +80,72 @@
 </template>
 
 <script setup>
-// 這頁為純靜態內容展示
+import { ref } from 'vue';
+
+const baseUrl = import.meta.env.BASE_URL;
+
+const videoList = ref([
+  {
+    icon: 'fas fa-robot',
+    title: '案例一：AI合成假檢警，詐走近九千萬',
+    subtitle: '視訊造假瓦解心理防線，單一受害者遭榨乾存款並淪為人頭戶',
+    filename: `${baseUrl}videos/news-video-1.mp4#t=0.001`,
+    sourceUrl: 'https://www.youtube.com/watch?v=WeoJIU3RXU0',
+    btnText: '前往中視新聞YouTube觀看原片',
+    description: '這起案例凸顯AI技術已被詐騙集團大量濫用，<strong class="highlight-red">假冒檢警</strong>的聲音與影像幾可亂真，讓受害者在視訊當下完全失去判斷力。婦人短短四個月內，八個帳戶共遭詐走<strong class="highlight-red">近九千萬元</strong>，不僅畢生存款全失，更因帳戶被當成<strong class="highlight-red">人頭戶</strong>而受到連帶法律懲處。<br><br>這顯示出銀行在鉅額轉帳的風險控管與即時警示上仍有檢討空間；同時也強烈提醒民眾，只要遇到「檢警要求視訊」或「監管帳戶金流操作」時，務必立刻掛斷，並撥打165或透過官方電話親自確認，切勿讓恐懼支配行動。'
+  },
+  {
+    icon: 'fas fa-gavel',
+    title: '案例二：竹聯幫經營跨境詐騙與洗錢',
+    subtitle: '黑幫組織轉型，假投資平台結合跨國洗錢水房榨取上億資金',
+    filename: `${baseUrl}videos/news-video-2.webm#t=0.001`,
+    sourceUrl: 'https://www.youtube.com/watch?v=FxEYy7gfDAk',
+    btnText: '前往YouTube新聞快訊觀看原片',
+    description: '此案例顯示犯罪集團已從單純的話術詐欺，轉型為利用社群平台與「假投資網站」進行的精密詐騙，短短四個月內就騙走超過<strong class="highlight-red">1億5千萬台幣</strong>，受害者高達220人以上。<br><br>竹聯幫弘仁會幹部涉入其中，凸顯了<strong class="highlight-red">跨國組織化與洗錢手法</strong>的嚴重升級。當傳統黑道幫派的龐大執行力，結合了無遠弗屆的社群網路與包裝精美的假投資平台，其詐騙的規模與擴散速度便難以想像。提醒民眾務必提高對「網路飆股、高報酬內線」的警覺，慎防落入精心設計的假網站陷阱。'
+  }
+]);
+
+// 📱 1. 點擊播放時：自動觸發全螢幕並切換為橫向
+async function handleVideoPlay(event) {
+  const video = event.target;
+  try {
+    if (video.webkitEnterFullscreen) {
+      video.webkitEnterFullscreen();
+    } else if (video.requestFullscreen) {
+      await video.requestFullscreen();
+    }
+    if (screen.orientation && screen.orientation.lock) {
+      await screen.orientation.lock('landscape').catch(() => {});
+    }
+  } catch (err) {
+    console.warn('全螢幕切換略過:', err);
+  }
+}
+
+// 📱 2. 影片播完時：退出全螢幕並釋放系統音訊通道，讓背景音樂恢復
+function handleVideoEnded(event) {
+  const video = event.target;
+  try {
+    if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (video.webkitExitFullscreen) {
+      video.webkitExitFullscreen();
+    }
+    if (screen.orientation && screen.orientation.unlock) {
+      screen.orientation.unlock();
+    }
+  } catch (e) {}
+
+  video.pause();
+  setTimeout(() => {
+    video.currentTime = 0.001;
+    video.load();
+  }, 300);
+}
 </script>
 
 <style scoped>
-/* =========================================================================
-   本頁面專屬微調 (繼承全站 .panel, .fraud-item 樣式，字體統一放大 1.1 倍)
-   ========================================================================= */
-
-/* 🌟 紅色粗體重點專屬樣式 */
-.highlight-red {
+:deep(.highlight-red) {
   color: #dc2626;      
   font-weight: 900;    
   background: #fee2e2; 
@@ -116,9 +153,8 @@
   border-radius: 4px;
 }
 
-/* 🌟 特殊高亮分析區塊 (給最後的總結使用) */
 .highlight-panel {
-  background: #fffbeb !important; /* 淡淡的警告黃底色 */
+  background: #fffbeb !important;
   border: 2px solid #fcd34d !important;
 }
 
@@ -146,34 +182,51 @@
   padding-bottom: 0;
 }
 
-.anti-fraud-container .fraud-title {
-  color: #0284c7; 
-  font-weight: 900; 
-  font-size: 26px !important;     
-  margin-bottom: 12px;
-  margin-top: 0;
-}
-
 .anti-fraud-container .description {
   font-size: 22px !important; 
- LINE-height: 1.75 !important;
+  line-height: 1.8 !important;
   color: #334155 !important;
   text-align: justify;
   margin: 0;
 }
 
-/* 影片區塊與圓角陰影設計 */
 .video-wrapper {
   margin: 20px auto 0 auto;
-  max-width: 850px; 
+  max-width: 900px; 
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.25); /* 增加高級立體陰影 */
+  box-shadow: 0 15px 35px rgba(0,0,0,0.25);
   background: #000;
   border: 1px solid #cbd5e1;
 }
 
-/* 確保子導覽列在 RWD 能完美折行 */
+.video-player {
+  width: 100%;
+  display: block;
+  border: none;
+}
+
+.source-btn {
+  text-decoration: none;
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 17px;
+  font-weight: bold;
+  color: #0284c7;
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.source-btn:hover {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border-color: #7dd3fc;
+  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.1);
+  transform: translateY(-2px);
+}
+
 @media (max-width: 1000px) {
   .subpages {
     grid-template-columns: repeat(2, 1fr) !important;
@@ -187,7 +240,6 @@
   }
   .panel-header h2 { font-size: 26px !important; }
   .panel-header .box-subtitle { font-size: 18px !important; }
-  .anti-fraud-container .fraud-title { font-size: 22px !important; }
   .anti-fraud-container .description { font-size: 18px !important; }
 }
 </style>

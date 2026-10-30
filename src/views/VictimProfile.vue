@@ -7,7 +7,7 @@
      <p class="dashboard-subtitle">犯罪心理學與行為經濟學深度報告：解構「演算法精準狩獵」下的人類認知防線潰堤</p>
    </div>
 
-   <<!-- 4.總結子導覽列 -->
+   <!-- 4.總結子導覽列 -->
 	<div class="subpages" style="grid-template-columns: repeat(4, 1fr);">
 	  <router-link to="/summary" :class="{ 'router-link-exact-active': $route.path === '/summary' }">
 		<i class="fas fa-project-diagram"></i>&nbsp;詐騙趨勢總結
