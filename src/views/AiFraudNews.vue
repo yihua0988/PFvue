@@ -98,7 +98,7 @@ const videoList = ref([
     icon: 'fas fa-gavel',
     title: '案例二：竹聯幫經營跨境詐騙與洗錢',
     subtitle: '黑幫組織轉型，假投資平台結合跨國洗錢水房榨取上億資金',
-    filename: `${baseUrl}videos/news-video-2.mp4#t=0.001`,
+    filename: `${baseUrl}videos/news-video-2.webm#t=0.001`,
     sourceUrl: 'https://www.youtube.com/watch?v=FxEYy7gfDAk',
     btnText: '前往YouTube新聞快訊觀看原片',
     description: '此案例顯示犯罪集團已從單純的話術詐欺，轉型為利用社群平台與「假投資網站」進行的精密詐騙，短短四個月內就騙走超過<strong class="highlight-red">1億5千萬台幣</strong>，受害者高達220人以上。<br><br>竹聯幫弘仁會幹部涉入其中，凸顯了<strong class="highlight-red">跨國組織化與洗錢手法</strong>的嚴重升級。當傳統黑道幫派的龐大執行力，結合了無遠弗屆的社群網路與包裝精美的假投資平台，其詐騙的規模與擴散速度便難以想像。提醒民眾務必提高對「網路飆股、高報酬內線」的警覺，慎防落入精心設計的假網站陷阱。'
