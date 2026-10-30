@@ -1,5 +1,4 @@
 <template>
- <!-- 主要內容區 -->
  <main class="content dashboard-page">
     
    <div class="page-header" style="margin-bottom: 24px;">
@@ -7,26 +6,14 @@
      <p class="dashboard-subtitle">內政部警政署官方授權宣導：破解日常釣魚陷阱與假投資連環套路</p>
    </div>
 
-   <!-- 新的子導覽列 (165反詐影片) -->
    <div class="subpages" style="grid-template-columns: repeat(3, 1fr);">
-     <router-link 
-       to="/anti-deepfake-video" 
-       :class="{ 'router-link-exact-active': $route.path === '/anti-deepfake-video' }"
-     >
+     <router-link to="/anti-deepfake-video" :class="{ 'router-link-exact-active': $route.path === '/anti-deepfake-video' }">
        <i class="fas fa-project-diagram"></i>&nbsp;反深偽詐騙
      </router-link>
-      
-     <router-link 
-       to="/anti-phishing-video" 
-       :class="{ 'router-link-exact-active': $route.path === '/anti-phishing-video' }"
-     >
+     <router-link to="/anti-phishing-video" :class="{ 'router-link-exact-active': $route.path === '/anti-phishing-video' }">
        <i class="fas fa-user-shield"></i>&nbsp;常見詐騙手法分析
      </router-link>
-      
-     <router-link 
-       to="/anti-investment-video" 
-       :class="{ 'router-link-exact-active': $route.path === '/anti-investment-video' }"
-     >
+     <router-link to="/anti-investment-video" :class="{ 'router-link-exact-active': $route.path === '/anti-investment-video' }">
        <i class="fas fa-bug"></i>&nbsp;假投資詐騙解析
      </router-link>
    </div>
@@ -46,21 +33,24 @@
        <p class="description" v-html="video.description"></p>
      </div>
 
-     <!-- 影片播放器容器 (不加 playsinline，綁定全螢幕與音訊釋放事件) -->
-     <div class="video-wrapper">
+     <div class="video-wrapper" :class="{ 'force-landscape': activeVideo === index }">
+       <button v-if="activeVideo === index" class="exit-fs-btn" @click="closeFakeFullscreen(index)">
+         <i class="fas fa-compress"></i>
+       </button>
        <video 
          controls 
          :src="video.filename" 
          class="video-player" 
          preload="metadata"
-         @play="handleVideoPlay"
-         @ended="handleVideoEnded"
+         playsinline
+         webkit-playsinline
+         @play="handleVideoPlay(index, $event)"
+         @ended="handleVideoEnded(index, $event)"
        >
          您的瀏覽器不支援影片播放。
        </video>
      </div>
 
-     <!-- 🌟 超連結改為靠左對齊，並統一樣式 -->
      <div style="text-align: left; margin-top: 18px;">
        <a :href="video.sourceUrl" target="_blank" rel="noopener noreferrer" class="source-btn">
          <i class="fab fa-youtube" style="color: #ef4444;"></i>前往YouTube觀看宣導影片
@@ -68,40 +58,27 @@
      </div>
    </div>
 
-   <!-- ================== 深度解析 (警告黃色面板) ================== -->
+   <!-- ================== 深度解析 ================== -->
    <div class="panel anti-fraud-container highlight-panel" style="text-align: left; margin-top: 32px;">
      <div class="panel-header" style="border-bottom: none; margin-bottom: 8px;">
        <h2 style="color: #b45309;"><i class="fas fa-link"></i>詐騙手法深度解析與共通點</h2>
        <p class="box-subtitle" style="color: #92400e !important;">識破詐騙集團精準操弄人性的連環套路</p>
      </div>
      <div class="fraud-item" style="border-bottom: none; padding-bottom: 0;">
-       <p 
-          v-for="(point, index) in commonalities" 
-          :key="'com-' + index" 
-          class="description" 
-          style="margin-bottom: 20px;" 
-          v-html="point"
-        ></p>
+       <p v-for="(point, index) in commonalities" :key="'com-' + index" class="description" style="margin-bottom: 20px;" v-html="point"></p>
      </div>
    </div>
 
-   <!-- ================== 防範守則 (安全綠色面板) ================== -->
+   <!-- ================== 防範守則 ================== -->
    <div class="panel anti-fraud-container safe-panel" style="text-align: left; margin-top: 32px; margin-bottom: 40px;">
      <div class="panel-header" style="border-bottom: none; margin-bottom: 8px;">
        <h2 style="color: #065f46;"><i class="fas fa-shield-alt"></i>關鍵安全防範守則</h2>
        <p class="box-subtitle" style="color: #047857 !important;">熟記四大防線，徹底隔絕詐騙危機</p>
      </div>
      <div class="fraud-item" style="border-bottom: none; padding-bottom: 0;">
-       <p 
-          v-for="(method, index) in preventionMethods" 
-          :key="'prev-' + index" 
-          class="description" 
-          style="margin-bottom: 20px;" 
-          v-html="method"
-        ></p>
+       <p v-for="(method, index) in preventionMethods" :key="'prev-' + index" class="description" style="margin-bottom: 20px;" v-html="method"></p>
      </div>
    </div>
-
  </main>
 </template>
 
@@ -109,8 +86,8 @@
 import { ref } from 'vue';
 
 const baseUrl = import.meta.env.BASE_URL;
+const activeVideo = ref(null);
 
-// 🌟 統一於影片檔名結尾加上 #t=0.001，解決 iOS Safari 無法預覽開頭畫面的問題
 const videoList = ref([
   {
     title: '一、 社群帳號盜用與親友借款釣魚',
@@ -145,147 +122,74 @@ const preventionMethods = ref([
   '<strong style="color: #065f46;">防線四｜善用165專線，打破當局者迷：</strong>遇到疑似詐騙狀況，請立刻放下手機，<strong class="highlight-red">撥打「165反詐騙諮詢專線」</strong>，讓受過專業訓練的人員協助您釐清狀況。'
 ]);
 
-// 📱 1. 點擊播放時：自動觸發全螢幕並切換為橫向
-async function handleVideoPlay(event) {
+function handleVideoPlay(index, event) {
+  const isMobile = window.innerWidth <= 768;
   const video = event.target;
-  try {
-    if (video.webkitEnterFullscreen) {
-      video.webkitEnterFullscreen();
-    } else if (video.requestFullscreen) {
-      await video.requestFullscreen();
-    }
-    if (screen.orientation && screen.orientation.lock) {
-      await screen.orientation.lock('landscape').catch(() => {});
-    }
-  } catch (err) {
-    console.warn('全螢幕切換略過:', err);
+  video.muted = false;
+  if (isMobile) {
+    activeVideo.value = index;
+  } else {
+    if (video.requestFullscreen) video.requestFullscreen();
   }
 }
 
-// 📱 2. 影片播完時：退出全螢幕並釋放系統音訊通道，讓背景音樂恢復
-function handleVideoEnded(event) {
+function closeFakeFullscreen(index) {
+  activeVideo.value = null;
+  const videos = document.querySelectorAll('.video-player');
+  if(videos[index]) {
+    const video = videos[index];
+    video.pause();
+    releaseIOSAudio(video);
+  }
+}
+
+function handleVideoEnded(index, event) {
+  activeVideo.value = null;
   const video = event.target;
   try {
-    if (document.fullscreenElement && document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (video.webkitExitFullscreen) {
-      video.webkitExitFullscreen();
-    }
-    if (screen.orientation && screen.orientation.unlock) {
-      screen.orientation.unlock();
-    }
+    if (document.fullscreenElement) document.exitFullscreen();
   } catch (e) {}
-
   video.pause();
-  setTimeout(() => {
-    video.currentTime = 0.001;
-    video.load();
-  }, 300);
+  releaseIOSAudio(video);
+}
+
+function releaseIOSAudio(video) {
+  video.muted = true;
+  video.currentTime = 0.001;
 }
 </script>
 
 <style scoped>
-/* 🌟 紅色粗體重點專屬樣式 (加上 :deep 才能穿透 v-html 成功渲染！) */
-:deep(.highlight-red) {
-  color: #dc2626;      
-  font-weight: 900;    
-  background: #fee2e2; 
-  padding: 0 4px;
-  border-radius: 4px;
-}
+:deep(.highlight-red) { color: #dc2626; font-weight: 900; background: #fee2e2; padding: 0 4px; border-radius: 4px; }
+.highlight-panel { background: #fffbeb !important; border: 2px solid #fcd34d !important; }
+.safe-panel { background: #ecfdf5 !important; border: 2px solid #34d399 !important; }
+.panel-header h2 { font-size: 32px !important; font-weight: 900 !important; }
+.panel-header .box-subtitle { font-size: 20px !important; color: #dc2626 !important; font-weight: bold !important; margin-top: 8px !important; }
+.anti-fraud-container .fraud-item { margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px dashed #cbd5e1; }
+.anti-fraud-container .fraud-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.anti-fraud-container .description { font-size: 22px !important; line-height: 1.8 !important; color: #334155 !important; text-align: justify; margin: 0; }
+.video-wrapper { margin: 20px auto 0 auto; max-width: 900px; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.25); background: #000; border: 1px solid #cbd5e1; position: relative; }
+.video-player { width: 100%; display: block; border: none; }
+.source-btn { text-decoration: none; display: inline-block; padding: 12px 24px; font-size: 17px; font-weight: bold; color: #0284c7; background-color: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; transition: all 0.3s; }
+.source-btn:hover { background-color: #e0f2fe; color: #0369a1; border-color: #7dd3fc; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.1); transform: translateY(-2px); }
 
-.highlight-panel {
-  background: #fffbeb !important; 
-  border: 2px solid #fcd34d !important;
-}
+/* --- CSS 偽全螢幕與按鈕修復區 --- */
+.force-landscape { position: fixed !important; top: 50% !important; left: 50% !important; width: 100dvh !important; height: 100dvw !important; transform: translate(-50%, -50%) rotate(90deg) !important; transform-origin: center center !important; z-index: 99999 !important; background: #000 !important; border-radius: 0 !important; max-width: none !important; margin: 0 !important; border: none !important; }
+@supports not (height: 100dvh) { .force-landscape { width: 100vh !important; height: 100vw !important; } }
+.force-landscape .video-player { width: 100% !important; height: 100% !important; object-fit: contain !important; }
+.force-landscape video::-webkit-media-controls-fullscreen-button { display: none !important; }
+.exit-fs-btn { position: absolute; bottom: 12px; right: 12px; z-index: 100000; background: rgba(28, 28, 30, 0.7); color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: all 0.2s; }
+.exit-fs-btn:active { transform: scale(0.92); background: rgba(28, 28, 30, 0.95); }
 
-.safe-panel {
-  background: #ecfdf5 !important; 
-  border: 2px solid #34d399 !important;
-}
-
-.panel-header h2 {
-  font-size: 32px !important;  
-  font-weight: 900 !important;
-}
-
-.panel-header .box-subtitle {
-  font-size: 20px !important;  
-  color: #dc2626 !important;   
-  font-weight: bold !important;
-  margin-top: 8px !important;
-}
-
-.anti-fraud-container .fraud-item {
-  margin-bottom: 28px;
-  padding-bottom: 20px;
-  border-bottom: 1px dashed #cbd5e1;
-}
-
-.anti-fraud-container .fraud-item:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-.anti-fraud-container .description {
-  font-size: 22px !important; 
-  line-height: 1.8 !important;
-  color: #334155 !important;
-  text-align: justify;
-  margin: 0;
-}
-
-.video-wrapper {
-  margin: 20px auto 0 auto;
-  max-width: 900px; 
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-  background: #000;
-  border: 1px solid #cbd5e1;
-}
-
-.video-player {
-  width: 100%;
-  display: block;
-  border: none;
-}
-
-.source-btn {
-  text-decoration: none;
-  display: inline-block;
-  padding: 12px 24px;
-  font-size: 17px;
-  font-weight: bold;
-  color: #0284c7;
-  background-color: #f0f9ff;
-  border: 1px solid #bae6fd;
-  border-radius: 8px;
-  transition: all 0.3s;
-}
-
-.source-btn:hover {
-  background-color: #e0f2fe;
-  color: #0369a1;
-  border-color: #7dd3fc;
-  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.1);
-  transform: translateY(-2px);
-}
-
-@media (max-width: 1000px) {
-  .subpages {
-    grid-template-columns: repeat(3, 1fr) !important;
-  }
-}
-
-@media (max-width: 600px) {
-  .subpages {
-    display: flex !important;
-    flex-direction: column !important;
-  }
-  .panel-header h2 { font-size: 26px !important; }
-  .panel-header .box-subtitle { font-size: 18px !important; }
-  .anti-fraud-container .description { font-size: 18px !important; }
+@media (max-width: 1000px) { 
+  .subpages { 
+    display: flex !important; 
+    flex-direction: column !important; 
+    gap: 10px !important;
+  } 
+  .panel-header h2 { font-size: 26px !important; } 
+  .panel-header .box-subtitle { font-size: 18px !important; } 
+  .anti-fraud-container .fraud-title { font-size: 22px !important; } 
+  .anti-fraud-container .description { font-size: 18px !important; } 
 }
 </style>

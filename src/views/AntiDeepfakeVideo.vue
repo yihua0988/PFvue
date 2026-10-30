@@ -9,24 +9,13 @@
  
     <!-- 新的子導覽列 (165反詐影片) -->
     <div class="subpages" style="grid-template-columns: repeat(3, 1fr);">
-      <router-link 
-        to="/anti-deepfake-video" 
-        :class="{ 'router-link-exact-active': $route.path === '/anti-deepfake-video' }"
-      >
+      <router-link to="/anti-deepfake-video" :class="{ 'router-link-exact-active': $route.path === '/anti-deepfake-video' }">
         <i class="fas fa-project-diagram"></i>&nbsp;反深偽詐騙
       </router-link>
-       
-      <router-link 
-        to="/anti-phishing-video" 
-        :class="{ 'router-link-exact-active': $route.path === '/anti-phishing-video' }"
-      >
+      <router-link to="/anti-phishing-video" :class="{ 'router-link-exact-active': $route.path === '/anti-phishing-video' }">
         <i class="fas fa-user-shield"></i>&nbsp;常見詐騙手法分析
       </router-link>
-       
-      <router-link 
-        to="/anti-investment-video" 
-        :class="{ 'router-link-exact-active': $route.path === '/anti-investment-video' }"
-      >
+      <router-link to="/anti-investment-video" :class="{ 'router-link-exact-active': $route.path === '/anti-investment-video' }">
         <i class="fas fa-bug"></i>&nbsp;假投資詐騙解析
       </router-link>
     </div>
@@ -37,7 +26,6 @@
         <h2><i class="fas fa-bullhorn"></i>防詐重點宣導：AI深偽來電解析</h2>
         <p class="box-subtitle">當親友的長相與聲音都能被複製，我們該如何守護財產？</p>
       </div>
- 
       <div class="fraud-item">
         <h3 class="fraud-title">一、科技賦能的犯罪升級</h3>
         <p class="description">
@@ -45,7 +33,6 @@
            在過去，我們或許能從口音、語氣來辨識詐騙電話；但在AI科技的加持下，詐騙集團已經能輕易地擷取網路上公開的影像與語音資料，合成出與您親友幾乎一模一樣的聲音與長相，並透過視訊通話進行高度逼真的客製化詐騙。
         </p>
       </div>
- 
       <div class="fraud-item" style="border-bottom: none; padding-bottom: 0;">
         <h3 class="fraud-title">二、詐騙情境模擬：最熟悉的陌生來電</h3>
         <p class="description">
@@ -61,20 +48,17 @@
         <h2 style="color: #b45309;"><i class="fas fa-search"></i>如何破解AI深偽視訊？</h2>
         <p class="box-subtitle" style="color: #92400e !important;">目前的技術並非完美無缺，只要冷靜觀察，仍能找出致命破綻！</p>
       </div>
- 
       <div class="fraud-item" style="border-bottom: none; padding-bottom: 0;">
         <p class="description" style="margin-bottom: 20px;">
           <strong style="color: #b45309;">防線一：觀察影像邊緣與不自然處</strong><br>
            當接獲視訊電話時，AI演算法在處理不規則動態時極易出現運算延遲或畫面扭曲。<br>
           <strong class="highlight-red">💡破解心法：要求對方「左右轉頭」、「臉部遮擋」或「快速擺動手部」，觀察臉部邊緣是否模糊、下巴線條消失或出現破圖。</strong>
         </p>
- 
         <p class="description" style="margin-bottom: 20px;">
           <strong style="color: #b45309;">防線二：約定專屬「通關密語」</strong><br>
            詐騙集團即使能模仿外表，也無法輕易回答出私密的家庭記憶。<br>
           <strong class="highlight-red">💡破解心法：與家人事先約定好暗號，或詢問只有家人知道的生活瑣事（例如：家裡寵物最喜歡的玩具是什麼？）。</strong>
         </p>
- 
         <p class="description">
           <strong style="color: #b45309;">防線三：切斷通訊，反向查證</strong><br>
            這是最重要的一道防線！科技再怎麼進步，只要不匯款就不會受害。<br>
@@ -91,21 +75,25 @@
       </div>
        
       <!-- 影片播放器容器 -->
-      <div class="video-wrapper">
-         <!-- 🌟 修改為動態綁定 BASE_URL 的安全寫法 -->
+      <div class="video-wrapper" :class="{ 'force-landscape': activeVideo === 0 }">
+         <button v-if="activeVideo === 0" class="exit-fs-btn" @click="closeFakeFullscreen(0)">
+           <i class="fas fa-compress"></i>
+         </button>
          <video 
            controls 
            preload="metadata"
            :src="`${baseUrl}videos/anti-fraud-ep9.webm#t=0.001`"
-           @play="handleVideoPlay"
-           @ended="handleVideoEnded"
+           class="video-player"
+           playsinline
+           webkit-playsinline
+           @play="handleVideoPlay(0, $event)"
+           @ended="handleVideoEnded(0, $event)"
            style="width: 100%; display: block;"
          >
            您的瀏覽器不支援HTML5影片播放。
          </video>
        </div>
 
-      <!-- 🌟 超連結樣式統一改為 source-btn -->
       <div style="text-align: left; margin-top: 18px;">
         <a href="https://www.youtube.com/watch?v=bLsaATEFIB0" target="_blank" rel="noopener noreferrer" class="source-btn">
           <i class="fab fa-youtube" style="color: #ef4444;"></i>前往YouTube觀看原片
@@ -119,168 +107,77 @@
 <script setup>
 import { ref } from 'vue';
 
-// 🌟 宣告根目錄環境變數，解決所有部署路徑問題
 const baseUrl = import.meta.env.BASE_URL;
+const activeVideo = ref(null);
 
-// 1. 點擊播放時：強制進入全螢幕並嘗試切換為橫向
-async function handleVideoPlay(event) {
-  const video = event.target
- 
-  try {
-    // 針對 iOS Safari 呼叫原生全螢幕播放器
-    if (video.webkitEnterFullscreen) {
-      video.webkitEnterFullscreen()
-    } 
-    // 針對 Android Chrome 等標準瀏覽器請求全螢幕
-    else if (video.requestFullscreen) {
-      await video.requestFullscreen()
-    }
- 
-    // 在支援 Screen Orientation API 的手機瀏覽器上自動轉為橫向
-    if (screen.orientation && screen.orientation.lock) {
-      await screen.orientation.lock('landscape').catch(() => {
-        // 略過錯誤，iOS由系統陀螺儀接管
-      })
-    }
-  } catch (err) {
-    console.warn('全螢幕切換略過:', err)
+function handleVideoPlay(index, event) {
+  const isMobile = window.innerWidth <= 768;
+  const video = event.target;
+  video.muted = false;
+  if (isMobile) {
+    activeVideo.value = index;
+  } else {
+    if (video.requestFullscreen) video.requestFullscreen();
   }
 }
- 
-// 2. 影片播完時：退出全螢幕並徹底釋放音訊通道，讓背景音樂恢復
-function handleVideoEnded(event) {
-  const video = event.target
- 
-  // A. 退出全螢幕狀態
+
+function closeFakeFullscreen(index) {
+  activeVideo.value = null;
+  const videos = document.querySelectorAll('.video-player');
+  if(videos[index]) {
+    const video = videos[index];
+    video.pause();
+    releaseIOSAudio(video);
+  }
+}
+
+function handleVideoEnded(index, event) {
+  activeVideo.value = null;
+  const video = event.target;
   try {
-    if (document.fullscreenElement && document.exitFullscreen) {
-      document.exitFullscreen()
-    } else if (video.webkitExitFullscreen) {
-      video.webkitExitFullscreen()
-    }
-    if (screen.orientation && screen.orientation.unlock) {
-      screen.orientation.unlock()
-    }
+    if (document.fullscreenElement) document.exitFullscreen();
   } catch (e) {}
- 
-  // B. 釋放手機系統的 Audio Session (音訊焦點)
-  video.pause()
-   
-  setTimeout(() => {
-    video.currentTime = 0.001
-    video.load()
-  }, 300)
+  video.pause();
+  releaseIOSAudio(video);
+}
+
+function releaseIOSAudio(video) {
+  video.muted = true;
+  video.currentTime = 0.001;
 }
 </script>
  
 <style scoped>
-/* =========================================================================
-   本頁面專屬微調 (繼承全站 .panel, .fraud-item 樣式，字體統一放大 1.1 倍)
-   ========================================================================= */
- 
-/* 🌟 紅色粗體重點專屬樣式 */
-.highlight-red {
-  color: #dc2626;      
-  font-weight: 900;    
-  background: #fee2e2; 
-  padding: 0 4px;
-  border-radius: 4px;
-}
- 
-/* 🌟 特殊高亮分析區塊 (破解三大防線使用) */
-.highlight-panel {
-  background: #fffbeb !important; 
-  border: 2px solid #fcd34d !important;
-}
- 
-.panel-header h2 {
-  font-size: 32px !important;  
-  font-weight: 900 !important;
-}
- 
-.panel-header .box-subtitle {
-  font-size: 20px !important;  
-  color: #dc2626 !important;   
-  font-weight: bold !important;
-  margin-top: 8px !important;
-}
- 
-.anti-fraud-container .fraud-item {
-  margin-bottom: 28px;
-  padding-bottom: 20px;
-  border-bottom: 1px dashed #cbd5e1;
-}
- 
-.anti-fraud-container .fraud-item:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
- 
-.anti-fraud-container .fraud-title {
-  color: #0284c7; 
-  font-weight: 900; 
-  font-size: 26px !important;     
-  margin-bottom: 14px;
-  margin-top: 0;
-}
- 
-.anti-fraud-container .description {
-  font-size: 22px !important; 
-  line-height: 1.8 !important;
-  color: #334155 !important;
-  text-align: justify;
-  margin: 0;
-}
- 
-/* 影片區塊與圓角陰影設計 */
-.video-wrapper {
-  margin: 20px auto 0 auto;
-  max-width: 900px; 
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-  background: #000;
-  border: 1px solid #cbd5e1;
-}
+:deep(.highlight-red) { color: #dc2626; font-weight: 900; background: #fee2e2; padding: 0 4px; border-radius: 4px; }
+.highlight-panel { background: #fffbeb !important; border: 2px solid #fcd34d !important; }
+.panel-header h2 { font-size: 32px !important; font-weight: 900 !important; }
+.panel-header .box-subtitle { font-size: 20px !important; color: #dc2626 !important; font-weight: bold !important; margin-top: 8px !important; }
+.anti-fraud-container .fraud-item { margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px dashed #cbd5e1; }
+.anti-fraud-container .fraud-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.anti-fraud-container .fraud-title { color: #0284c7; font-weight: 900; font-size: 26px !important; margin-bottom: 14px; margin-top: 0; }
+.anti-fraud-container .description { font-size: 22px !important; line-height: 1.8 !important; color: #334155 !important; text-align: justify; margin: 0; }
+.video-wrapper { margin: 20px auto 0 auto; max-width: 900px; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.25); background: #000; border: 1px solid #cbd5e1; position: relative; }
+.video-player { width: 100%; display: block; border: none; }
+.source-btn { text-decoration: none; display: inline-block; padding: 12px 24px; font-size: 17px; font-weight: bold; color: #0284c7; background-color: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; transition: all 0.3s; }
+.source-btn:hover { background-color: #e0f2fe; color: #0369a1; border-color: #7dd3fc; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.1); transform: translateY(-2px); }
 
-/* 🌟 統一加入 source-btn 專屬按鈕樣式 */
-.source-btn {
-  text-decoration: none;
-  display: inline-block;
-  padding: 12px 24px;
-  font-size: 17px;
-  font-weight: bold;
-  color: #0284c7;
-  background-color: #f0f9ff;
-  border: 1px solid #bae6fd;
-  border-radius: 8px;
-  transition: all 0.3s;
-}
+/* --- CSS 偽全螢幕與按鈕修復區 --- */
+.force-landscape { position: fixed !important; top: 50% !important; left: 50% !important; width: 100dvh !important; height: 100dvw !important; transform: translate(-50%, -50%) rotate(90deg) !important; transform-origin: center center !important; z-index: 99999 !important; background: #000 !important; border-radius: 0 !important; max-width: none !important; margin: 0 !important; border: none !important; }
+@supports not (height: 100dvh) { .force-landscape { width: 100vh !important; height: 100vw !important; } }
+.force-landscape .video-player { width: 100% !important; height: 100% !important; object-fit: contain !important; }
+.force-landscape video::-webkit-media-controls-fullscreen-button { display: none !important; }
+.exit-fs-btn { position: absolute; bottom: 12px; right: 12px; z-index: 100000; background: rgba(28, 28, 30, 0.7); color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: all 0.2s; }
+.exit-fs-btn:active { transform: scale(0.92); background: rgba(28, 28, 30, 0.95); }
 
-.source-btn:hover {
-  background-color: #e0f2fe;
-  color: #0369a1;
-  border-color: #7dd3fc;
-  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.1);
-  transform: translateY(-2px);
-}
- 
-/* 確保子導覽列在 RWD 能完美折行 */
-@media (max-width: 1000px) {
-  .subpages {
-    grid-template-columns: repeat(3, 1fr) !important;
-  }
-}
- 
-@media (max-width: 600px) {
-  .subpages {
-    display: flex !important;
-    flex-direction: column !important;
-  }
-  .panel-header h2 { font-size: 26px !important; }
-  .panel-header .box-subtitle { font-size: 18px !important; }
-  .anti-fraud-container .fraud-title { font-size: 22px !important; }
-  .anti-fraud-container .description { font-size: 18px !important; }
+@media (max-width: 1000px) { 
+  .subpages { 
+    display: flex !important; 
+    flex-direction: column !important; 
+    gap: 10px !important;
+  } 
+  .panel-header h2 { font-size: 26px !important; } 
+  .panel-header .box-subtitle { font-size: 18px !important; } 
+  .anti-fraud-container .fraud-title { font-size: 22px !important; } 
+  .anti-fraud-container .description { font-size: 18px !important; } 
 }
 </style>

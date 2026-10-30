@@ -40,14 +40,19 @@
      </div>
 
      <!-- 影片播放器容器 -->
-     <div class="video-wrapper">
+     <div class="video-wrapper" :class="{ 'force-landscape': activeVideo === index }">
+       <button v-if="activeVideo === index" class="exit-fs-btn" @click="closeFakeFullscreen(index)">
+         <i class="fas fa-compress"></i>
+       </button>
        <video 
          controls 
          :src="video.filename" 
          class="video-player" 
          preload="metadata"
-         @play="handleVideoPlay"
-         @ended="handleVideoEnded"
+         playsinline
+         webkit-playsinline
+         @play="handleVideoPlay(index, $event)"
+         @ended="handleVideoEnded(index, $event)"
        >
          您的瀏覽器不支援影片播放。
        </video>
@@ -83,6 +88,7 @@
 import { ref } from 'vue';
 
 const baseUrl = import.meta.env.BASE_URL;
+const activeVideo = ref(null);
 
 const videoList = ref([
   {
@@ -98,49 +104,47 @@ const videoList = ref([
     icon: 'fas fa-gavel',
     title: '案例二：竹聯幫經營跨境詐騙與洗錢',
     subtitle: '黑幫組織轉型，假投資平台結合跨國洗錢水房榨取上億資金',
-    filename: `${baseUrl}videos/news-video-2.webm#t=0.001`,
+    filename: `${baseUrl}videos/news-video-2.mp4#t=0.001`,
     sourceUrl: 'https://www.youtube.com/watch?v=FxEYy7gfDAk',
     btnText: '前往YouTube新聞快訊觀看原片',
     description: '此案例顯示犯罪集團已從單純的話術詐欺，轉型為利用社群平台與「假投資網站」進行的精密詐騙，短短四個月內就騙走超過<strong class="highlight-red">1億5千萬台幣</strong>，受害者高達220人以上。<br><br>竹聯幫弘仁會幹部涉入其中，凸顯了<strong class="highlight-red">跨國組織化與洗錢手法</strong>的嚴重升級。當傳統黑道幫派的龐大執行力，結合了無遠弗屆的社群網路與包裝精美的假投資平台，其詐騙的規模與擴散速度便難以想像。提醒民眾務必提高對「網路飆股、高報酬內線」的警覺，慎防落入精心設計的假網站陷阱。'
   }
 ]);
 
-// 📱 1. 點擊播放時：自動觸發全螢幕並切換為橫向
-async function handleVideoPlay(event) {
+function handleVideoPlay(index, event) {
+  const isMobile = window.innerWidth <= 768;
   const video = event.target;
-  try {
-    if (video.webkitEnterFullscreen) {
-      video.webkitEnterFullscreen();
-    } else if (video.requestFullscreen) {
-      await video.requestFullscreen();
-    }
-    if (screen.orientation && screen.orientation.lock) {
-      await screen.orientation.lock('landscape').catch(() => {});
-    }
-  } catch (err) {
-    console.warn('全螢幕切換略過:', err);
+  video.muted = false;
+  if (isMobile) {
+    activeVideo.value = index;
+  } else {
+    if (video.requestFullscreen) video.requestFullscreen();
   }
 }
 
-// 📱 2. 影片播完時：退出全螢幕並釋放系統音訊通道，讓背景音樂恢復
-function handleVideoEnded(event) {
+function closeFakeFullscreen(index) {
+  activeVideo.value = null;
+  const videos = document.querySelectorAll('.video-player');
+  if(videos[index]) {
+    const video = videos[index];
+    video.pause();
+    releaseIOSAudio(video);
+  }
+}
+
+function handleVideoEnded(index, event) {
+  activeVideo.value = null;
   const video = event.target;
   try {
-    if (document.fullscreenElement && document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (video.webkitExitFullscreen) {
-      video.webkitExitFullscreen();
-    }
-    if (screen.orientation && screen.orientation.unlock) {
-      screen.orientation.unlock();
-    }
+    if (document.fullscreenElement) document.exitFullscreen();
   } catch (e) {}
-
   video.pause();
-  setTimeout(() => {
-    video.currentTime = 0.001;
-    video.load();
-  }, 300);
+  releaseIOSAudio(video);
+}
+
+function releaseIOSAudio(video) {
+  video.muted = true;
+  video.currentTime = 0.001;
 }
 </script>
 
@@ -152,94 +156,28 @@ function handleVideoEnded(event) {
   padding: 0 4px;
   border-radius: 4px;
 }
-
 .highlight-panel {
   background: #fffbeb !important;
   border: 2px solid #fcd34d !important;
 }
+.panel-header h2 { font-size: 32px !important; font-weight: 900 !important; }
+.panel-header .box-subtitle { font-size: 20px !important; color: #dc2626 !important; font-weight: bold !important; margin-top: 8px !important; }
+.anti-fraud-container .fraud-item { margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px dashed #cbd5e1; }
+.anti-fraud-container .fraud-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.anti-fraud-container .description { font-size: 22px !important; line-height: 1.8 !important; color: #334155 !important; text-align: justify; margin: 0; }
+.video-wrapper { margin: 20px auto 0 auto; max-width: 900px; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.25); background: #000; border: 1px solid #cbd5e1; position: relative; }
+.video-player { width: 100%; display: block; border: none; }
+.source-btn { text-decoration: none; display: inline-block; padding: 12px 24px; font-size: 17px; font-weight: bold; color: #0284c7; background-color: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; transition: all 0.3s; }
+.source-btn:hover { background-color: #e0f2fe; color: #0369a1; border-color: #7dd3fc; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.1); transform: translateY(-2px); }
 
-.panel-header h2 {
-  font-size: 32px !important;  
-  font-weight: 900 !important;
-}
+/* --- CSS 偽全螢幕與按鈕修復區 --- */
+.force-landscape { position: fixed !important; top: 50% !important; left: 50% !important; width: 100dvh !important; height: 100dvw !important; transform: translate(-50%, -50%) rotate(90deg) !important; transform-origin: center center !important; z-index: 99999 !important; background: #000 !important; border-radius: 0 !important; max-width: none !important; margin: 0 !important; border: none !important; }
+@supports not (height: 100dvh) { .force-landscape { width: 100vh !important; height: 100vw !important; } }
+.force-landscape .video-player { width: 100% !important; height: 100% !important; object-fit: contain !important; }
+.force-landscape video::-webkit-media-controls-fullscreen-button { display: none !important; }
+.exit-fs-btn { position: absolute; bottom: 12px; right: 12px; z-index: 100000; background: rgba(28, 28, 30, 0.7); color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: all 0.2s; }
+.exit-fs-btn:active { transform: scale(0.92); background: rgba(28, 28, 30, 0.95); }
 
-.panel-header .box-subtitle {
-  font-size: 20px !important;  
-  color: #dc2626 !important;   
-  font-weight: bold !important;
-  margin-top: 8px !important;
-}
-
-.anti-fraud-container .fraud-item {
-  margin-bottom: 24px;
-  padding-bottom: 18px;
-  border-bottom: 1px dashed #cbd5e1;
-}
-
-.anti-fraud-container .fraud-item:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-.anti-fraud-container .description {
-  font-size: 22px !important; 
-  line-height: 1.8 !important;
-  color: #334155 !important;
-  text-align: justify;
-  margin: 0;
-}
-
-.video-wrapper {
-  margin: 20px auto 0 auto;
-  max-width: 900px; 
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-  background: #000;
-  border: 1px solid #cbd5e1;
-}
-
-.video-player {
-  width: 100%;
-  display: block;
-  border: none;
-}
-
-.source-btn {
-  text-decoration: none;
-  display: inline-block;
-  padding: 12px 24px;
-  font-size: 17px;
-  font-weight: bold;
-  color: #0284c7;
-  background-color: #f0f9ff;
-  border: 1px solid #bae6fd;
-  border-radius: 8px;
-  transition: all 0.3s;
-}
-
-.source-btn:hover {
-  background-color: #e0f2fe;
-  color: #0369a1;
-  border-color: #7dd3fc;
-  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.1);
-  transform: translateY(-2px);
-}
-
-@media (max-width: 1000px) {
-  .subpages {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-}
-
-@media (max-width: 600px) {
-  .subpages {
-    display: flex !important;
-    flex-direction: column !important;
-  }
-  .panel-header h2 { font-size: 26px !important; }
-  .panel-header .box-subtitle { font-size: 18px !important; }
-  .anti-fraud-container .description { font-size: 18px !important; }
-}
+@media (max-width: 1000px) { .subpages { grid-template-columns: repeat(2, 1fr) !important; } }
+@media (max-width: 600px) { .subpages { display: flex !important; flex-direction: column !important; } .panel-header h2 { font-size: 26px !important; } .panel-header .box-subtitle { font-size: 18px !important; } .anti-fraud-container .description { font-size: 18px !important; } }
 </style>
