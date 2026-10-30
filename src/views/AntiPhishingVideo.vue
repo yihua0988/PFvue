@@ -33,23 +33,18 @@
        <p class="description" v-html="video.description"></p>
      </div>
 
-     <div class="video-wrapper" :class="{ 'force-landscape': activeVideo === index }">
-       <button v-if="activeVideo === index" class="exit-fs-btn" @click="closeFakeFullscreen(index)">
-         <i class="fas fa-compress"></i>
-       </button>
-       <video 
-         controls 
-         :src="video.filename" 
-         class="video-player" 
-         preload="metadata"
-         playsinline
-         webkit-playsinline
-         @play="handleVideoPlay(index, $event)"
-         @ended="handleVideoEnded(index, $event)"
-       >
-         您的瀏覽器不支援影片播放。
-       </video>
-     </div>
+     <div class="video-wrapper">
+		  <video 
+			controls 
+			preload="metadata"
+			:src="video.filename" 
+			class="video-player" 
+			@play="handleVideoPlay"
+			@ended="handleVideoEnded"
+		  >
+			您的瀏覽器不支援影片播放。
+		  </video>
+		</div>
 
      <div style="text-align: left; margin-top: 18px;">
        <a :href="video.sourceUrl" target="_blank" rel="noopener noreferrer" class="source-btn">
@@ -121,41 +116,51 @@ const preventionMethods = ref([
   '<strong style="color: #065f46;">防線三｜識破投資與借貸的致命陷阱：</strong>合法的投資平台<strong class="highlight-red">絕對不會要求您「先匯鉅額保證金」</strong>才能拿回獲利；若遇到慫恿您找來路不明的金主抵押房產借貸，百分之百是詐騙。',
   '<strong style="color: #065f46;">防線四｜善用165專線，打破當局者迷：</strong>遇到疑似詐騙狀況，請立刻放下手機，<strong class="highlight-red">撥打「165反詐騙諮詢專線」</strong>，讓受過專業訓練的人員協助您釐清狀況。'
 ]);
-
-function handleVideoPlay(index, event) {
-  const isMobile = window.innerWidth <= 768;
+// 📱 1. 點擊播放時：呼叫系統原生全螢幕與橫向鎖定
+async function handleVideoPlay(event) {
   const video = event.target;
-  video.muted = false;
-  if (isMobile) {
-    activeVideo.value = index;
-  } else {
-    if (video.requestFullscreen) video.requestFullscreen();
-  }
-}
+  video.muted = false; // 確保有聲音
 
-function closeFakeFullscreen(index) {
-  activeVideo.value = null;
-  const videos = document.querySelectorAll('.video-player');
-  if(videos[index]) {
-    const video = videos[index];
-    video.pause();
-    releaseIOSAudio(video);
-  }
-}
-
-function handleVideoEnded(index, event) {
-  activeVideo.value = null;
-  const video = event.target;
   try {
-    if (document.fullscreenElement) document.exitFullscreen();
-  } catch (e) {}
-  video.pause();
-  releaseIOSAudio(video);
+    // 針對 iOS Safari 呼叫原生全螢幕播放器
+    if (video.webkitEnterFullscreen) {
+      video.webkitEnterFullscreen();
+    } 
+    // 針對 Android Chrome 等標準瀏覽器請求全螢幕
+    else if (video.requestFullscreen) {
+      await video.requestFullscreen();
+    }
+
+    // 嘗試自動轉為橫向
+    if (screen.orientation && screen.orientation.lock) {
+      await screen.orientation.lock('landscape').catch(() => {});
+    }
+  } catch (err) {
+    console.warn('全螢幕切換略過:', err);
+  }
 }
 
-function releaseIOSAudio(video) {
+// 📱 2. 影片播完或關閉時：退出全螢幕並釋放背景音訊焦點（保護 Spotify）
+function handleVideoEnded(event) {
+  const video = event.target;
+  
+  try {
+    if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (video.webkitExitFullscreen) {
+      video.webkitExitFullscreen();
+    }
+    if (screen.orientation && screen.orientation.unlock) {
+      screen.orientation.unlock();
+    }
+  } catch (e) {}
+
+  // 靜音並退回第 0.001 秒，完美釋放音訊通道給 Spotify
+  video.pause();
   video.muted = true;
-  video.currentTime = 0.001;
+  setTimeout(() => {
+    video.currentTime = 0.001;
+  }, 300);
 }
 </script>
 
@@ -173,13 +178,7 @@ function releaseIOSAudio(video) {
 .source-btn { text-decoration: none; display: inline-block; padding: 12px 24px; font-size: 17px; font-weight: bold; color: #0284c7; background-color: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; transition: all 0.3s; }
 .source-btn:hover { background-color: #e0f2fe; color: #0369a1; border-color: #7dd3fc; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.1); transform: translateY(-2px); }
 
-/* --- CSS 偽全螢幕與按鈕修復區 --- */
-.force-landscape { position: fixed !important; top: 50% !important; left: 50% !important; width: 100dvh !important; height: 100dvw !important; transform: translate(-50%, -50%) rotate(90deg) !important; transform-origin: center center !important; z-index: 99999 !important; background: #000 !important; border-radius: 0 !important; max-width: none !important; margin: 0 !important; border: none !important; }
-@supports not (height: 100dvh) { .force-landscape { width: 100vh !important; height: 100vw !important; } }
-.force-landscape .video-player { width: 100% !important; height: 100% !important; object-fit: contain !important; }
-.force-landscape video::-webkit-media-controls-fullscreen-button { display: none !important; }
-.exit-fs-btn { position: absolute; bottom: 12px; right: 12px; z-index: 100000; background: rgba(28, 28, 30, 0.7); color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: all 0.2s; }
-.exit-fs-btn:active { transform: scale(0.92); background: rgba(28, 28, 30, 0.95); }
+
 
 @media (max-width: 1000px) { 
   .subpages { 
