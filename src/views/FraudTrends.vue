@@ -19,8 +19,8 @@
 
    <!-- 讀取中狀態 -->
    <div v-if="isLoading" class="status-box">
+	 <div class="spinner"></div>
      <h2>⏳正在從雲端載入統計資料...</h2>
-     <p>正在同步年齡性別、職業、學歷與戶政同齡人口數據，請稍候</p>
    </div>
 
    <!-- 錯誤狀態 -->

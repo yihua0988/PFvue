@@ -20,7 +20,6 @@
    <div v-if="isLoading" class="status-box">
      <div class="spinner"></div>
      <h2>⏳正在從雲端載入統計資料...</h2>
-     <p>正在同步警政發生地點與戶政人口資料，請稍候</p>
    </div>
 
    <!-- 錯誤狀態 -->

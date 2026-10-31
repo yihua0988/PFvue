@@ -2726,7 +2726,6 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -3907,8 +3906,6 @@ footer {
   .kpi-sub-row strong { font-size: 18px !important; }
   .filter-panel .filter-title { white-space: normal !important; line-height: 1.4 !important; font-size: 14px !important; }
   .dataset-time-pill { white-space: normal !important; width: 100%; text-align: center; font-size: 14px !important; }
-
-  .img-lightbox-Modal { width: 96%; padding: 14px; }
   .guide-img-card { padding: 14px 12px !important; }
   .guide-card-top h3 { font-size: 16px !important; line-height: 1.35 !important; }
   .content .guide-card-desc { font-size: 16px !important; line-height: 1.55 !important; }
@@ -3988,4 +3985,71 @@ footer {
   .rank-city-name { font-size: 14px; }
   .rank-val-col .primary-val { font-size: 13px; }
   .custom-date-box .clean-select { min-width: 80px; }
+}
+/* =========================================================================
+   📊 戰情室專屬特化元件 (讀取動畫、排行表頭、細節標籤)
+   ========================================================================= */
+   
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(14, 165, 233, 0.15); /* 更輕盈的淡藍底軌道 */
+  border-top-color: #0ea5e9; /* 亮藍色轉軸 */
+  border-right-color: rgba(14, 165, 233, 0.5); /* 做出漸進拖尾效果 */
+  border-radius: 50%;
+  animation: spin 0.85s cubic-bezier(0.6, 0.2, 0.4, 0.8) infinite; /* 加入非線性轉速，看起來更生動 */
+  margin: 0 auto 20px auto;
+  box-shadow: 0 0 15px rgba(14, 165, 233, 0.2); /* 微弱的科技光暈 */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 縣市/族群深度體檢卡：特別處理表格標題欄 */
+.ranking-table-head {
+  display: grid;
+  grid-template-columns: 130px 1fr 210px;
+  gap: 12px;
+  padding: 0 14px 6px 14px;
+  font-size: 14.5px;
+  font-weight: 800;
+  color: #64748b;
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 8px;
+}
+
+/* 體檢卡標題與名次標籤排列 */
+.banner-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+.banner-rank-pill {
+  font-size: 14.5px;
+  font-weight: 800;
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* =========================================================================
+   📱 戰情室特化元件 - 手機版微調 (<= 768px)
+   ========================================================================= */
+@media (max-width: 768px) {
+  /* 手機版隱藏繁瑣的表頭說明，讓畫面更清爽 */
+  .ranking-table-head {
+    display: none !important;
+  }
+  
+  /* 體檢卡：標題列折行處理 */
+  .banner-title-row {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    margin-top: 4px !important;
+  }
 }

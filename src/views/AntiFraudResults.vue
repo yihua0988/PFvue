@@ -20,6 +20,7 @@
 
     <!-- 讀取中狀態 -->
     <div v-if="isLoading" class="status-box">
+	  <div class="spinner"></div>
       <h2>⏳正在從雲端載入統計資料...</h2>
     </div>
 
