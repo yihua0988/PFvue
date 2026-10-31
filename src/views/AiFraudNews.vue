@@ -150,41 +150,4 @@ function handleVideoEnded(event) {
     video.currentTime = 0.001;
   }, 300);
 }
-</script>
-
-<style scoped>
-:deep(.highlight-red) {
-  color: #dc2626;      
-  font-weight: 900;    
-  background: #fee2e2; 
-  padding: 0 4px;
-  border-radius: 4px;
-}
-.highlight-panel {
-  background: #fffbeb !important;
-  border: 2px solid #fcd34d !important;
-}
-.panel-header h2 { font-size: 32px !important; font-weight: 900 !important; }
-.panel-header .box-subtitle { font-size: 20px !important; color: #dc2626 !important; font-weight: bold !important; margin-top: 8px !important; }
-.anti-fraud-container .fraud-item { margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px dashed #cbd5e1; }
-.anti-fraud-container .fraud-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-.anti-fraud-container .description { font-size: 22px !important; line-height: 1.8 !important; color: #334155 !important; text-align: justify; margin: 0; }
-.video-wrapper { margin: 20px auto 0 auto; max-width: 900px; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.25); background: #000; border: 1px solid #cbd5e1; position: relative; }
-.video-player { width: 100%; display: block; border: none; }
-.source-btn { text-decoration: none; display: inline-block; padding: 12px 24px; font-size: 17px; font-weight: bold; color: #0284c7; background-color: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; transition: all 0.3s; }
-.source-btn:hover { background-color: #e0f2fe; color: #0369a1; border-color: #7dd3fc; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.1); transform: translateY(-2px); }
-
-
-
-@media (max-width: 1000px) { 
-  .subpages { 
-    display: flex !important; 
-    flex-direction: column !important; 
-    gap: 10px !important;
-  } 
-  .panel-header h2 { font-size: 26px !important; } 
-  .panel-header .box-subtitle { font-size: 18px !important; } 
-  .anti-fraud-container .fraud-title { font-size: 22px !important; } 
-  .anti-fraud-container .description { font-size: 18px !important; } 
-}
-</style>
+</script>	
