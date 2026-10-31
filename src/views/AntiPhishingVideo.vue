@@ -41,6 +41,7 @@
 			class="video-player" 
 			@play="handleVideoPlay"
 			@ended="handleVideoEnded"
+			@dblclick="handleDoubleClick"
 		  >
 			您的瀏覽器不支援影片播放。
 		  </video>
@@ -79,6 +80,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { onBeforeUnmount } from 'vue';
 
 const baseUrl = import.meta.env.BASE_URL;
 const activeVideo = ref(null);
@@ -116,22 +118,31 @@ const preventionMethods = ref([
   '<strong style="color: #065f46;">防線三｜識破投資與借貸的致命陷阱：</strong>合法的投資平台<strong class="highlight-red">絕對不會要求您「先匯鉅額保證金」</strong>才能拿回獲利；若遇到慫恿您找來路不明的金主抵押房產借貸，百分之百是詐騙。',
   '<strong style="color: #065f46;">防線四｜善用165專線，打破當局者迷：</strong>遇到疑似詐騙狀況，請立刻放下手機，<strong class="highlight-red">撥打「165反詐騙諮詢專線」</strong>，讓受過專業訓練的人員協助您釐清狀況。'
 ]);
-// 📱 1. 點擊播放時：呼叫系統原生全螢幕與橫向鎖定
+
+
+// 📱 1. 點擊播放時：自動暫停其他影片，並【釋放其他影片的音訊】
 async function handleVideoPlay(event) {
-  const video = event.target;
-  video.muted = false; // 確保有聲音
+  const currentVideo = event.target;
+  currentVideo.muted = false; // 確保有聲音
+
+  // 🔥 互斥與音訊釋放：找出畫面上其他的影片，強制暫停並釋放音訊
+  const allVideos = document.querySelectorAll('video');
+  allVideos.forEach(v => {
+    if (v !== currentVideo && !v.paused) {
+      v.pause();
+      v.muted = true; // 靜音以釋放音訊通道
+      setTimeout(() => {
+        if (v.readyState > 0) v.currentTime = 0.001;
+      }, 300);
+    }
+  });
 
   try {
-    // 針對 iOS Safari 呼叫原生全螢幕播放器
-    if (video.webkitEnterFullscreen) {
-      video.webkitEnterFullscreen();
-    } 
-    // 針對 Android Chrome 等標準瀏覽器請求全螢幕
-    else if (video.requestFullscreen) {
-      await video.requestFullscreen();
+    if (currentVideo.webkitEnterFullscreen) {
+      currentVideo.webkitEnterFullscreen();
+    } else if (currentVideo.requestFullscreen) {
+      await currentVideo.requestFullscreen();
     }
-
-    // 嘗試自動轉為橫向
     if (screen.orientation && screen.orientation.lock) {
       await screen.orientation.lock('landscape').catch(() => {});
     }
@@ -140,7 +151,28 @@ async function handleVideoPlay(event) {
   }
 }
 
-// 📱 2. 影片播完或關閉時：退出全螢幕並釋放背景音訊焦點（保護 Spotify）
+// 📱 2. 新增：雙點擊影片時觸發（播放並釋放其他影片音訊）
+function handleDoubleClick(event) {
+  const currentVideo = event.target;
+  
+  if (currentVideo.paused) {
+    currentVideo.play();
+  }
+
+  // 🔥 雙擊時同樣確保其他影片被暫停並釋放音訊
+  const allVideos = document.querySelectorAll('video');
+  allVideos.forEach(v => {
+    if (v !== currentVideo && !v.paused) {
+      v.pause();
+      v.muted = true;
+      setTimeout(() => {
+        if (v.readyState > 0) v.currentTime = 0.001;
+      }, 300);
+    }
+  });
+}
+
+// 📱 3. 影片播完時：退出全螢幕並釋放背景音訊焦點（保護 Spotify）
 function handleVideoEnded(event) {
   const video = event.target;
   
@@ -155,11 +187,21 @@ function handleVideoEnded(event) {
     }
   } catch (e) {}
 
-  // 靜音並退回第 0.001 秒，完美釋放音訊通道給 Spotify
   video.pause();
   video.muted = true;
-  setTimeout(() => {
-    video.currentTime = 0.001;
+  setTimeout(() => { 
+    if (video.readyState > 0) video.currentTime = 0.001; 
   }, 300);
 }
+
+// 📱 4. 切換分頁保護：離開這個網頁時，徹底中斷所有影片串流與釋放音訊
+onBeforeUnmount(() => {
+  const allVideos = document.querySelectorAll('video');
+  allVideos.forEach(video => {
+    video.pause();
+    video.muted = true;           
+    video.removeAttribute('src'); 
+    video.load();                 
+  });
+})
 </script>

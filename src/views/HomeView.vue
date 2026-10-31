@@ -9,7 +9,7 @@
       
      <div class="hero-top-bar">
        <span class="live-badge">
-         <span class="pulse-dot"></span>DEFCON-1 LIVE INTELLIGENCE
+         <span class="pulse-dot"></span>LIVE THREAT INTELLIGENCE
        </span>
        <span class="system-tag">
          <i class="fas fa-microchip"></i>2026 TAIWAN CYBER-DEFENSE RESEARCH

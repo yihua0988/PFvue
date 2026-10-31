@@ -47,6 +47,7 @@
 			class="video-player" 
 			@play="handleVideoPlay"
 			@ended="handleVideoEnded"
+			@dblclick="handleDoubleClick"
 		  >
 			您的瀏覽器不支援影片播放。
 		  </video>
@@ -80,6 +81,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { onBeforeUnmount } from 'vue';
 
 const baseUrl = import.meta.env.BASE_URL;
 const activeVideo = ref(null);
@@ -104,22 +106,29 @@ const videoList = ref([
     description: '此案例顯示犯罪集團已從單純的話術詐欺，轉型為利用社群平台與「假投資網站」進行的精密詐騙，短短四個月內就騙走超過<strong class="highlight-red">1億5千萬台幣</strong>，受害者高達220人以上。<br><br>竹聯幫弘仁會幹部涉入其中，凸顯了<strong class="highlight-red">跨國組織化與洗錢手法</strong>的嚴重升級。當傳統黑道幫派的龐大執行力，結合了無遠弗屆的社群網路與包裝精美的假投資平台，其詐騙的規模與擴散速度便難以想像。提醒民眾務必提高對「網路飆股、高報酬內線」的警覺，慎防落入精心設計的假網站陷阱。'
   }
 ]);
-// 📱 1. 點擊播放時：呼叫系統原生全螢幕與橫向鎖定
+// 📱 1. 點擊播放時：自動暫停其他影片，並【釋放其他影片的音訊】
 async function handleVideoPlay(event) {
-  const video = event.target;
-  video.muted = false; // 確保有聲音
+  const currentVideo = event.target;
+  currentVideo.muted = false; // 確保有聲音
+
+  // 🔥 互斥與音訊釋放：找出畫面上其他的影片，強制暫停並釋放音訊
+  const allVideos = document.querySelectorAll('video');
+  allVideos.forEach(v => {
+    if (v !== currentVideo && !v.paused) {
+      v.pause();
+      v.muted = true; // 靜音以釋放音訊通道
+      setTimeout(() => {
+        if (v.readyState > 0) v.currentTime = 0.001;
+      }, 300);
+    }
+  });
 
   try {
-    // 針對 iOS Safari 呼叫原生全螢幕播放器
-    if (video.webkitEnterFullscreen) {
-      video.webkitEnterFullscreen();
-    } 
-    // 針對 Android Chrome 等標準瀏覽器請求全螢幕
-    else if (video.requestFullscreen) {
-      await video.requestFullscreen();
+    if (currentVideo.webkitEnterFullscreen) {
+      currentVideo.webkitEnterFullscreen();
+    } else if (currentVideo.requestFullscreen) {
+      await currentVideo.requestFullscreen();
     }
-
-    // 嘗試自動轉為橫向
     if (screen.orientation && screen.orientation.lock) {
       await screen.orientation.lock('landscape').catch(() => {});
     }
@@ -128,7 +137,28 @@ async function handleVideoPlay(event) {
   }
 }
 
-// 📱 2. 影片播完或關閉時：退出全螢幕並釋放背景音訊焦點（保護 Spotify）
+// 📱 2. 新增：雙點擊影片時觸發（播放並釋放其他影片音訊）
+function handleDoubleClick(event) {
+  const currentVideo = event.target;
+  
+  if (currentVideo.paused) {
+    currentVideo.play();
+  }
+
+  // 🔥 雙擊時同樣確保其他影片被暫停並釋放音訊
+  const allVideos = document.querySelectorAll('video');
+  allVideos.forEach(v => {
+    if (v !== currentVideo && !v.paused) {
+      v.pause();
+      v.muted = true;
+      setTimeout(() => {
+        if (v.readyState > 0) v.currentTime = 0.001;
+      }, 300);
+    }
+  });
+}
+
+// 📱 3. 影片播完時：退出全螢幕並釋放背景音訊焦點（保護 Spotify）
 function handleVideoEnded(event) {
   const video = event.target;
   
@@ -143,11 +173,21 @@ function handleVideoEnded(event) {
     }
   } catch (e) {}
 
-  // 靜音並退回第 0.001 秒，完美釋放音訊通道給 Spotify
   video.pause();
   video.muted = true;
-  setTimeout(() => {
-    video.currentTime = 0.001;
+  setTimeout(() => { 
+    if (video.readyState > 0) video.currentTime = 0.001; 
   }, 300);
 }
-</script>	
+
+// 📱 4. 切換分頁保護：離開這個網頁時，徹底中斷所有影片串流與釋放音訊
+onBeforeUnmount(() => {
+  const allVideos = document.querySelectorAll('video');
+  allVideos.forEach(video => {
+    video.pause();
+    video.muted = true;           
+    video.removeAttribute('src'); 
+    video.load();                 
+  });
+})
+</script>
