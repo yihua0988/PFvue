@@ -106,8 +106,8 @@
     <template v-if="activeTab === 'guide'">
       <section class="card-box" style="text-align: left;">
         <div class="box-header">
+		<h2>📸一頁式假網購防詐全拆解</h2>
           <div>
-            <h2>📸一頁式假網購防詐全拆解（點擊任一圖片可放大檢視）</h2>
             <p class="box-subtitle">
               👆 結合視覺圖卡與圖片沒說的<strong>「幕後運作黑幕＋實戰查證技巧」</strong>，下單前花1分鐘看懂不踩雷！
             </p>
@@ -119,16 +119,14 @@
             v-for="(card, idx) in guideImageCards" 
             :key="card.id" 
             class="guide-img-card"
-            @click="openPreview(card)"
           >
             <div class="guide-card-top">
               <span :class="['guide-step-badge', card.badgeClass]">深度拆解 {{ idx + 1 }}</span>
               <h3>{{ card.title }}</h3>
             </div>
 
-            <div class="guide-img-frame" title="點擊放大檢視高清原圖">
+            <div class="guide-img-frame">
               <img :src="card.src" :alt="card.title" loading="lazy" />
-              <span class="zoom-hint-pill">🔍點擊放大檢視</span>
             </div>
 
             <p class="guide-card-desc">
@@ -143,53 +141,7 @@
           </article>
         </div>
       </section>
-
-      <!-- 點擊放大檢視圖片 Lightbox 燈箱 (支援滾輪縮放與拖曳) -->
-      <Teleport to="body">
-        <div v-if="previewCard" class="img-lightbox-backdrop" @click="closePreview()">
-          <div class="img-lightbox-Modal" @click.stop>
-            
-            <div class="lightbox-header">
-              <h3>{{ previewCard.title }}</h3>
-              <div class="lightbox-actions">
-                <button class="zoom-tool-btn" @click.stop="zoomScale = Math.max(1, Number((zoomScale - 0.25).toFixed(2)))">➖</button>
-                <span class="zoom-level-pill">{{ Math.round(zoomScale * 100) }}%</span>
-                <button class="zoom-tool-btn" @click.stop="zoomScale = Math.min(4, Number((zoomScale + 0.25).toFixed(2)))">➕</button>
-                <button class="zoom-tool-btn reset-btn" @click.stop="resetZoom">🔄重置</button>
-                <button class="lightbox-close-btn" @click="closePreview()">✕關閉</button>
-              </div>
-            </div>
-
-            <div 
-              class="lightbox-stage"
-              @wheel="handleWheel"
-              @mousedown="startDrag"
-              @mousemove="onDrag"
-              @mouseup="endDrag"
-              @mouseleave="endDrag"
-              @dblclick="toggleZoom"
-              :class="{ 'is-zoomed': zoomScale > 1, 'is-dragging': isDragging }"
-            >
-              <img 
-                :src="previewCard.src" 
-                :alt="previewCard.title" 
-                class="lightbox-zoom-img"
-                :style="{
-                  transform: `translate(${panX}px, ${panY}px) scale(${zoomScale})`
-                }"
-                draggable="false"
-              />
-            </div>
-
-            <div class="lightbox-footer-hint">
-              💡 提示：支援<strong>滑鼠滾輪縮放</strong>、<strong>雙擊放大</strong>，放大後可<strong>按住滑鼠拖曳移動</strong>！
-            </div>
-            <p class="lightbox-caption" v-html="previewCard.desc"></p>
-          </div>
-        </div>
-      </Teleport>
-    </template>
-
+	 </template> 
     <!-- =====================================================================
           ⚡ 頁面二：網址 Security 安全層網站檢測 ＋ 10 題結構化防詐量表
           ===================================================================== -->
@@ -414,7 +366,6 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_KEY
 
 const activeTab = ref('guide')
-const previewCard = ref(null)
 const detectorSectionRef = ref(null)
 
 function checkRouteTab(shouldScroll = false) {
@@ -485,69 +436,6 @@ const guideImageCards = [
     ]
   }
 ]
-
-// ==========================================
-// 🔍 燈箱動態縮放與平移狀態管理 (Zoom & Pan)
-// ==========================================
-const zoomScale = ref(1)
-const panX = ref(0)
-const panY = ref(0)
-const isDragging = ref(false)
-const dragStart = { x: 0, y: 0 }
-
-function resetZoom() {
-  zoomScale.value = 1
-  panX.value = 0
-  panY.value = 0
-}
-
-function openPreview(card) {
-  resetZoom()
-  previewCard.value = card
-}
-
-function closePreview() {
-  previewCard.value = null
-  resetZoom()
-}
-
-function handleWheel(e) {
-  e.preventDefault()
-  const delta = e.deltaY < 0 ? 0.2 : -0.2
-  const newScale = Math.min(Math.max(1, zoomScale.value + delta), 4)
-  zoomScale.value = Number(newScale.toFixed(2))
-
-  if (zoomScale.value === 1) {
-    panX.value = 0
-    panY.value = 0
-  }
-}
-
-function startDrag(e) {
-  if (zoomScale.value <= 1) return
-  isDragging.value = true
-  dragStart.x = e.clientX - panX.value
-  dragStart.y = e.clientY - panY.value
-}
-
-function onDrag(e) {
-  if (!isDragging.value) return
-  panX.value = e.clientX - dragStart.x
-  panY.value = e.clientY - dragStart.y
-}
-
-function endDrag() {
-  isDragging.value = false
-}
-
-function toggleZoom() {
-  if (zoomScale.value > 1) {
-    resetZoom()
-  } else {
-    zoomScale.value = 2
-  }
-}
-
 const testUrlInput = ref('')
 const isScanningUrl = ref(false)
 const scanErrorMsg = ref('')
