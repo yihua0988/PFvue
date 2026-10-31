@@ -11,9 +11,7 @@
 
 🔗 **[點此觀看網站 Live Demo](https://yihua0988.github.io/PFvue/)**
 📝 **[專題簡報 PPT 檔案連結](https://github.com/yihua0988/PFvue/tree/master/ppt)**
-
 ---
-
 ## 🎯 核心研究模組 (Core Modules)
 
 本專案聚焦於以下四大核心防詐研究維度：
@@ -31,9 +29,7 @@
 4. 📖 **資安與犯罪心理學防制研究**
    - 從行為經濟學（如 FOMO 錯失恐懼）解構受害者的心理弱點。
    - 檢討現有制度的防禦破口，並提出包含導入 FIDO2 認證等五大防制行動方案。
-
 ---
-
 ## 🚀 亮點技術與獨家功能 (Key Features)
 
 ### 1. 雙模式網購風險量化引擎 (`scamSecurityScanner.js`)
@@ -52,9 +48,7 @@
 - **爬蟲特徵攔截**：封鎖 30+ 種主流爬蟲框架（Python, Puppeteer, HeadlessChrome 等）。
 - **底層框架殘留掃描**：檢查 `Navigator.prototype.webdriver` 竄改痕跡與 ChromeDriver 特徵變數。
 - **前端防護強化**：動態注入 CSS 阻擋全站文字選取與右鍵（不影響 `input` 正常操作），並防禦 Clickjacking 點擊劫持。
-
 ---
-
 ## 🛠️ 技術架構 (Tech Stack)
 
 * **前端框架**: Vue 3 (Composition API, `<script setup>`)
@@ -64,9 +58,7 @@
 * **後端 / 資料庫**: Supabase (PostgreSQL 關聯式資料庫 API 串接, RPC 函數實作)
 * **資料來源**: 政府資料開放平臺 (data.gov.tw), 內政部, 警政署, 統計處
 * **部署**: GitHub Pages
-
 ---
-
 ## 👨‍💻 作者與聯繫方式 (Author)
 
 **洪益華 (Hung Yi-Hua)**
@@ -91,9 +83,7 @@ An anti-fraud educational research project integrating Open Data visualization, 
 
 🔗 **[Click here for Live Demo](https://yihua0988.github.io/PFvue/)** 
 📝 **[Download Project Presentation (PPT)](https://github.com/yihua0988/PFvue/tree/main/ppt)**
-
 ---
-
 ## 🎯 Core Modules
 
 This project focuses on the following four core anti-fraud research dimensions:
@@ -111,9 +101,7 @@ This project focuses on the following four core anti-fraud research dimensions:
 4. 📖 **Cybersecurity & Criminal Psychology Defense Research**
    - Deconstructs victims' psychological vulnerabilities through behavioral economics (e.g., FOMO - Fear of Missing Out).
    - Reviews defense loopholes in current systems and proposes five major action plans, including the implementation of FIDO2 authentication.
-
 ---
-
 ## 🚀 Key Features & Exclusive Functions
 
 ### 1. Dual-Mode Online Shopping Risk Quantification Engine (`scamSecurityScanner.js`)
@@ -132,9 +120,7 @@ To protect the research content from being scraped by malicious automated script
 - **Crawler Feature Interception**: Blocks over 30 mainstream crawler frameworks (Python, Puppeteer, HeadlessChrome, etc.).
 - **Underlying Framework Residue Scan**: Checks for `Navigator.prototype.webdriver` tampering traces and ChromeDriver characteristic variables.
 - **Front-End Protection Enhancement**: Dynamically injects CSS to block site-wide text selection and right-clicks (without affecting normal `input` operations), and defends against Clickjacking.
-
 ---
-
 ## 🛠️ Tech Stack
 
 * **Front-End Framework**: Vue 3 (Composition API, `<script setup>`)
@@ -144,9 +130,7 @@ To protect the research content from being scraped by malicious automated script
 * **Backend / Database**: Supabase (PostgreSQL relational database API integration, RPC Implementation)
 * **Data Sources**: Taiwan Government Open Data (data.gov.tw), Ministry of Interior, National Police Agency, DGBAS
 * **Deployment**: GitHub Pages
-
 ---
-
 ## 👨‍💻 Author & Contact
 
 **Hung Yi-Hua (洪益華)**
