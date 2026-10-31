@@ -1,5 +1,5 @@
 /* =========================================================================
-   全站基本樣式 (Bright & Breathing Light Style + 全分頁統一整合版)
+   全站基本樣式 (Bright & Breathing Light Style + 全分頁統一整合完整版)
    ========================================================================= */
 
 @font-face {
@@ -63,6 +63,24 @@
     box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
     border-color: #f87171;
     background: linear-gradient(135deg, #ef4444, #dc2626);
+  }
+}
+
+@keyframes globalRedPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.85);
+    border-color: #f87171;
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 16px rgba(239, 68, 68, 0);
+    border-color: #fee2e2;
+    transform: scale(1.05);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+    border-color: #f87171;
+    transform: scale(1);
   }
 }
 
@@ -193,11 +211,19 @@ nav a:active {
   background-color: #f1f5f9;
 }
 
+/* 導覽列 (nav) Active 樣式與 .subpages 漸層藍底白字格式一致 */
 nav a.router-link-active,
 nav a.router-link-exact-active {
-  color: #0284c7 !important;
-  background-color: #f0f9ff !important;
+  background: linear-gradient(135deg, #0ea5e9, #3b82f6) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
   font-weight: 900 !important;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+}
+
+nav a.router-link-active i,
+nav a.router-link-exact-active i {
+  color: #ffffff !important;
 }
 
 nav a[href="/"]:not(.router-link-exact-active):not(.router-link-active) {
@@ -446,7 +472,7 @@ nav a[href="/"]:not(.router-link-exact-active):not(.router-link-active) {
   margin: 0;
 }
 
-/* 🔥 避免 .content a 污染子導覽列與特殊按鈕 */
+/* 避免 .content a 污染子導覽列與特殊按鈕 */
 .content a:not(.subpages a):not(.source-btn):not(.hero-source-btn):not(.cyber-bento-card):not(.terminal-ext-btn):not(.dev-btn) {
   color: #0284c7;
   font-weight: 800;
@@ -674,6 +700,72 @@ footer {
   padding-bottom: 100px !important; 
 }
 
+.footer-meta-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 10px;
+  font-size: 15px;
+  color: #334155;
+}
+
+.footer-meta-row strong {
+  color: #0284c7;
+}
+
+.footer-author-link {
+  color: #0284c7 !important;
+  font-weight: 800 !important;
+  text-decoration: none !important;
+  border-bottom: 1.5px solid rgba(2, 132, 199, 0.3) !important;
+  transition: all 0.2s ease !important;
+}
+
+.footer-author-link:hover {
+  color: #0369a1 !important;
+  border-bottom-color: #0369a1 !important;
+  background-color: transparent !important;
+}
+
+.global-floating-scam-btn {
+  position: fixed;
+  right: 28px;
+  bottom: 32px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 22px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #ffffff !important;
+  border-radius: 50px;
+  border: 3px solid #f87171;
+  font-size: 17.5px;
+  font-weight: 900;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+  animation: globalRedPulse 1.8s infinite cubic-bezier(0.4, 0, 0.6, 1);
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.global-floating-scam-btn:hover {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  transform: translateY(-3px) scale(1.06);
+  box-shadow: 0 10px 25px rgba(220, 38, 38, 0.6);
+  border-color: #ffffff;
+}
+
+.float-icon {
+  font-size: 20px;
+}
+
+.float-text {
+  letter-spacing: 0.5px;
+}
+
 /* =========================================================================
    🎬 165 反詐影片與新聞案例分頁共用樣式 (整合自各分頁 style scoped)
    ========================================================================= */
@@ -778,11 +870,11 @@ footer {
   text-align: center;
 }
 
-/* 🔥 使用 .content .action-image-container img 提高權重，縮小圖片且不彈出視窗 */
+/* 限制防制與行動方案宣導圖片大小為 450px，避免撐滿整頁 */
 .content .action-image-container img,
 .action-image-container img {
   width: 100% !important;
-  max-width: 450px !important; /* 電腦版縮小為精緻的 450px，不再撐滿整頁 */
+  max-width: 450px !important;
   height: auto !important;
   border-radius: 12px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
@@ -1313,6 +1405,7 @@ footer {
   margin-bottom: 0;
 }
 
+/* 狀態讀取框 (電腦版基準) */
 .status-box {
   background: rgba(255, 255, 255, 0.96);
   border-radius: 16px;
@@ -1322,6 +1415,7 @@ footer {
   border: 1px solid #e2e8f0;
   width: 100%;
 }
+
 .content .status-box h2 {
   font-size: 28px !important;
   margin-bottom: 10px;
@@ -1329,6 +1423,7 @@ footer {
   display: block;
 }
 .content .status-box h2::after { display: none !important; }
+
 .content .status-box p {
   text-align: center !important;
   font-size: 20px !important;
@@ -2597,20 +2692,6 @@ footer {
   margin-bottom: 0;
 }
 
-.footer-meta-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-bottom: 10px;
-  font-size: 15px;
-  color: #334155;
-}
-.footer-meta-row strong {
-  color: #0284c7;
-}
-
 /* =========================================================================
    🛒 第 5 頁 (/one-page-scam) 一頁式假網購宣導圖卡、解剖器 & 檢測器樣式
    ========================================================================= */
@@ -3299,7 +3380,7 @@ footer {
 /* =========================================================================
    全站圖片通用保護 (防止任何尺寸下爆版)
    ========================================================================= */
-.content img,
+.content img:not(.action-image-container img),
 .guide-card img,
 .preview-card img,
 .modal-body img {
@@ -3356,7 +3437,7 @@ footer {
     justify-content: center !important;
   }
 
-  /* 🌟 奇數個（3 或 5 個）最後一個維持 1 欄原大小靠左，絕不拉長 */
+  /* 奇數個（3 或 5 個）最後一個維持 1 欄原大小靠左，絕不拉長 */
   .subpages a:last-child:nth-child(odd) {
     grid-column: 1 / 2 !important;
   }
@@ -3425,7 +3506,7 @@ footer {
    ========================================================================= */
 @media (max-width: 768px) {
   
-  /* --- 1. 主導覽列：高質感毛玻璃膠囊 --- */
+  /* --- 1. 主導覽列：每行 2 個，第 5 個維持原大小靠左 --- */
   nav {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
@@ -3470,10 +3551,10 @@ footer {
     color: #0284c7 !important;
   }
 
-  /* 第 5 個按鈕（總結）跨滿兩欄 */
+  /* 第 5 個按鈕（總結）維持原大小（佔 1 欄）並自動靠左 */
   nav a:nth-child(5),
   nav a:last-child:nth-child(odd) {
-    grid-column: 1 / -1 !important;
+    grid-column: 1 / 2 !important;
   }
 
   nav a:active {
@@ -3482,7 +3563,7 @@ footer {
 
   nav a.router-link-active,
   nav a.router-link-exact-active {
-    background: linear-gradient(135deg, #0284c7, #2563eb) !important;
+    background: linear-gradient(135deg, #0ea5e9, #3b82f6) !important;
     color: #ffffff !important;
     border-color: transparent !important;
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28) !important;
@@ -3493,7 +3574,7 @@ footer {
     color: #ffffff !important;
   }
 
-  /* --- 2. 子導覽列：手機版每行 2 個，奇數個最後一個維持原大小靠左，徹底防白字隱形 --- */
+  /* --- 2. 子導覽列：手機版每行 2 個，奇數個最後一個維持原大小靠左，防白字隱形 --- */
   .subpages {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
@@ -3517,10 +3598,9 @@ footer {
     border-radius: 10px !important;
     border: 1.5px solid #cbd5e1 !important;
     background: rgba(255, 255, 255, 0.95) !important;
-    color: #1e293b !important; /* 🔥 強制深色字體，防止 Safari 點擊變白字隱形 */
+    color: #1e293b !important;
   }
 
-  /* 🔥 手機版選中與滑過狀態：強制藍底白字，優先權高於上方白底設定 */
   .subpages a:hover,
   .subpages a.router-link-active,
   .subpages a.router-link-exact-active {
@@ -3529,9 +3609,25 @@ footer {
     border-color: transparent !important;
   }
 
-  /* 🌟 關鍵：當按鈕總數是奇數（如 3 個或 5 個）時，最後一個維持 1 欄原大小靠左對齊 */
   .subpages a:last-child:nth-child(odd) {
     grid-column: 1 / 2 !important;
+  }
+
+  /* --- 狀態讀取框 (載入中/錯誤) 手機版優化 --- */
+  .status-box {
+    padding: 30px 16px !important;
+  }
+
+  .content .status-box h2 {
+    font-size: 20px !important;
+    line-height: 1.4 !important;
+    word-break: keep-all !important;
+    white-space: nowrap !important;
+  }
+
+  .content .status-box p {
+    font-size: 15px !important;
+    white-space: normal !important;
   }
 
   /* --- 3. 全域容器與卡片空間釋放 --- */
@@ -3571,6 +3667,12 @@ footer {
     padding: 12px !important;
   }
 
+  /* 手機版宣導圖片適中大小 */
+  .content .action-image-container img,
+  .action-image-container img {
+    max-width: 88% !important;
+  }
+
   /* 影片與新聞分頁手機版字級優化 */
   .anti-fraud-container .panel-header h2 { font-size: 24px !important; }
   .anti-fraud-container .panel-header .box-subtitle { font-size: 17px !important; }
@@ -3606,15 +3708,18 @@ footer {
   .dev-label, .dev-email, .copy-chip { font-size: 1rem !important; }
   .footer-panel-header h2 { font-size: 24px !important; font-weight: 800 !important; color: #0f172a !important; margin: 4px 0 8px 0 !important; }
 
-  /* --- 5. 控制面板緊湊收納 --- */
+  /* --- 5. 控制面板緊湊收納 (精準區分長短按鈕與自訂區間) --- */
   .control-bar,
   .filter-panel {
-    padding: 12px 14px !important;
+    padding: 14px 12px !important;
     gap: 10px !important;
   }
 
   .control-row,
   .filter-row {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
     gap: 8px !important;
   }
 
@@ -3622,100 +3727,89 @@ footer {
     padding-top: 10px !important;
   }
 
-  .filter-panel .btn-group {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-    width: 100%;
+  /* 預設按鈕群組：2 欄對稱網格 (適用「近3個月/近6個月/近1年/近3年」) */
+  .filter-panel .btn-group,
+  .control-bar .btn-group,
+  .period-group {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    width: 100% !important;
   }
 
-  .filter-row:first-of-type .btn-group,
-  .filter-row:first-of-type .mode-group {
+  /* 長文字模式切換按鈕 (.mode-tab / .mode-btn)：單欄垂直排列，防止文字擠壓 */
+  .btn-group:has(.mode-tab),
+  .btn-group:has(.mode-btn),
+  .mode-group {
     display: flex !important;
     flex-direction: column !important;
     gap: 6px !important;
     width: 100% !important;
   }
 
-  .filter-row:first-of-type .mode-btn,
-  .filter-row:first-of-type .mode-tab {
-    padding: 8px 10px !important;
-    font-size: 14.5px !important;
-    min-height: 42px !important;
-    justify-content: center !important;
-  }
-
-  .filter-row:has(.gender-filter),
-  .gender-group,
-  .filter-row:nth-child(2) .btn-group {
+  /* 性別篩選群組 (含 .date-label 與 3 個按鈕)：自動 3 等分並排 */
+  .btn-group:has(.date-label),
+  .gender-group {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
     gap: 6px !important;
     width: 100% !important;
   }
 
-  .gender-group button,
-  .filter-row:nth-child(2) .btn-group button,
-  .filter-row:nth-child(2) .btn-group .pill-btn {
-    width: 100% !important;
-    padding: 8px 4px !important;
+  .btn-group:has(.date-label) .date-label {
+    grid-column: 1 / -1 !important;
     font-size: 13.5px !important;
-    text-align: center !important;
-    justify-content: center !important;
-    white-space: nowrap !important;
+    margin-bottom: 2px !important;
   }
 
-  .filter-row:has(.period-btn) .btn-group,
-  .filter-row:nth-child(3) .btn-group,
-  .period-group {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 6px !important;
-    width: 100% !important;
-  }
-
+  .mode-btn,
+  .mode-tab,
   .period-btn,
-  .filter-row:nth-child(3) .btn-group .period-btn,
-  .filter-row:nth-child(3) .btn-group .pill-btn {
+  .pill-btn {
     width: 100% !important;
-    padding: 8px 6px !important;
+    height: auto !important;
+    min-height: 44px !important;
+    padding: 8px 10px !important;
     font-size: 14px !important;
-    text-align: center !important;
+    line-height: 1.35 !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    display: flex !important;
+    align-items: center !important;
     justify-content: center !important;
-    white-space: nowrap !important;
+    text-align: center !important;
   }
 
-  .filter-panel .mode-tab,
-  .filter-panel .pill-btn {
-    width: 100%;
-    text-align: center;
-    padding: 10px 8px;
-    font-size: 14px;
-    white-space: normal;
-    line-height: 1.35;
-  }
-
+  /* 自訂時間區間：年、月固定 2 欄並排，標籤與波浪號獨立佔滿一行 */
   .custom-date-box {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
     gap: 6px !important;
-    padding: 8px 10px !important;
-    margin-top: 6px !important;
+    padding: 10px !important;
+    margin-top: 4px !important;
     width: 100% !important;
     box-sizing: border-box !important;
+    background: #f8fafc !important;
   }
 
   .custom-date-box .clean-select,
   .custom-date-box .date-select {
     width: 100% !important;
     min-width: 0 !important;
-    font-size: 13.5px !important;
+    font-size: 14px !important;
     padding: 6px 4px !important;
   }
 
-  .date-label {
-    grid-column: 1 / -1;
-    font-size: 13px !important;
+  .custom-date-box > span,
+  .custom-date-box .date-label {
+    grid-column: 1 / -1 !important;
+    font-size: 13.5px !important;
+    text-align: left !important;
+  }
+
+  .custom-date-box > span:nth-of-type(2) {
+    text-align: center !important;
+    margin: -2px 0 !important;
   }
 
   /* 信用卡子分類雙排網格 */
@@ -3753,7 +3847,7 @@ footer {
     gap: 10px;
   }
 
-  /* --- 7. 藍色 Banner 寬鬆展開 --- */
+  /* --- 7. 藍色 Banner 與雙軸圖表頂部展開 --- */
   .detail-card .detail-banner,
   .card-box .detail-banner,
   .city-header-banner {
@@ -3812,7 +3906,7 @@ footer {
     margin-left: 0;
   }
 
-  /* --- 8. 排行榜頂部與列表精簡 --- */
+  /* --- 8. 排行榜頂部與列表精簡 (含一般排行與 Spacious 寬版排行) --- */
   .box-header { margin-bottom: 8px !important; }
   .box-header h2 { font-size: 19px !important; margin-bottom: 4px !important; }
   .content .box-subtitle { font-size: 14px !important; line-height: 1.4 !important; margin-bottom: 10px !important; }
@@ -3843,6 +3937,7 @@ footer {
     text-align: center !important;
   }
 
+  .city-bar-row,
   .rank-row {
     display: grid;
     grid-template-columns: 100px 1fr;
@@ -3852,6 +3947,7 @@ footer {
     align-items: center;
   }
 
+  .city-rank-name,
   .rank-city-col {
     grid-column: 1 / 2;
     grid-row: 1 / 2;
@@ -3859,6 +3955,7 @@ footer {
     white-space: nowrap;
   }
 
+  .city-metric-val,
   .rank-val-col {
     grid-column: 2 / 3;
     grid-row: 1 / 2;
@@ -3866,6 +3963,7 @@ footer {
     text-align: right;
   }
 
+  .bar-track,
   .rank-bar-col {
     grid-column: 1 / 3;
     grid-row: 2 / 3;
@@ -3877,7 +3975,7 @@ footer {
   .rank-val-col .primary-val strong { font-size: 16px; }
   .delta-pill { padding: 2px 6px; font-size: 12px; }
 
-  /* Spacious 寬大版排行精簡 */
+  /* Spacious 寬大版排行精簡 (第 3、4 頁) */
   .spacious-rank-row {
     padding: 10px 12px !important;
     gap: 8px !important;
@@ -3925,6 +4023,7 @@ footer {
     word-break: break-all;
   }
 
+  .vs-bar-container,
   .compare-bar {
     display: flex;
     flex-direction: column;
@@ -4011,12 +4110,31 @@ footer {
     white-space: nowrap;
     font-size: 13.5px;
   }
+
+  /* --- 10. 頁尾 Footer 雙行解題 --- */
+  .footer-meta-row {
+    flex-direction: column !important;
+    gap: 6px !important;
+  }
+  
+  .footer-meta-row span:nth-child(2) {
+    display: none !important;
+  }
+
+  footer { padding-bottom: 90px !important; }
 }
 
 @media (max-width: 600px) {
   .legend-hero { padding: 28px 22px; }
   .qr-bento-list { grid-template-columns: 1fr; }
   .developer-bar { flex-direction: column; align-items: flex-start; }
+
+  .global-floating-scam-btn {
+    right: 18px;
+    bottom: 20px;
+    padding: 12px 16px;
+    font-size: 15px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -4028,108 +4146,4 @@ footer {
   .rank-city-name { font-size: 14px; }
   .rank-val-col .primary-val { font-size: 13px; }
   .custom-date-box .clean-select { min-width: 80px; }
-}
-/* =========================================================================
-   🌟 App.vue 全域懸浮按鈕、頁尾連結 & 導覽列統一格式
-   ========================================================================= */
-@keyframes globalRedPulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.85);
-    border-color: #f87171;
-    transform: scale(1);
-  }
-  50% {
-    box-shadow: 0 0 0 16px rgba(239, 68, 68, 0);
-    border-color: #fee2e2;
-    transform: scale(1.05);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
-    border-color: #f87171;
-    transform: scale(1);
-  }
-}
-
-.global-floating-scam-btn {
-  position: fixed;
-  right: 28px;
-  bottom: 32px;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 22px;
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  color: #ffffff !important;
-  border-radius: 50px;
-  border: 3px solid #f87171;
-  font-size: 17.5px;
-  font-weight: 900;
-  text-decoration: none;
-  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
-  animation: globalRedPulse 1.8s infinite cubic-bezier(0.4, 0, 0.6, 1);
-  transition: all 0.2s ease;
-  backdrop-filter: blur(8px);
-}
-
-.global-floating-scam-btn:hover {
-  background: linear-gradient(135deg, #dc2626, #b91c1c);
-  transform: translateY(-3px) scale(1.06);
-  box-shadow: 0 10px 25px rgba(220, 38, 38, 0.6);
-  border-color: #ffffff;
-}
-
-.float-text {
-  letter-spacing: 0.5px;
-}
-
-.footer-author-link {
-  color: #0284c7 !important;
-  font-weight: 800 !important;
-  text-decoration: none !important;
-  border-bottom: 1.5px solid rgba(2, 132, 199, 0.3) !important;
-  transition: all 0.2s ease !important;
-}
-
-.footer-author-link:hover {
-  color: #0369a1 !important;
-  border-bottom-color: #0369a1 !important;
-  background-color: transparent !important;
-}
-
-/* 導覽列 (nav) Active 樣式與 .subpages 漸層藍底白字格式完全一致 */
-nav a.router-link-active,
-nav a.router-link-exact-active {
-  background: linear-gradient(135deg, #0ea5e9, #3b82f6) !important;
-  color: #ffffff !important;
-  border-color: transparent !important;
-  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2) !important;
-}
-
-nav a.router-link-active i,
-nav a.router-link-exact-active i {
-  color: #ffffff !important;
-}
-
-@media (max-width: 768px) {
-  /* 手機版 nav 與 .subpages 一致：每行 2 個，第 5 個（總結）維持原大小靠左 */
-  nav a:nth-child(5),
-  nav a:last-child:nth-child(odd) {
-    grid-column: 1 / 2 !important;
-  }
-
-  /* 手機版宣導圖片適中大小 */
-  .content .action-image-container img,
-  .action-image-container img {
-    max-width: 88% !important;
-  }
-}
-
-@media (max-width: 600px) {
-  .global-floating-scam-btn {
-    right: 18px;
-    bottom: 20px;
-    padding: 12px 16px;
-    font-size: 15px;
-  }
 }
