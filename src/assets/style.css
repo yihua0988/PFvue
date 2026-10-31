@@ -733,7 +733,7 @@ footer {
   position: fixed;
   right: 28px;
   bottom: 32px;
-  z-index: 9999;
+  z-index: 99999; /* 🔥 提高層級確保不被蓋住 */
   display: flex;
   align-items: center;
   gap: 8px;
@@ -747,15 +747,30 @@ footer {
   text-decoration: none;
   box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
   animation: globalRedPulse 1.8s infinite cubic-bezier(0.4, 0, 0.6, 1);
-  transition: all 0.2s ease;
   backdrop-filter: blur(8px);
+  
+  /* 🔥 手機版核心修復屬性 (Hardware Acceleration & Touch Fix) */
+  transform: translateZ(0); /* 強制開啟 GPU 加速，徹底解決跳頁留下的半透明殘影 */
+  -webkit-tap-highlight-color: transparent; /* 取消手機點擊時的灰色反白塊 */
+  touch-action: manipulation; /* 停用手機雙擊放大，確保點一下立刻觸發跳頁 */
+  user-select: none; /* 防止文字被意外反白選取 */
+  transition: background 0.2s ease, border-color 0.2s ease; /* 移除 transform 漸變，保護固定元素 */
 }
 
-.global-floating-scam-btn:hover {
-  background: linear-gradient(135deg, #dc2626, #b91c1c);
-  transform: translateY(-3px) scale(1.06);
-  box-shadow: 0 10px 25px rgba(220, 38, 38, 0.6);
-  border-color: #ffffff;
+/* 電腦版滑鼠懸停效果 (保留) */
+@media (hover: hover) {
+  .global-floating-scam-btn:hover {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    border-color: #ffffff;
+    box-shadow: 0 8px 25px rgba(220, 38, 38, 0.6);
+  }
+}
+
+/* 手機版點擊按壓效果 (取代原有的 scale 縮放，防當機留殘影) */
+.global-floating-scam-btn:active {
+  background: linear-gradient(135deg, #b91c1c, #991b1b);
+  border-color: #fca5a5;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.8);
 }
 
 .float-icon {
