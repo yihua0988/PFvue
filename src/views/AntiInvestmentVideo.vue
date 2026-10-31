@@ -7,18 +7,6 @@
      <p class="dashboard-subtitle">兆豐證券官方防詐宣導：破解投資群組與假認股陷阱</p>
    </div>
 
-   <div class="subpages" style="grid-template-columns: repeat(3, 1fr);">
-     <router-link to="/anti-deepfake-video" :class="{ 'router-link-exact-active': $route.path === '/anti-deepfake-video' }">
-       <i class="fas fa-project-diagram"></i>&nbsp;反深偽詐騙
-     </router-link>
-     <router-link to="/anti-phishing-video" :class="{ 'router-link-exact-active': $route.path === '/anti-phishing-video' }">
-       <i class="fas fa-user-shield"></i>&nbsp;常見詐騙手法分析
-     </router-link>
-     <router-link to="/anti-investment-video" :class="{ 'router-link-exact-active': $route.path === '/anti-investment-video' }">
-       <i class="fas fa-bug"></i>&nbsp;假投資詐騙解析
-     </router-link>
-   </div>
-
    <!-- ================== 動態影片展示區塊 ================== -->
    <div 
       v-for="(video, index) in videoList" 

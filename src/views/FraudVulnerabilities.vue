@@ -7,22 +7,6 @@
      <p class="dashboard-subtitle">制度經濟學與資安體制檢討報告：解構「瑞士起司理論」下的系統性失靈與權責重分配</p>
    </div>
 
-   <!-- 4.總結子導覽列 -->
-	<div class="subpages" style="grid-template-columns: repeat(4, 1fr);">
-	  <router-link to="/summary" :class="{ 'router-link-exact-active': $route.path === '/summary' }">
-		<i class="fas fa-project-diagram"></i>&nbsp;詐騙趨勢總結
-	  </router-link>
-	  <router-link to="/victim-profile" :class="{ 'router-link-exact-active': $route.path === '/victim-profile' }">
-		<i class="fas fa-user-shield"></i>&nbsp;受害人特徵分析
-	  </router-link>
-	  <router-link to="/fraud-vulnerabilities" :class="{ 'router-link-exact-active': $route.path === '/fraud-vulnerabilities' }">
-		<i class="fas fa-bug"></i>&nbsp;防詐破口與責任
-	  </router-link>
-	  <router-link to="/action-plan" :class="{ 'router-link-exact-active': $route.path === '/action-plan' }">
-		<i class="fas fa-fist-raised"></i>&nbsp;防制與行動方案
-	  </router-link>
-	</div>
-
    <!-- ================== 導論：瑞士起司理論與系統性失靈 ================== -->
    <div class="panel anti-fraud-container" style="text-align: left; margin-top: 24px;">
      <div class="panel-header">

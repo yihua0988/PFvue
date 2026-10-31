@@ -6,22 +6,6 @@
      <p class="dashboard-subtitle">深偽與語音複製技術崛起，客製化釣魚瓦解傳統資安防線</p>
    </div>
 
-   <!-- 3. 案例分析子導覽列 -->
-	<div class="subpages" style="grid-template-columns: repeat(4, 1fr);">
-	  <router-link to="/prevention" :class="{ 'router-link-exact-active': $route.path === '/prevention' }">
-		<i class="fas fa-project-diagram"></i>&nbsp;AI深偽亂入罷免案例
-	  </router-link>
-	  <router-link to="/fraud-growth-stats" :class="{ 'router-link-exact-active': $route.path === '/fraud-growth-stats' }">
-		<i class="fas fa-user-shield"></i>&nbsp;AI詐騙一年暴增四倍
-	  </router-link>
-	  <router-link to="/ai-fraud-news" :class="{ 'router-link-exact-active': $route.path === '/ai-fraud-news' }">
-		<i class="fas fa-bug"></i>&nbsp;AI假檢警與黑幫經營
-	  </router-link>
-	  <router-link to="/top-10-frauds" :class="{ 'router-link-exact-active': $route.path === '/top-10-frauds' }">
-		<i class="fas fa-fist-raised"></i>&nbsp;十大常見詐騙解析
-	  </router-link>
-	</div>
-
    <!-- 📖 深度案例探討區塊 -->
    <div class="panel anti-fraud-container" style="text-align: left; margin-top: 24px;">
      <div class="panel-header">

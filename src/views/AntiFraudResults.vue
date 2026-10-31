@@ -8,16 +8,7 @@
         整合「金管會警示帳戶季度統計」與「全國打詐查緝與查扣成效」，透過同步折線圖直觀掌握執法防堵趨勢！
       </p>
     </header>
-
-    <!-- 2. 資料視覺化子頁面選單 (5 頁配置，強制重整) -->
-	<div class="subpages" style="grid-template-columns: repeat(5, 1fr); margin: 0 auto;">
-	  <a href="/PFvue/fraud-patterns" :class="{ 'router-link-exact-active': $route.path === '/fraud-patterns' }"><i class="fas fa-map-marked-alt"></i>&nbsp;我住的縣市安全嗎？</a>
-	  <a href="/PFvue/fraud-trends" :class="{ 'router-link-exact-active': $route.path === '/fraud-trends' }"><i class="fas fa-users"></i>&nbsp;哪種人最容易被騙？</a>
-	  <a href="/PFvue/fraud-interception" :class="{ 'router-link-exact-active': $route.path === '/fraud-interception' }"><i class="fas fa-phone-slash"></i>&nbsp;假電話與盜刷防範</a>
-	  <a href="/PFvue/anti-fraud-results" :class="{ 'router-link-exact-active': $route.path === '/anti-fraud-results' }"><i class="fas fa-shield-alt"></i>&nbsp;警示戶與打詐成效</a>
-	  <a href="/PFvue/one-page-scam" :class="{ 'router-link-exact-active': $route.path === '/one-page-scam' }"><i class="fas fa-shopping-cart"></i>&nbsp;假網購長怎樣？</a>
-	</div>
-
+	
     <!-- 讀取中狀態 -->
     <div v-if="isLoading" class="status-box">
 	  <div class="spinner"></div>

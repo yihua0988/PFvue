@@ -9,14 +9,6 @@
       </p>
     </header>
 
-    <div class="subpages" style="grid-template-columns: repeat(5, 1fr); margin: 0 auto;">
-	  <router-link to="/fraud-patterns" :class="{ 'router-link-exact-active': $route.path === '/fraud-patterns' }"><i class="fas fa-map-marked-alt"></i>&nbsp;我住的縣市安全嗎？</router-link>
-	  <router-link to="/fraud-trends" :class="{ 'router-link-exact-active': $route.path === '/fraud-trends' }"><i class="fas fa-users"></i>&nbsp;哪種人最容易被騙？</router-link>
-	  <router-link to="/fraud-interception" :class="{ 'router-link-exact-active': $route.path === '/fraud-interception' }"><i class="fas fa-phone-slash"></i>&nbsp;假電話與盜刷防範</router-link>
-	  <router-link to="/anti-fraud-results" :class="{ 'router-link-exact-active': $route.path === '/anti-fraud-results' }"><i class="fas fa-shield-alt"></i>&nbsp;警示戶與打詐成效</router-link>
-	  <router-link to="/one-page-scam" :class="{ 'router-link-exact-active': $route.path === '/one-page-scam' }"><i class="fas fa-shopping-cart"></i>&nbsp;假網購長怎樣？</router-link>
-	</div>
-
     <!-- 讀取中狀態 -->
     <div v-if="isLoading" class="status-box">
 	  <div class="spinner"></div>
